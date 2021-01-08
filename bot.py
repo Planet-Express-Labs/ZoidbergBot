@@ -14,13 +14,16 @@ from confessbot.utilities import generate_id, generate_code
 from datetime import datetime
 from io import BytesIO
 from discord.ext import commands
+import os
 
-
+# This is a horrible hack. I will fix this later. Hopefully.
 CHANNEL_ID = 769050998790291476
 
 GUILD_ID = 769039315945914370
 
 LOG_ID = 769062433314439199
+
+Token = os.getenv("DISCORD_BOT_TOKEN")
 
 
 logging.basicConfig(level=logging.INFO)
