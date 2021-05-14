@@ -9,7 +9,7 @@ Discord bot that allows you to send confession messages into a channel without r
 Hosted confessbot is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run just fine, although you'll probably have some reliablility issues with windows update.
 
 Installation is simple.
-1. `git clone https://github.com/LiemEldert/confessbot-public.git`
+1. Run `git clone https://github.com/LiemEldert/confessbot-public.git`in a terminal in whatever directory you want the server to be stored in.
 2. Edit the config_template file and save as `config.ini`. More detailed instructions are inside the file.
    a: Make a bot account here: discord.com/developers/
    b: To copy the chanel ids, you need to enable developer mode in the settings. 
