@@ -64,6 +64,7 @@ async def conf(ctx, *, message=""):
         userID = ctx.message.author.id
         server = bot.get_guild(GUILD_ID)
         member = ctx.message.author
+        # TODO: change this to sqlite3. Not here, in beta, but do that.
         print(now.strftime("%d/%m %H:%M"), file=open("output.txt", "a"))
         print(userID, file=open("output.txt", "a"))
         print(server, file=open("output.txt", "a"))
@@ -88,7 +89,8 @@ async def conf(ctx, *, message=""):
             for file in ctx.message.attachments:
                 fp = BytesIO()
                 await file.save(fp)
-                files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
+                files.append(discord.File(
+                    fp, filename=file.filename, spoiler=file.is_spoiler()))
                 imageURL = ctx.message.attachments[0].url
                 embed.set_image(url=imageURL)
                 print("image" + imageURL)
@@ -123,16 +125,6 @@ async def on_ready():
 
     # Really make sure the internal cache is ready
     await bot.wait_until_ready()
-
-
-"""
-@bot.listen()
-async def on_member_join(member: Member):
-
-
-@bot.listen()
-async def on_raw_reaction_add(payload: RawReactionActionEvent):
-"""
 
 
 #############
