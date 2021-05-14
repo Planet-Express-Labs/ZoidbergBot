@@ -77,6 +77,8 @@ async def conf(ctx, *, message=""):
 #############
 # Discord events
 #############
+
+# Perhaps add an optional member join message? 
 @bot.listen()
 async def on_ready():
     log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
