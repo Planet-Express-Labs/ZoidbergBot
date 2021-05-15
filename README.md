@@ -1,17 +1,11 @@
+<img align="left" src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
 
-:::: {.columns}
-::: {.column width="60%"}
-![zoidberg](https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg)
-:::
-::: {.column width="40%"}
  _____         _     ____                       ____        __ 
 /__  /  ____  (_)___/ / /_  ___  _________ _   / __ )____  / /_
   / /  / __ \/ / __  / __ \/ _ \/ ___/ __ `/  / __  / __ \/ __/
  / /__/ /_/ / / /_/ / /_/ /  __/ /  / /_/ /  / /_/ / /_/ / /_  
 /____/\____/_/\__,_/_.___/\___/_/   \__, /  /_____/\____/\__/  
-                                   /____/                      
-:::
-::::
+
 
 # confessbot-public
 
