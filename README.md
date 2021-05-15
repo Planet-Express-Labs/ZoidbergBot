@@ -1,4 +1,4 @@
-<img align="left" src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
+<img align="left" scale="50%" src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
 
  _____         _     ____                       ____        __ 
 /__  /  ____  (_)___/ / /_  ___  _________ _   / __ )____  / /_
