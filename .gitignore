@@ -1,7 +1,8 @@
 /venv/
-/confessbot/encode.py
+/zoidbergbot/encode.py
 /data/config.ini
 /.idea/
 /.vs/
 .DS_Store
 /%SystemDrive%/
+zoidbergbot/__pycache__/
