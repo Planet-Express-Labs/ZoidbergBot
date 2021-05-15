@@ -6,3 +6,4 @@
 .DS_Store
 /%SystemDrive%/
 zoidbergbot/__pycache__/
+output.txt
