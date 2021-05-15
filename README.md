@@ -1,7 +1,7 @@
 <img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
 
-<img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118348722-34876e00-b51a-11eb-9099-29b576d60c4c.png">!
-
+<img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118348722-34876e00-b51a-11eb-9099-29b576d60c4c.png">
+# Zoidberg bot
 Public branch of Zoidberg. Feature request should go in issues. 
 Discord bot that allows you to send confession messages into a channel without revealing your username to the server. 
 
