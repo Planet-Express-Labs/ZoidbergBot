@@ -1,12 +1,5 @@
-<img align="left" width=100 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
-```
- _____         _     ____                       ____        __ 
-/__  /  ____  (_)___/ / /_  ___  _________ _   / __ )____  / /_
-  / /  / __ \/ / __  / __ \/ _ \/ ___/ __ `/  / __  / __ \/ __/
- / /__/ /_/ / / /_/ / /_/ /  __/ /  / /_/ /  / /_/ / /_/ / /_  
-/____/\____/_/\__,_/_.___/\___/_/   \__, /  /_____/\____/\__/  
-                                   /____/                        
-```
+<img align="left" width=100 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg"><img align="right" width=100 src="https://user-images.githubusercontent.com/45272685/118345454-9045fd00-b502-11eb-917e-ef53a3a13a59.png">
+
 
 
 # confessbot-public
