@@ -1,12 +1,12 @@
 <img align="left" width=100 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
-
+<p align="right">
  _____         _     ____                       ____        __ 
 /__  /  ____  (_)___/ / /_  ___  _________ _   / __ )____  / /_
   / /  / __ \/ / __  / __ \/ _ \/ ___/ __ `/  / __  / __ \/ __/
  / /__/ /_/ / / /_/ / /_/ /  __/ /  / /_/ /  / /_/ / /_/ / /_  
 /____/\____/_/\__,_/_.___/\___/_/   \__, /  /_____/\____/\__/  
 
-
+</p>
 # confessbot-public
 
 Public branch of confessionbot. Feature request should go in issues. 
