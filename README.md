@@ -10,7 +10,7 @@ Discord bot that allows you to send confession messages into a channel without r
 
 # Install
 
-Hosted confessbot is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run just fine, although you'll probably have some reliablility issues with windows update.
+Hosted Zoidberg is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run just fine, although you'll probably have some reliablility issues with windows update.
 
 Installation is simple.
 1. Run `git clone https://github.com/LiemEldert/confessbot-public.git`in a terminal in whatever directory you want the server to be stored in.
@@ -37,4 +37,5 @@ Installation is simple.
   - For now, the server's data will be store solely with an internal sqlite3 database. This will probably change much later on - after merging to stable. 
   - We will still maintain a version without multi server support since it's easier to install and requires less resources, but that branch will not recieve frequent updates, and will probably not get feature updates. 
 - "Private" votes in confession channels. 
-~~- New name, new logo/icon. ~~
+- New name, new logo/icon. 
+  - Suggestions are very welcome.

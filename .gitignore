@@ -1,6 +1,5 @@
 /venv/
 /data/config_test.ini/
-/.idea/
 /.vs/
 /output.txt/
 /permissionLog.txt/
@@ -9,4 +8,5 @@ zoidbergbot/__pycache__/
 /%SystemDrive%/
 data/config.ini
 output.txt
-.idea/
+.idea
+*.pyc

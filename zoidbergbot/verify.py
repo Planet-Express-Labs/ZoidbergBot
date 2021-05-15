@@ -9,3 +9,10 @@ def verify_user(ctx, perm):
         for each in ADMIN_ID:
             print(ADMIN_ID, ctx.message.author.id)
             return int(ctx.message.author.id) == int(each)
+
+
+def verify_user_decorator(ctx, perm):
+    if verify_user(ctx, perm):
+        pass
+    else:
+        return lambda *_: None

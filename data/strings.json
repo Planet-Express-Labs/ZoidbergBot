@@ -1,6 +1,0 @@
-{
-  "BOT_ABOUT": "Discord bot to make anonymous confessions into a channel. ",
-  "CMD_PERMISSION_ERROR": ":exclamation: You do not have permission to ",
-  "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command.",
-  "VERSION": "1.0 RC"
-}

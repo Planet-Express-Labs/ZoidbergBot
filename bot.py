@@ -38,21 +38,17 @@ sublime with Ayu doesn't work, for instance.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
-import asyncio
-from datetime import datetime
-from io import BytesIO
 
 import discord
-from discord.ext import commands
 from discord.ext.commands import Bot, Context
 
 from zoidbergbot.config import *
-from zoidbergbot.localization import get_string, String
+from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
 # TODO: place these in config.py.
 COGS = ["cogs.confess"]
-permissionLevels = ["dev", "admin"]
+#
 
 # TODO: add to config.
 logging.basicConfig(level=logging.INFO)
@@ -89,7 +85,7 @@ class Main:
     @bot.command(name="about", brief="A bit about the bot")
     async def cmd_about(self, ctx: Context):
         # Replies with a short blurb of information. I should probably update this later.
-        await ctx.send(get_string(String.BOT_ABOUT).format(bot_mention=bot.user.mention, bot_version=__version__))
+        await ctx.send(get_string(get_string("BOT_ABOUT")).format(bot_mention=bot.user.mention, bot_version=__version__))
 
     @bot.command(name="set-status",
                  brief="Set the status of the bot. This saves to a file on the disk. This command is logged, "
@@ -110,17 +106,20 @@ class Main:
                   file=open("permissionLog.txt", "a"))
 
     @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
-    async def cmd_check_perms(self, ctx: Context):
-        message = ""
+    async def cmd_check_perms(self, ctx, message):
+        # TODO: change how this is handled. This will likely just be moved into a different function. Works fine as
+        #  is, however.
+        permission_levels = ["dev", "admin"]
         await ctx.send("Checking user permissions... ")
-        for each in permissionLevels:
+        for each in permission_levels:
             message += f"{each}: {verify_user(ctx, each)}\n"
         if "True" in message:
-            message += "\nYou are the special one. Be wise, my child."
+            message += "\n:green_circle:"
         else:
-            message += "\nYou're boring."
+            message += "\n:red_circle"
         embed = discord.Embed(description=message)
         await ctx.send(embed=embed)
 
 
-bot.run(BOT_TOKEN)
+bot.run('NzczNjAzMzgxNTQ4ODEwMjYw.X6LoSw.J9At9Lazf-B-3we5Mn2S4qYnuFM')
+# bot.run(BOT_TOKEN)

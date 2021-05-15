@@ -1,5 +1,7 @@
 {
-  "BOT_ABOUT": "Discord bot to make anonymous confessions into a channel. https://github.com/LiemEldert/confessbot-public",
-  "CMD_NO_CONTENT": ":exclamation: Your command isn't complete! See help to view the syntax for this command.",
-  "CMD_MESSAGE_SENT": ":white_check_mark: Message sent!"
+  "BOT_ABOUT": "Discord bot to make anonymous confessions into a channel. ",
+  "CMD_PERMISSION_ERROR": ":exclamation: You do not have permission to use this command! Please contact an admin if you believe this to be an error. ",
+  "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command.",
+  "VERSION": "1.0 RC",
+  "COMMAND_EMPTY_USER_ID": "Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\""
 }

@@ -1,16 +1,36 @@
 """
-  ____             __ _           _
- / ___|___  _ __  / _| |__   ___ | |_
-| |   / _ \| '_ \| |_| '_ \ / _ \| __|
-| |__| (_) | | | |  _| |_) | (_) | |_
- \____\___/|_| |_|_| |_.__/ \___/ \__|
+if you see an insane mess here, it's supposed to be zoidberg. Probably only works correcly in certain fonts,
+sublime with Ayu doesn't work, for instance.
 
-
- ____  _____ _____  _      ____  ____      _    _   _  ____ _   _
-| __ )| ____|_   _|/ \    | __ )|  _ \    / \  | \ | |/ ___| | | |
-|  _ \|  _|   | | / _ \   |  _ \| |_) |  / _ \ |  \| | |   | |_| |
-| |_) | |___  | |/ ___ \  | |_) |  _ <  / ___ \| |\  | |___|  _  |
-|____/|_____| |_/_/   \_\ |____/|_| \_\/_/   \_\_| \_|\____|_| |_|
+▌▙▚▛▞▚▚▘▌▚▝▄▙▜▜▀▀▙▌▜▟▌▚▌▌▌▚▚▚▚▚▚▚▚▚▚▚▘▌▚▀▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖
+▚▀▄▘▀▖▚▙▞█▛▜▐▐▝▞▞▟▜▐▟▐▚▚▐▐▐▗▚▐▗▚▐▗▚▐▗▚▚▚▚▜▝▞▝▖▌▞▖▌▞▖▚▐▗▚▝▖▚
+▚▚▐▞▙█▜▐▚▘▞▖▚▗▚▝▖▛▙▐▟▀▖▌▚▐▝▞▞▐▝▞▞▐▝▞▞▞▐▗▚▐▐▞▐▗▘▞▗▝▖▞▝▖▚▗▚▐▝▖
+▟▜▚▜▝▖▚▖▘▙▐▐▝▖▚▚▝▛▞▞▙▚▚▚▚▚▚▚▐▐▐▝▞▞▞▞▖▌▌▌▌▌▚▐▗▘▞▝▞▝▞▝▞▝▖▚▗▘▞
+▐▝▞▖▌▌▌▀▌▞▞▙▘▌▚▗▚▛▙▜▟▜▐▝▞▖▌▚▚▚▚▚▚▐▝▖▌▚▐▝▖▌▌▌▌▚▐▝▖▌▞▝▞▝▞▖▚▝▝▖
+▞▞▞▞▞▞▞▚▚▚▚▚▚▐▝▖▘▛▌▟▟▝▄▚▚▚▚▚▚▐▗▚▘▌▌▌▌▌▌▌▌▌▚▚▀▖▚▝▖▞▝▞▗▚▗▝▖▌▌▖
+▚▚▚▌▙▛▟▙▚▚▚▜▗▘▚▐▝▛▙▐▟▚▚▚▐▗▚▚▐▝▞▖▌▌▞▞▐▝▞▐▝▞▞▖▌▛▖▌▚▝▞▝▖▚▝▞▖▞▗
+▛▛▙█▙▛█▞▞▖▌▛▖▌▚▘▚▜▌▚█▗▀▞▐▝▖▌▘▘▘▘▚▚▚▐▐▐▐▐▐▝▖▌▌▌▚▝▖▌▞▐▝▖▌▄▝▖▚▘
+▛█▙▙▙▛▙▌▌▌█▚▝▐▗▘▌▙▛▞▙▚▚▞▞▞▞▖▖     ▝▝▐▗▚▐ ▘▀   ▚▚▘▞▝▖▚▝▖▖▚▐▗▘
+▛▙▙▙▙▛▙▌▌▜▝▖▀▖▘▌▞▞▙▜▐▚▖▙▘▌▚▘  ▖▜▘▗   ▞▞▘   ▙   ▌▚▝▞▝▖▌▞▝▖▚▗▘
+█▙▜▟▚▛▙▌▌█▝▞▞▐▝▖▚▛▞▟▌▛▛▌▌▌▌▙       ▝ ▌▞▖ ▝   ▝▗▝▖▌▞▐▗▝▖▌▚▘▖▘
+▙▜▜▟▜▜▙▛▞▟▝▖▞▖▛▟█▜▙▚▛▞▘▌▌▞▞▖▌▖▗ ▘ ▘▗▞▐▐▐▗  ▖▝▗▖▚▘▞▝▖▚▚▝▖▚▝▞▖    __________ _____ _____  ____  ______ _____   _____
+▛█▜▟▛█▟▞▞▟▐▝▖▚▌▀▝▀▝▀▞  ▞▞▞▖▌▌▚▚▗▖▖▜▐▐▝▖▌▌▌▄▗▀▌▞▖▚▝▞▝▖▖▌▞▖▚▗    |___  / __ \_   _|  __ \|  _ \|  ____|  __ \ / ____|
+▛▙▛▙▛▙▙▌▙▀▝           ▐▝▖▌▚▐▐▝▛▀▚▀▞▖▌▌▌▌▞▞▞▞▚▚▗▘▚▚▝▞▝▖▞▗▝▞▝▖      / / |  | || | | |  | | |_) | |__  | |__) | |  __
+▛▛▛▙▛▌▘▘              ▞▞▞▞▞▞▖▙▙▛▞▞▞▐▝▞▐▝▞▖▌▞▚▘▘▘▙▗▚▐▝▞▞▖▌▞▝▖     / /| |  | || | | |  | |  _ <|  __| |  _  /| | |_ |
+█▜▛▌▘     ▝▗         ▗▚▚▐▝▞▄████▞▖▌▌▌▌▌▜▝▞▝▌▌▌▌▗▗▐▐▗▚▚▐▝▞▝▌▀    / /_| |__| || |_| |__| | |_) | |____| | \ \| |__| |
+▛▌▘     ▄▗▐▀▞▚▀▞▚▀▞▖ ▗▚▚▚▚▜█████▞▞▐▝▙▐▐▝▙▚▚▚▚▐ ▌▚▌▌▚▚▘▌▚▚▚▚▘   /_____\____/_____|_____/|____/|______|_|  \_\\_____|
+▘   ▗▖▜▐▝▞▖▌▌▌▌▌▌▌▘  ▘▖▐▗▚▛█▜██▛▖▌▌▌▌▞▖▙▚▘▌▚▚▚▘▌    ▘▌▌▌▚▘▌▘
+  ▗▞▚▐▐▝▞▞▞▞▐▝▞▐     ▗▝ ▚▚▝▌▛▞▟▐▐▝▖▌▌▚▚▞▖▌▌▌▌▞▖      ▘▌▞▞▞▞▖
+▗▞▚▚▚▚▘▌▌▞▖▌▌▌▀      ▝▗▘▖▚▚▚▐▝▖▌▚▚▜▞▞▞▞▞▞▞▐▝▞▐▐▝       ▝▝▞▐
+▞▐▝▖▌▚▚▘▌▚▚▚▐▗        ▚▗▝▗▝▝▟▐▐▐▝▌▜▗▚▐▝▞▐▝▞ ▘▘           ▄▚▘
+▐▐▐▐▐▐▗▚▚▚▚▐▐▘        ▝▞▗▖▝▖▗▗▗▗▚▝▗▝▐ ▛  ▝      ▌         ▘▌
+▚▘▌▚▘▌▚▚▘▌▞▞         ▖ ▝▗▝▘▄▘▗▗ ▖▝▗▐▖▀          ▌
+▞▞▞▞▞▞▞▖▌▌▌▖▝            ▞▗ ▞ ▚▀▀▘▘▖            ▌   ▝  ▖
+▐▝▞▐▝▞▐▐▝▞▞ ▖      ▝     ▝▖▝▗▝▗▝▗▘▘             ▘
+▚▚▚▚▚▚▚▘▌▘       ▞▜        ▘▖▐ ▝               ▗  ▗▄▖
+▞▖▌▚▐▗▚▚▘  ▝   ▄▜▐▝      ▗ ▝                 ▖▘▝   ▗▚▀▚▗▄▖▗
+▐▐▐▐▐▐▗▚▘  ▖ ▄▜▝▖▌▘  ▗ ▝                    ▘       ▗▚▚▚▝▞▞▖
+▘▘▝▝ ▘▌   ▗ ▘▘▝▝▝▝ ▘                 ▘   ▘     ▘     ▘▌▘▘▘▝
 """
 # This software is provided free of charge without a warranty - meaning if you're an idiot and somehow
 # blow up your sever, I am not liable or responsible.
@@ -28,15 +48,17 @@ import re
 import discord
 from discord.ext import commands
 
-from bot import bot, permissionLevels
-from confessbot.strings import gets, String
-from confessbot.verify import verify_user
-from confessbot.config import *
+from bot import bot
+from zoidbergbot.localization import get_string
+from zoidbergbot.verify import verify_user
+from zoidbergbot.config import *
+
 
 def find_url(input):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s(" \
             r")<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])) "
     return re.search(input, regex)
+
 
 class Confess(commands.Cog):
     """Cog for confessing. As the name makes clear. """
@@ -46,41 +68,35 @@ class Confess(commands.Cog):
 
     @commands.command(name="conf")
     async def cmd_conf(self, ctx, *, message=""):
-        # Error check: skips if message has no content or image
+        # Checks if the message actually contains anything worth sending.
         if (len(message) != 0) or (ctx.message.attachments != []):
-            if not find_url(message):
-
-            else:
-
-            now = datetime.now()
-            current_time = now.strftime("%d/%m %H:%M")
+            current_time = datetime.now().strftime("%d/%m %H:%M")
 
             # Obtains User ID and nickname to verify user is in guild/server
             user_id = ctx.message.author.id
             server = bot.get_guild(GUILD_ID)
             # Assigns Discord channel (given channel ID)
+            print(CHANNEL_ID)
+            print(LOG_ID)
             channel = bot.get_channel(int(CHANNEL_ID))
             logChannel = bot.get_channel(int(LOG_ID))
             # last_message_id = ctx.channel.last_message_id
 
             # TODO: reformat this and add better logging options.
-            print(now.strftime("%d/%m %H:%M"), file=open("../output.txt", "a"))
+            print(current_time, file=open("../output.txt", "a"))
             print(user_id, file=open("../output.txt", "a"))
             print("Guild ID:", GUILD_ID)
             print(server, file=open("../output.txt", "a"))
             print("Channel:", CHANNEL_ID, channel, file=open("../output.txt", "a"))
             print("Log:", LOG_ID, file=open("../output.txt", "a"))
             print(str(ctx.message.author).encode("utf-8"), file=open("../output.txt", "a"))
-            print(ctx.message)
+            print(ctx.message.content)
 
-            print(CONFESS_BANS)
-            for each in CONFESS_BANS:
-                print(each)
-                if user_id == each:
-                    await ctx.send(
-                        "You have been temporarily blacklisted from sending confessions. \nThis could be a "
-                        "permanent ban, or simply rate limiting. ")
-                    return None
+            if get_user_ban(user_id):
+                await ctx.send(
+                    "You have been temporarily blacklisted from sending confessions. \nThis could be a "
+                    "permanent ban, or simply rate limiting. ")
+                pass
             # Create embed. They're fancy
             embed = discord.Embed(description=f"{message}\n\n:id:: \n:card_box::")
             print(message, file=open("../output.txt", "a"))
@@ -128,7 +144,7 @@ class Confess(commands.Cog):
         channel = bot.get_channel(int(CHANNEL_ID))
         if verify_user(ctx, "admin"):
             embed = discord.Embed(body=ctx.message, color=0xFF5733, title="Confession Announcement",
-                                  footer=f"confessbot v{String.VERSION}.")
+                                  footer=f"confessbot v{get_string('VERSION')}.")
             await ctx.send(embed=embed)
 
             async def confirm(m):
@@ -142,28 +158,21 @@ class Confess(commands.Cog):
                 await channel.send(embed=embed)
 
         else:
-            await ctx.send("You do not have sufficient permissions to run that command. This event will be logged, "
-                           "Daddy is disappointed. ")
-            print(f"{ctx.message.author} just attempted to use set-status without proper permissions. ",
-                  file=open("permissionLog.txt", "a"))
+            await ctx.send(get_string("BOT_PERMISSION_ERROR"))
 
-    @commands.command(name="ban-confessions", brief="Bans a user from using confessions. A reason is not yet supported, "
-                                               "but might be implemented soon:tm:. ")
+    @commands.command(name="ban-confessions")
     async def cmd_ban_confessions(self, ctx, *, message=""):
+        # TODO: convert everything to docstrings.
+        """Bans a user from using confessions. A reason is not yet supported, but might be implemented soon:tm:.
+        """
         if verify_user(ctx, "admin"):
             if message is None:
-                await ctx.send(
-                    "Please provide the user ID. To grab someone's ID, enable developer options in appearance, "
-                    "right click their username and click ''Copy ID''")
+                await ctx.send(get_string("COMMAND_EMPTY_USER_ID"))
             else:
-                add_banned_user(int(message))
-                await ctx.send("User banned from sending confessions.")
+                add_ban(int(ctx.message.author))
+                await ctx.send(":white_check_mark:")
         else:
-            await ctx.send(
-                "You do not have sufficient permissions (%s) to run that command. This event will be logged, "
-                "Daddy is disappointed. " % "dev")
-            print(f"{ctx.message.author} just attempted to use set-status without proper permissions. ",
-                  file=open("permissionLog.txt", "a"))
+            await ctx.send(get_string("CMD_PERMISSION_ERROR"))
 
     @commands.command(name="unban-confessions", brief="Unbans a user from confessions. ")
     async def cmd_unban_confessions(self, ctx, *, message=""):
@@ -174,24 +183,25 @@ class Confess(commands.Cog):
                     "right click their username and click ''Copy ID''")
             else:
                 try:
-                    remove_banned_user(int(message))
+                    rm_ban(int(message))
                 except ValueError:
-                    await ctx.send("Invalid ID. ")
+                    await ctx.send("Invalid ID. ID must be an integer. ")
                 await ctx.send("User unbanned from sending confessions. ")
                 print(f"{ctx.message.author} just unbanned {bot.get_user(int(message))}. ",
                       file=open("permissionLog.txt", "a"))
         else:
-            await ctx.send(
-                "You do not have sufficient permissions (%s) to run that command. This event will be logged, "
-                "Daddy is disappointed. " % "dev")
-            print(f"{ctx.message.author} just attempted to use set-status without proper permissions. ",
-                  file=open("permissionLog.txt", "a"))
-    
-    @commands.command(name="confession-bans", brief="Lists all banned confession users. ")
-    async def cmd_confession_bans(self, ctx, *, message=""):
-        embed = discord.Embed(description=f"Pulling bans, please wait.")
+            await ctx.send(get_string("CMD_PERMISSION_ERROR"))
 
-        await ctx.send(embed=embed)
+    @commands.command(name="confession-bans", brief="Lists all banned confession users. ")
+    async def cmd_confession_bans(self, ctx):
+        embed = discord.Embed(description="Getting bans, please wait.")
+        message = ctx.send(embed=embed)
+        if verify_user(ctx, "admin"):
+            for each in get_bans():
+                embed += "\n {0}".format(bot.get_user(each))
+                message.edit(embed=embed)
+        else:
+            await ctx.send(get_string("CMD_PERMISSION_ERROR"))
 
 
 def setup(bot):
