@@ -1,5 +1,5 @@
 {
   "BOT_ABOUT": "Discord bot to make anonymous confessions into a channel. https://github.com/LiemEldert/confessbot-public",
-  "CMD_NO_CONTENT": ":exclamation: Your command isn't complete! See help to view the syntax for this command."
+  "CMD_NO_CONTENT": ":exclamation: Your command isn't complete! See help to view the syntax for this command.",
   "CMD_MESSAGE_SENT": ":white_check_mark: Message sent!"
 }

@@ -33,78 +33,92 @@ sublime with Ayu doesn't work, for instance.
 """
 
 import discord
+import re
 from typing import Optional
 from random import choice
 from discord import Member, Guild, TextChannel, Message, PermissionOverwrite, Role, CategoryChannel, Reaction
 from discord.ext.commands import Bot, Context, check_any, CheckFailure
 from discord import RawReactionActionEvent
 from discord.errors import HTTPException
-from zoidbergbot.state import state
 from zoidbergbot.config import *
-from zoidbergbot.strings import get_string, String
-from zoidbergbot.utilities import generate_id, generate_code
+from zoidbergbot.localization import get_string, String
 from datetime import datetime
 from io import BytesIO
 from discord.ext import commands
 import os
 
-__version__ = "1.0 RELEASE CANDIDATE"
+__version__ = "1.0"
 
 log = logging.getLogger(__name__)
 bot = Bot(
     command_prefix=BOT_PREFIX
 )
 
+
+def find_url(input):
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s(" \
+            r")<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])) "
+    return re.search(input, regex)
+
+
 # "!conf" command
 @bot.command()
-async def conf(ctx, *, message=""):
+async def conf(ctx, message):
+    # Error check: skips if message has no content or image
     if (len(message) != 0) or (ctx.message.attachments != []):
-
         now = datetime.now()
-        currentTime = now.strftime("%d/%m %H:%M")
-        userID = ctx.message.author.id
+        current_time = now.strftime("%d/%m %H:%M")
+
+        # Obtains User ID and nickname to verify user is in guild/server
+        user_id = ctx.message.author.id
         server = bot.get_guild(GUILD_ID)
-        member = ctx.message.author
-        # TODO: change this to sqlite3. Not here, in beta, but do that.
-        print(now.strftime("%d/%m %H:%M"), file=open("output.txt", "a"))
-        print(userID, file=open("output.txt", "a"))
-        print(server, file=open("output.txt", "a"))
-        print(member, file=open("output.txt", "a"))
+        # Assigns Discord channel (given channel ID)
+        channel = bot.get_channel(int(CHANNEL_ID))
+        logChannel = bot.get_channel(int(LOG_ID))
+        # last_message_id = ctx.channel.last_message_id
 
-        # Grabs channel IDS from config.
-        # TODO: convert this to use a database per guild id. 
-        channel = bot.get_channel(CHANNEL_ID)
-        logChannel = bot.get_channel(LOG_ID)
+        # TODO: reformat this and add better logging options.
+        print(now.strftime("%d/%m %H:%M"), file=open("../output.txt", "a"))
+        print(user_id, file=open("../output.txt", "a"))
+        print("Guild ID:", GUILD_ID)
+        print(server, file=open("../output.txt", "a"))
+        print("Channel:", CHANNEL_ID, channel, file=open("../output.txt", "a"))
+        print("Log:", LOG_ID, file=open("../output.txt", "a"))
+        print(str(ctx.message.author).encode("utf-8"), file=open("../output.txt", "a"))
+        print(ctx.message)
 
-        # Embed looks fancy.
-        embed = discord.Embed(description=message)
-        print(message, file=open("output.txt", "a"))
-        # Set date/time as footer of embed
-        embed.set_footer(text=currentTime)
-
-        # Image attachments
+        # Create embed. They're fancy
+        embed = discord.Embed(description=f"{message}\n\n:id:: \n:card_box::")
+        print(message, file=open("../output.txt", "a"))
+        embed.set_footer(text=f"Pulling info. ")
+        # Send embed.
+        msg = await channel.send(embed=embed)
+        embed = discord.Embed(
+            description=f"{message}  \n\n:id:: {msg.id}")
         files = []
         for file in ctx.message.attachments:
             fp = BytesIO()
             await file.save(fp)
-            files.append(discord.File(
-                fp, filename=file.filename, spoiler=file.is_spoiler()))
+            files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
             imageURL = ctx.message.attachments[0].url
             embed.set_image(url=imageURL)
             print("image" + imageURL)
+        url = find_url(message)
+        if url is not None:
+            imageURL = url
+        embed.set_footer(text=f"{current_time}")
+        await msg.edit(embed=embed)
 
-        # Send embed message to channel
-        await channel.send(embed=embed)
-        embed.set_footer(text=currentTime + str(member))
+        # log message
+        embed.set_footer(text="%s %s\n%s" % (current_time, str(user_id + 10), ctx.message.author))
         await logChannel.send(embed=embed)
-        # TODO: Change to use strings. 
+        # Inform user their message has been sent
         await ctx.send("Your message has been sent!")
 
-
-    else: 
-        await ctx.send(CMD_NO_CONTENT)
-    print("--------------------------------------- END CONFESS ---------------------------------------",
-          file=open("output.txt", "a"))
+    # If the message contains no image or text
+    else:
+        await ctx.send("Your message does not contain any content. Message failed.")
+        print("--------------------------------------- END CONFESS ---------------------------------------", file=open("../output.txt", "a"))
 
 
 #############
