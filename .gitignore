@@ -1,9 +1,12 @@
 /venv/
-/zoidbergbot/encode.py
-/data/config.ini
+/data/config_test.ini/
 /.idea/
 /.vs/
-.DS_Store
-/%SystemDrive%/
+/output.txt/
+/permissionLog.txt/
+/test/
 zoidbergbot/__pycache__/
+/%SystemDrive%/
+data/config.ini
 output.txt
+.idea/
