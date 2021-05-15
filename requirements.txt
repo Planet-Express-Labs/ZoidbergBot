@@ -1,9 +1,7 @@
 discord.py
-logging
 os
 random
 asyncio
 configparser
-logging
 codecs
 json
