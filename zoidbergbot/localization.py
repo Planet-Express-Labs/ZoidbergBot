@@ -14,7 +14,8 @@ REQUIRED_STRING_LIST = [
     "CMD_PERMISSION_ERROR",
     "COMMAND_ON_COOLDOWN",
     "VERSION",
-    "COMMAND_EMPTY_USER_ID"
+    "COMMAND_EMPTY_USER_ID",
+    "NO_RESULTS"
 ]
 
 # Makes sure everything is present on runtime.

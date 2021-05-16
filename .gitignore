@@ -10,3 +10,4 @@ data/config.ini
 output.txt
 .idea
 *.pyc
+bans.csv
