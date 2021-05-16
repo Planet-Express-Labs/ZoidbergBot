@@ -105,6 +105,4 @@ class Main:
         await ctx.send(embed=embed)
 
 
-bot.run('NzczNjAzMzgxNTQ4ODEwMjYw.X6LoSw.J9At9Lazf-B-3we5Mn2S4qYnuFM')
-# bot.run(BOT_TOKEN)
 bot.run(BOT_TOKEN)
