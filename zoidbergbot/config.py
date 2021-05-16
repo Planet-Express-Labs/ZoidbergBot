@@ -60,10 +60,11 @@ def read_config(section, value, file="./data/config.ini"):
 
 # Bot section.
 
-if bool(config.get("Bot", "token_env_var")):
-    BOT_TOKEN = os.getenv("zoidberg_token")
-else:
-    BOT_TOKEN = int(config.get("Bot", "bot_token", fallback=None))
+# TODO: Fix this.
+# if bool(config.get("Bot", "token_env_var")):
+#     BOT_TOKEN = os.getenv("zoidberg_token")
+# else:
+BOT_TOKEN = config.get("Bot", "bot_token")
 
 
 BOT_PREFIX = config.get("Bot", "bot_prefix", fallback="!")
