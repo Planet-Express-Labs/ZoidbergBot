@@ -32,7 +32,6 @@ sublime with Ayu doesn't work, for instance.
 ▐▐▐▐▐▐▗▚▘  ▖ ▄▜▝▖▌▘  ▗ ▝                    ▘       ▗▚▚▚▝▞▞▖
 ▘▘▝▝ ▘▌   ▗ ▘▘▝▝▝▝ ▘                 ▘   ▘     ▘     ▘▌▘▘▘▝
 """
-
 # This software is provided free of charge without a warranty - meaning if you're an idiot and somehow
 # blow up your sever, I am not liable or responsible.
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -84,30 +83,15 @@ class Main:
 
     @bot.command(name="about", brief="A bit about the bot")
     async def cmd_about(self, ctx: Context):
-        # Replies with a short blurb of information. I should probably update this later.
-        await ctx.send(get_string(get_string("BOT_ABOUT")).format(bot_mention=bot.user.mention, bot_version=__version__))
 
-    @bot.command(name="set-status",
-                 brief="Set the status of the bot. This saves to a file on the disk. This command is logged, "
-                       "even if you do not have proper permissions.")
-    async def cmd_set_status(self, ctx: Context, *, message=""):
-        # Sets the status of the bot. This will be stored in the config file.
-        print("status:", message)
-        if verify_user(ctx, "dev"):
-            if message is not None:
-                print("status:", message)
-                await ctx.send("Setting status to: " + message)
-                await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=message))
-            else:
-                await ctx.send("Status cannot be sent to a blank string. ")
-        else:
-            await ctx.send("You do not have sufficient permissions to run that command. This event will be logged")
-            print(f"{ctx.message.author} just attempted to use set-status without proper permissions. ",
-                  file=open("permissionLog.txt", "a"))
+        embed = discord.Embed(description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__), title="Zoidberg")
+        embed.set_author("LiemEldert/Sopmk/Sky", "https://github.com/LiemEldert",  )
+        embed.set_thumbnail("https://github.com/LiemEldert", "https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
+        embed.url("https://github.com/LiemEldert/ZoidbergBot/")
 
     @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
     async def cmd_check_perms(self, ctx, message):
-        # TODO: change how this is handled. This will likely just be moved into a different function. Works fine as
+        # TODO: change how this is handled. This will likely just be moved into a differ ent function. Works fine as
         #  is, however.
         permission_levels = ["dev", "admin"]
         await ctx.send("Checking user permissions... ")
@@ -123,3 +107,4 @@ class Main:
 
 bot.run('NzczNjAzMzgxNTQ4ODEwMjYw.X6LoSw.J9At9Lazf-B-3we5Mn2S4qYnuFM')
 # bot.run(BOT_TOKEN)
+bot.run(BOT_TOKEN)
