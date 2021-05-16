@@ -66,7 +66,6 @@ def read_config(section, value, file="./data/config.ini"):
 # else:
 BOT_TOKEN = config.get("Bot", "bot_token")
 
-
 BOT_PREFIX = config.get("Bot", "bot_prefix", fallback="!")
 SPECIAL_USERS_IDS = [int(id_) for id_ in loads(config.get("Bot", "special_user_ids", fallback="[]"))]
 BOT_LANGUAGE = config.get("Bot", "language")
@@ -74,12 +73,14 @@ BOT_LANGUAGE = config.get("Bot", "language")
 # Conf section:
 CHANNEL_ID = config.get("conf", "channel_id")
 GUILD_ID: int = config.getint("conf", "guild_id")
-LOG_ID:int = config.getint("conf", "log_channel_id")
+LOG_ID: int = config.getint("conf", "log_channel_id")
 # Users section.
 
 log.info(f"Special users: {', '.join([str(a) for a in SPECIAL_USERS_IDS])}")
 DEV_ID = config.get("Users", "developer_id")
-ADMIN_ID = config.get("Users", "admin_id")
+ADMIN_ID = config.get("Users", "admin_id").split(" ")
+print(DEV_ID, ADMIN_ID)
+
 
 ####################
 #       bans       #
@@ -96,6 +97,9 @@ def get_bans():
 
 
 def get_user_ban(name):
+    if not os.path.isfile("./data/bans.csv"):
+        file = open("./data/bans.csv", "w")
+        file.close()
     bans = get_bans()
     for each in bans:
         if each == name:
@@ -120,7 +124,7 @@ def rm_ban(user):
 def add_ban(user):
     if get_user_ban(user):
         return False
-
-    with open("./bans/bans.csv", "a", newline='') as write_file:
+    with open("./data/bans.csv", "a", newline='') as write_file:
         write = csv.writer(write_file, delimiter='\n', quotechar='|')
+        user = [user]
         write.writerow(user)
