@@ -29,16 +29,40 @@ from io import BytesIO
 import discord
 from discord.ext import commands
 
-from bot import bot
+from bot import bot, __version__
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
+from cogs.logging import create_message_link, log_confess
 
 
 def find_url(url):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s(" \
             r")<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])) "
     return re.search(url, regex)
+
+
+async def handle_image_embed(ctx, embed, message):
+    files = []
+    for file in ctx.message.attachments:
+        fp = BytesIO()
+        await file.save(fp)
+        files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
+        image_url = ctx.message.attachments[0].url
+        embed.set_image(url=image_url)
+        print("image" + image_url)
+    image = str(find_url(message))
+    if image is not None:
+        embed.set_image(url=image)
+    return embed
+
+
+async def send_linked_embed(ctx, link):
+    embed = discord.Embed(description=get_string("message_sent"), url=link)
+    embed.set_author(name=f"Zoidberg v{0}".format(__version__),
+                     icon_url="https://i.imgur.com/wWa4zCM.png",
+                     url="https://github.com/LiemEldert/ZoidbergBot")
+    await ctx.send(embed=embed)
 
 
 class Confess(commands.Cog):
@@ -52,42 +76,19 @@ class Confess(commands.Cog):
     async def cmd_conf(self, ctx, *, message=""):
         if (len(message) != 0) or (ctx.message.attachments != []):
             current_time = datetime.now().strftime("%d/%m %H:%M")
-
-            # Obtains User ID and nickname to verify user is in guild/server
             user_id = ctx.message.author.id
-            server = bot.get_guild(GUILD_ID)
-            # Assigns Discord channel (given channel ID)
             channel = bot.get_channel(int(CHANNEL_ID))
-            log_channel = bot.get_channel(int(LOG_ID))
-            # last_message_id = ctx.channel.last_message_id
             if get_user_ban(user_id):
-                await ctx.send(
-                    "You have been temporarily blacklisted from sending confessions. \nThis could be a "
-                    "permanent ban, or simply rate limiting. ")
+                await ctx.send(get_string("BANNED_COMMAND"))
                 pass
             # Create embed. They're fancy
             embed = discord.Embed(description=f"{message}", timestamp=current_time)
-            files = []
-            for file in ctx.message.attachments:
-                fp = BytesIO()
-                await file.save(fp)
-                files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
-                image_url = ctx.message.attachments[0].url
-                embed.set_image(url=image_url)
-                print("image" + image_url)
-            image = str(find_url(message))
-            if image is not None:
-                embed.set_image(url=image)
-
-            await channel.send(embed=embed)
-            # log message
-            embed.set_footer(text="%s %s\n%s" % (current_time, str(user_id), ctx.message.author))
-            await log_channel.send(embed=embed)
-            await ctx.send(get_string("message_sent"))
-
-            # If the message contains no image or text
+            embed = handle_image_embed(ctx, embed, message)
+            msg = await channel.send(embed=embed)
+            log_confess(ctx, bot.get_channel(int(LOG_ID)), message, current_time)
+            await send_linked_embed(ctx, create_message_link(GUILD_ID, channel, msg))
         else:
-            await ctx.send("Your message does not contain any content. Message failed.")
+            await ctx.send(get_string("COMMAND_EMPTY"))
 
     @cmd_conf.error
     async def conf_error(self, ctx, error):
