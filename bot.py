@@ -44,14 +44,8 @@ from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
-# TODO: place these in config.py.
-COGS = ["cogs.confess"]
-#
-
-# TODO: add to config.
-logging.basicConfig(level=logging.INFO)
-# TODO: change how this is handled.
-__version__ = "1.0 Release Candidate 2"
+__version__ = get_string("version")
+logging.basicConfig(level=exec(LOGGING_LEVEL))
 
 log = logging.getLogger(__name__)
 bot = Bot(
