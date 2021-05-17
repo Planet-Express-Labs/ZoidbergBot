@@ -1,7 +1,4 @@
 """
-if you see an insane mess here, it's supposed to be zoidberg. Probably only works correcly in certain fonts,
-sublime with Ayu doesn't work, for instance.
-
 ▌▙▚▛▞▚▚▘▌▚▝▄▙▜▜▀▀▙▌▜▟▌▚▌▌▌▚▚▚▚▚▚▚▚▚▚▚▘▌▚▀▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖
 ▚▀▄▘▀▖▚▙▞█▛▜▐▐▝▞▞▟▜▐▟▐▚▚▐▐▐▗▚▐▗▚▐▗▚▐▗▚▚▚▚▜▝▞▝▖▌▞▖▌▞▖▚▐▗▚▝▖▚
 ▚▚▐▞▙█▜▐▚▘▞▖▚▗▚▝▖▛▙▐▟▀▖▌▚▐▝▞▞▐▝▞▞▐▝▞▞▞▐▗▚▐▐▞▐▗▘▞▗▝▖▞▝▖▚▗▚▐▝▖
@@ -32,14 +29,13 @@ sublime with Ayu doesn't work, for instance.
 ▐▐▐▐▐▐▗▚▘  ▖ ▄▜▝▖▌▘  ▗ ▝                    ▘       ▗▚▚▚▝▞▞▖
 ▘▘▝▝ ▘▌   ▗ ▘▘▝▝▝▝ ▘                 ▘   ▘     ▘     ▘▌▘▘▘▝
 """
-# This software is provided free of charge without a warranty - meaning if you're an idiot and somehow
-# blow up your sever, I am not liable or responsible.
+# This software is provided free of charge without a warranty.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# This is designed as a component for confbot. Use outside of that is not supported.
-# Do not create an issue on the repo if this is used outside of the main bot. If you create one, it will be closed.
+# This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
+# If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import asyncio
 from datetime import datetime
 from io import BytesIO
@@ -78,7 +74,7 @@ class Confess(commands.Cog):
             server = bot.get_guild(GUILD_ID)
             # Assigns Discord channel (given channel ID)
             channel = bot.get_channel(int(CHANNEL_ID))
-            logChannel = bot.get_channel(int(LOG_ID))
+            log_channel = bot.get_channel(int(LOG_ID))
             # last_message_id = ctx.channel.last_message_id
 
             # TODO: reformat this and add better logging options.
@@ -109,18 +105,19 @@ class Confess(commands.Cog):
                 fp = BytesIO()
                 await file.save(fp)
                 files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
-                imageURL = ctx.message.attachments[0].url
-                embed.set_image(url=imageURL)
-                print("image" + imageURL)
+                image_url = ctx.message.attachments[0].url
+                embed.set_image(url=image_url)
+                print("image" + image_url)
             url = find_url(message)
             if url is not None:
-                imageURL = url
+                embed.set_image(url=url)
+
             embed.set_footer(text=f"{current_time}")
             await msg.edit(embed=embed)
 
             # log message
             embed.set_footer(text="%s %s\n%s" % (current_time, str(user_id + 10), ctx.message.author))
-            await logChannel.send(embed=embed)
+            await log_channel.send(embed=embed)
             # Inform user their message has been sent
             await ctx.send("Your message has been sent!")
 
@@ -129,7 +126,6 @@ class Confess(commands.Cog):
             await ctx.send("Your message does not contain any content. Message failed.")
             print("--------------------------------------- END CONFESS ---------------------------------------",
                   file=open("../output.txt", "a"))
-
 
     @cmd_conf.error
     async def conf_error(self, ctx, error):
