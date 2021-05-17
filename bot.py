@@ -78,7 +78,7 @@ class Main:
     @bot.command(name="ping", brief="The bot responds if alive")
     async def cmd_ping(self, ctx: Context):
         # Literally just responds with this.
-        await ctx.send(f"Pong! :ping_pong: \n :clock1: {0}" .format(round(bot.latency, 1)))
+        await ctx.send(f"Pong! :ping_pong: \n :clock1: {0}".format(round(bot.latency, 1)))
 
     @bot.command(name="about", brief="A bit about the bot")
     async def cmd_about(self, ctx: Context):
