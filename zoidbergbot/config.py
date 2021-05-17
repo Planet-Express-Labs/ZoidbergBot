@@ -61,7 +61,7 @@ LOG_ID: int = config.getint("conf", "log_channel_id")
 
 log.info(f"Special users: {', '.join([str(a) for a in SPECIAL_USERS_IDS])}")
 DEV_ID = config.get("Users", "developer_id")
-ADMIN_ID = config.get("Users", "admin_id").split(" ")
+ADMIN_ID = config.get("Users", "admin_ids").split(" ")
 print(DEV_ID, ADMIN_ID)
 
 
