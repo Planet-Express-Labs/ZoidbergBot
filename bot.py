@@ -27,7 +27,7 @@ from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
-__version__ = get_string("version")
+__version__ = get_string("VERSION")
 logging.basicConfig(level=exec(LOGGING_LEVEL))
 
 log = logging.getLogger(__name__)
