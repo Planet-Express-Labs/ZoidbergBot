@@ -81,11 +81,17 @@ class Main:
         await ctx.send(f"Pong! :ping_pong: \n :clock1: {0}".format(round(bot.latency, 1)))
 
     @bot.command(name="about", brief="A bit about the bot")
-    async def cmd_about(self, ctx: Context):
-
-        embed = discord.Embed(description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__), title="Zoidberg")
-        embed.set_author("LiemEldert/Sopmk/Sky", "https://github.com/LiemEldert",  )
-        embed.set_thumbnail("https://github.com/LiemEldert", "https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
+    async def cmd_about(self):
+        # Oh no - the paragraphs.
+        embed = discord.Embed(description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention,
+                                                                         bot_version=__version__), title="Zoidberg")
+        embed.set_author("LiemEldert/Sopmk/Sky", "https://github.com/LiemEldert", "https://cdn.discordapp.com/channel"
+                                                                                  "-icons/812042455746740234"
+                                                                                  "/f8c312e61a3cf74d73d6ba8583edf8b9"
+                                                                                  ".webp?")
+        embed.set_thumbnail("https://github.com/LiemEldert",
+                            "https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24"
+                            "-d662a27818dc.jpg")
         embed.url("https://github.com/LiemEldert/ZoidbergBot/")
 
     @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
