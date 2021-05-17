@@ -29,11 +29,13 @@
 ▐▐▐▐▐▐▗▚▘  ▖ ▄▜▝▖▌▘  ▗ ▝                    ▘       ▗▚▚▚▝▞▞▖
 ▘▘▝▝ ▘▌   ▗ ▘▘▝▝▝▝ ▘                 ▘   ▘     ▘     ▘▌▘▘▘▝
 """
-# This software is provided free of charge without a warranty - meaning if you're an idiot and somehow
-# blow up your sever, I am not liable or responsible.
+# This software is provided free of charge without a warranty.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
+# If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
 from discord.ext.commands import Bot, Context
