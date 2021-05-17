@@ -1,7 +1,4 @@
 """
-if you see an insane mess here, it's supposed to be zoidberg. Probably only works correcly in certain fonts,
-sublime with Ayu doesn't work, for instance.
-
 ▌▙▚▛▞▚▚▘▌▚▝▄▙▜▜▀▀▙▌▜▟▌▚▌▌▌▚▚▚▚▚▚▚▚▚▚▚▘▌▚▀▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖▚▝▖
 ▚▀▄▘▀▖▚▙▞█▛▜▐▐▝▞▞▟▜▐▟▐▚▚▐▐▐▗▚▐▗▚▐▗▚▐▗▚▚▚▚▜▝▞▝▖▌▞▖▌▞▖▚▐▗▚▝▖▚
 ▚▚▐▞▙█▜▐▚▘▞▖▚▗▚▝▖▛▙▐▟▀▖▌▚▐▝▞▞▐▝▞▞▐▝▞▞▞▐▗▚▐▐▞▐▗▘▞▗▝▖▞▝▖▚▗▚▐▝▖
@@ -97,11 +94,11 @@ class Main:
         await ctx.send("Checking user permissions... ")
         for each in permission_levels:
             message += f"{each}: {verify_user(ctx, each)}\n"
-        if "True" in message:
-            message += "\n:green_circle:"
-        else:
-            message += "\n:red_circle"
-        embed = discord.Embed(description=message)
+            if "True" in message:
+                message += "\n:green_circle:"
+            else:
+                message += "\n:red_circle"
+        embed = discord.Embed(description=message, title="Special Permissions: ")
         await ctx.send(embed=embed)
 
 
