@@ -37,7 +37,8 @@ REQUIRED_STRING_LIST = [
     "COMMAND_ON_COOLDOWN",
     "VERSION",
     "COMMAND_EMPTY_USER_ID",
-    "NO_RESULTS"
+    "NO_RESULTS",
+    "MESSAGE_SENT"
 ]
 
 # Makes sure everything is present on runtime.

@@ -5,5 +5,5 @@
   "VERSION": "1.0 RC",
   "COMMAND_EMPTY_USER_ID": "Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
   "NO_RESULTS": "This command has returned no results. This likely just means you haven't added anything. ",
-  "CONF_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message."
+  "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message."
 }
