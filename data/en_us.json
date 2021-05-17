@@ -1,9 +1,12 @@
 {
-  "BOT_ABOUT": "Discord bot to make anonymous confessions into a channel. ",
+  "BOT_ABOUT": "Zoidberg bot is a general purpose discord bot. Currently, it does not have many features, however we are working on expanding that.  ",
   "CMD_PERMISSION_ERROR": ":exclamation:You do not have permission to use this command! Please contact an admin if you believe this to be an error. ",
   "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command.",
   "VERSION": "1.0 RC",
-  "COMMAND_EMPTY_USER_ID": "Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
-  "NO_RESULTS": "This command has returned no results. This likely just means you haven't added anything. ",
-  "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message."
+  "COMMAND_EMPTY_USER_ID": ":exclamation:Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
+  "NO_RESULTS": ":exclamation:This command has returned no results. This likely just means you haven't added anything. ",
+  "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message.",
+  "COMMAND_EMPTY": ":exclamation:This command requires other input!",
+  "BANNED_COMMAND": ":exclamation: You are banned from using this command by your server's admins! If you believe this to be in error, please message the administrators of this server. ",
+  "DISABLED_COMMAND": ":exclamation: This command is disabled on this server! If you believe this to be in error, please message the administrators of this server."
 }

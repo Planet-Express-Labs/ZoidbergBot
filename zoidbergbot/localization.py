@@ -38,10 +38,13 @@ REQUIRED_STRING_LIST = [
     "VERSION",
     "COMMAND_EMPTY_USER_ID",
     "NO_RESULTS",
-    "MESSAGE_SENT"
+    "MESSAGE_SENT",
+    "COMMAND_EMPTY",
+    "BANNED_COMMAND",
+    "DISABLED_COMMAND"
 ]
 
-# Makes sure everything is present on runtime.
+# Check for all strings.
 for s in REQUIRED_STRING_LIST:
     if STRINGS.get(s) is None:
         raise Exception(f"String {s} missing or localization file is missing. The bot cannot start up. ")
