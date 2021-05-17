@@ -34,20 +34,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import re
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-import asyncio
 from datetime import datetime
 from io import BytesIO
-import re
 
 import discord
 from discord.ext import commands
 
 from bot import bot
+from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
-from zoidbergbot.config import *
 
 
 def find_url(url):
@@ -77,24 +76,13 @@ class Confess(commands.Cog):
             log_channel = bot.get_channel(int(LOG_ID))
             # last_message_id = ctx.channel.last_message_id
 
-            # TODO: reformat this and add better logging options.
-            print(now.strftime("%d/%m %H:%M"), file=open("../output.txt", "a"))
-            print(user_id, file=open("../output.txt", "a"))
-            print("Guild ID:", GUILD_ID)
-            print(server, file=open("../output.txt", "a"))
-            print("Channel:", CHANNEL_ID, channel, file=open("../output.txt", "a"))
-            print("Log:", LOG_ID, file=open("../output.txt", "a"))
-            print(str(ctx.message.author).encode("utf-8"), file=open("../output.txt", "a"))
-            print(ctx.message)
             if get_user_ban(user_id):
                 await ctx.send(
                     "You have been temporarily blacklisted from sending confessions. \nThis could be a "
                     "permanent ban, or simply rate limiting. ")
                 pass
-
             # Create embed. They're fancy
             embed = discord.Embed(description=f"{message}\n\n:id:: \n:card_box::")
-            print(message, file=open("../output.txt", "a"))
             embed.set_footer(text=f"Pulling info. ")
             # Send embed.
             msg = await channel.send(embed=embed)
@@ -108,9 +96,9 @@ class Confess(commands.Cog):
                 image_url = ctx.message.attachments[0].url
                 embed.set_image(url=image_url)
                 print("image" + image_url)
-            url = find_url(message)
-            if url is not None:
-                embed.set_image(url=url)
+            image = str(find_url(message))
+            if image is not None:
+                embed.set_image(url=image)
 
             embed.set_footer(text=f"{current_time}")
             await msg.edit(embed=embed)
@@ -124,8 +112,6 @@ class Confess(commands.Cog):
             # If the message contains no image or text
         else:
             await ctx.send("Your message does not contain any content. Message failed.")
-            print("--------------------------------------- END CONFESS ---------------------------------------",
-                  file=open("../output.txt", "a"))
 
     @cmd_conf.error
     async def conf_error(self, ctx, error):
