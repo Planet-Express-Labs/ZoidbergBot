@@ -22,6 +22,7 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
 import discord
 from discord.ext import commands
 
+# TODO: Optimise these later - and get rid of import *
 from bot import bot
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
@@ -32,7 +33,7 @@ def log_confess(ctx, channel, content, timestamp, message_object):
     embed = discord.Embed(title="Confession made", timestamp=timestamp, description=content)
     author = ctx.message.author
     ava_url = author.avatar_url
-    embed.set_author(name=author, icon_url=ava_url, url=create_message_link(ctx.message))
+    embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
     channel.send(embed=embed)
 
 
@@ -46,9 +47,14 @@ def create_message_link(guild=None, channel=None, message=None):
 
 
 class Logging(commands.Cog):
+
+    # noinspection PyShadowingNames
+    def __init__(self, bot):
+        self.bot = bot
+
     pass
 
 
-
+# noinspection PyShadowingNames
 def setup(bot):
     bot.add_cog(Logging(bot))

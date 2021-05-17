@@ -51,8 +51,7 @@ class Confess(commands.Cog):
     @commands.command(name="conf")
     async def cmd_conf(self, ctx, *, message=""):
         if (len(message) != 0) or (ctx.message.attachments != []):
-            now = datetime.now()
-            current_time = now.strftime("%d/%m %H:%M")
+            current_time = datetime.now().strftime("%d/%m %H:%M")
 
             # Obtains User ID and nickname to verify user is in guild/server
             user_id = ctx.message.author.id
@@ -61,19 +60,13 @@ class Confess(commands.Cog):
             channel = bot.get_channel(int(CHANNEL_ID))
             log_channel = bot.get_channel(int(LOG_ID))
             # last_message_id = ctx.channel.last_message_id
-
             if get_user_ban(user_id):
                 await ctx.send(
                     "You have been temporarily blacklisted from sending confessions. \nThis could be a "
                     "permanent ban, or simply rate limiting. ")
                 pass
             # Create embed. They're fancy
-            embed = discord.Embed(description=f"{message}\n\n:id:: \n:card_box::")
-            embed.set_footer(text=f"Pulling info. ")
-            # Send embed.
-            msg = await channel.send(embed=embed)
-            embed = discord.Embed(
-                description=f"{message}  \n\n:id:: {msg.id}")
+            embed = discord.Embed(description=f"{message}", timestamp=current_time)
             files = []
             for file in ctx.message.attachments:
                 fp = BytesIO()
@@ -86,14 +79,11 @@ class Confess(commands.Cog):
             if image is not None:
                 embed.set_image(url=image)
 
-            embed.set_footer(text=f"{current_time}")
-            await msg.edit(embed=embed)
-
+            await channel.send(embed=embed)
             # log message
-            embed.set_footer(text="%s %s\n%s" % (current_time, str(user_id + 10), ctx.message.author))
+            embed.set_footer(text="%s %s\n%s" % (current_time, str(user_id), ctx.message.author))
             await log_channel.send(embed=embed)
-            # Inform user their message has been sent
-            await ctx.send("Your message has been sent!")
+            await ctx.send(get_string("message_sent"))
 
             # If the message contains no image or text
         else:
