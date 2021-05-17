@@ -14,6 +14,7 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
                                                           Y8b d88P
                                                            "Y88P"
 """
+```
 
 Public branch of Zoidberg. Feature request should go in issues. 
 Discord bot that allows you to send confession messages into a channel without revealing your username to the server. 
@@ -48,5 +49,5 @@ Installation is simple.
   - For now, the server's data will be store solely with an internal sqlite3 database. This will probably change much later on - after merging to stable. 
   - We will still maintain a version without multi server support since it's easier to install and requires less resources, but that branch will not recieve frequent updates, and will probably not get feature updates. 
 - "Private" votes in confession channels. 
-- New name, new logo/icon. 
-  - Suggestions are very welcome.
+- ~~New name, new logo/icon. ~~
+
