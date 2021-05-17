@@ -42,49 +42,44 @@ bot.load_extension("cogs.confess")
 async def on_ready():
     log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
 
-    # Really make sure the internal cache is ready
     await bot.wait_until_ready()
-    # await bot.change_presence(status=discord.Status.idle, activity="DM me !conf to confess text/images.")
 
 
-class Main:
+@bot.command(name="ping", brief="The bot responds if alive")
+async def cmd_ping(ctx: Context):
+    # Literally just responds with this.
+    await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
-    def __init__(self):
-        pass
 
-    @bot.command(name="ping", brief="The bot responds if alive")
-    async def cmd_ping(self, ctx: Context):
-        # Literally just responds with this.
-        await ctx.send(f"Pong! :ping_pong: \n :clock1: {0}".format(round(bot.latency, 1)))
+@bot.command(name="about", brief="A bit about the bot")
+async def cmd_about(ctx: Context):
+    # Oh no - the paragraphs.
+    embed = discord.Embed(
+        description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
+        title="Zoidberg",
+        url="https://github.com/LiemEldert/ZoidbergBot/")
+    embed.set_author(name="Zoidberg v" + __version__,
+                     icon_url="https://i.imgur.com/wWa4zCM.png",
+                     url="https://github.com/LiemEldert/ZoidbergBot")
+    embed.set_thumbnail(
+        url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
+    await ctx.send(embed=embed)
 
-    @bot.command(name="about", brief="A bit about the bot")
-    async def cmd_about(self):
-        # Oh no - the paragraphs.
-        embed = discord.Embed(description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention,
-                                                                         bot_version=__version__), title="Zoidberg")
-        embed.set_author("LiemEldert/Sopmk/Sky", "https://github.com/LiemEldert", "https://cdn.discordapp.com/channel"
-                                                                                  "-icons/812042455746740234"
-                                                                                  "/f8c312e61a3cf74d73d6ba8583edf8b9"
-                                                                                  ".webp?")
-        embed.set_thumbnail("https://github.com/LiemEldert",
-                            "https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24"
-                            "-d662a27818dc.jpg")
-        embed.url("https://github.com/LiemEldert/ZoidbergBot/")
 
-    @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
-    async def cmd_check_perms(self, ctx, message):
-        # TODO: change how this is handled. This will likely just be moved into a differ ent function. Works fine as
-        #  is, however.
-        permission_levels = ["dev", "admin"]
-        await ctx.send("Checking user permissions... ")
-        for each in permission_levels:
-            message += f"{each}: {verify_user(ctx, each)}\n"
-            if "True" in message:
-                message += "\n:green_circle:"
-            else:
-                message += "\n:red_circle"
-        embed = discord.Embed(description=message, title="Special Permissions: ")
-        await ctx.send(embed=embed)
+@bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
+async def cmd_check_perms(ctx, message=""):
+    # TODO: change how this is handled. This will likely just be moved into a differ ent function. Works fine as
+    #  is, however.
+    permission_levels = ["dev", "admin"]
+    await ctx.send("Checking user permissions... ")
+    for each in permission_levels:
+
+        if verify_user(ctx, each):
+            message += each + ": :green_circle:\n"
+        else:
+            message += each + "\n:red_circle"
+    embed = discord.Embed(description=message, title="Special Permissions: ")
+    await ctx.send(embed=embed)
 
 
 bot.run(BOT_TOKEN)
