@@ -49,5 +49,5 @@ Installation is simple.
   - For now, the server's data will be store solely with an internal sqlite3 database. This will probably change much later on - after merging to stable. 
   - We will still maintain a version without multi server support since it's easier to install and requires less resources, but that branch will not recieve frequent updates, and will probably not get feature updates. 
 - "Private" votes in confession channels. 
-- New name, new logo/icon. 
-  - Suggestions are very welcome.
+- ~~New name, new logo/icon. 
+  - ~~Suggestions are very welcome.
