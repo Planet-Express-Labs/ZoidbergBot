@@ -11,6 +11,14 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
                                                           Y8b d88P
                                                            "Y88P"
 """
+# This software is provided free of charge without a warranty - meaning if you're an idiot and somehow
+# blow up your sever, I am not liable or responsible.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
+# If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import logging
 from typing import Optional
 from json import loads
