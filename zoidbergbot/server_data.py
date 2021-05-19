@@ -1,21 +1,27 @@
-import sqlite3
-import os
-from bot import bot
+from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, func
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
 
 
-if not os.path.isfile('data/servers.db'):
-    os.mknod("data/severs.db")
-    connection = sqlite3.connect('data/servers.db')
-    cursor = connection.cursor()
-    # The way I'm storing the enabled modules isn't great, but it's not too bad to convert later. I hope.
-    cursor.execute("CREATE TABLE server_data (server_ID INTEGER, prefix INTEGER, logging_channel INTEGER, admin_roles INTEGER, enabled_modules TEXT)")
-else:
-    connection = sqlite3.connect('data/servers.db')
+class Department(Base):
+    __tablename__ = 'department'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
 
 
-class Server:
-    def __init__(self):
-        pass
+class Server(Base):
+    __tablename__ = 'server_data'
+    guild = Column(Integer, primary_key=True)
+    prefix = Column(String)
+    enabled_modules = Column(String)
 
-    def setup(self):
-        pass
+
+engine = create_engine('sqlite:///data/servers.db')
+
+session = sessionmaker()
+session.configure(bind=engine)
+Base.metadata.create_all(engine)
