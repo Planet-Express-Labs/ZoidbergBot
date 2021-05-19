@@ -27,6 +27,7 @@ from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 from cogs.logging import create_message_link, log_confess
+import sqlite3
 
 
 def find_url(url):
@@ -56,6 +57,15 @@ async def send_linked_embed(ctx, link):
                      icon_url="https://i.imgur.com/wWa4zCM.png",
                      url="https://github.com/LiemEldert/ZoidbergBot")
     await ctx.send(embed=embed)
+
+
+if not os.path.isfile('./confess/data.db'):
+    os.mknod("data/severs.db")
+    connection = sqlite3.connect('./confess/data.db')
+    cursor = connection.cursor()
+    cursor.execute("CREATE TABLE confess_data (guild INTEGER, confess_channel INTEGER, logging_channel INTEGER)")
+else:
+    connection = sqlite3.connect('./confess/data.db')
 
 
 class Confess(commands.Cog):
