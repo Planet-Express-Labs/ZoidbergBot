@@ -35,7 +35,15 @@ REQUIRED_STRING_LIST = [
     "MESSAGE_SENT",
     "COMMAND_EMPTY",
     "BANNED_COMMAND",
-    "DISABLED_COMMAND"
+    "DISABLED_COMMAND",
+    "SETUP_1",
+    "SETUP_1_ROLE",
+    "SETUP_1_SUCCESS",
+    "SETUP_2",
+    "SETUP_2_SUCCESS",
+    "SETUP_ISSUE_1",
+    "SETUP_ISSUE_2",
+    "SETUP_ISSUE_3"
 ]
 
 # Check for all strings.

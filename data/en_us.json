@@ -1,13 +1,24 @@
 
 {
-  "BOT_ABOUT": "Zoidberg bot is a general purpose discord bot. Currently, it does not have many features, however we are working on expanding that.  ",
+  "BOT_ABOUT": "I am a general purpose discord bot. Currently, I does not have too many functions (Nor do babies), however I are working very hard on expanding that.  ",
   "CMD_PERMISSION_ERROR": ":exclamation:You do not have permission to use this command! Please contact an admin if you believe this to be an error. ",
-  "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command.",
+  "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command. I can only take so many requests at once!",
   "VERSION": "1.0 RC-2",
   "COMMAND_EMPTY_USER_ID": ":exclamation:Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
   "NO_RESULTS": ":exclamation:This command has returned no results. This likely just means you haven't added anything. ",
   "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message.",
   "COMMAND_EMPTY": ":exclamation:This command requires other input!",
   "BANNED_COMMAND": ":exclamation: You are banned from using this command by your server's admins! If you believe this to be in error, please message the administrators of this server. ",
-  "DISABLED_COMMAND": ":exclamation: This command is disabled on this server! If you believe this to be in error, please message the administrators of this server."
+  "COMMAND_ERROR": ":exclamation: I couldn't do that quite right. This is my fault not yours, if this appears multiple times, please create an bug report by typing !bug or !issue. Thanks!",
+  "DISABLED_COMMAND": ":exclamation: This command is disabled on this server! If you believe this to be in error, please message the administrators of this server.",
+  "BOT_JOINED":  ":wave:\nThank you for inviting me to your server! We have a few steps to complete before the bot will be able to use all of it's features. This setup is really quick - just run !setup to start. ",
+  "SETUP_1":  "Let's get started. Do you have a specific role that you want to have admin permissions or do you want to use the admin permission on discord? ",
+  "SETUP_1_ROLE": "Sounds good. Please ping the role or send the ID of the role you want to assign.",
+  "SETUP_1_SUCCESS": "Great! We're almost done. ",
+  "SETUP_2":  "Do you have a moderation role that you want to have a different subset of commands allotted? Ping the role if so. If you want to disable my mod role, just say \"disable\". If you want to use the `kick-member` permission, just say \"permission\".",
+  "SETUP_2_SUCCESS": "Great, I have that recorded. ",
+  "SETUP_ISSUE_1": "That doesn't seem quite right. Could you make sure you entered the information correctly? If you need help, join our discord server by running !discord.",
+  "SETUP_ISSUE_2": "Something wasn't right there. Please try this again. If you need assistance, join our discord server by sending !discord.",
+  "SETUP_ISSUE_3": "Could you try that again? I didn't quite catch that. If you need help or think something is wrong, join our discord by sending !discord.",
+  "SETUP_COMPLETE": "That's all for now! I will notify you if we add new features. If you want to disable this feature, type !changelog disable at any time. Please note that this may cause you to loose out on exciting new features and changes."
 }
