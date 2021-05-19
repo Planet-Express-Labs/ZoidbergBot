@@ -5,3 +5,4 @@ asyncio
 configparser
 codecs
 json
+SQLAlchemy~=1.4.15

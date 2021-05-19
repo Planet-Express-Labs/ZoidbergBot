@@ -11,3 +11,5 @@ output.txt
 .idea
 *.pyc
 bans.csv
+*.db
+*.sqlite
