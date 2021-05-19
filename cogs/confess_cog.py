@@ -13,9 +13,9 @@
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-
-
+import os.path
 import re
+import shutil
 from datetime import datetime
 from io import BytesIO
 
@@ -23,11 +23,18 @@ import discord
 from discord.ext import commands
 
 from bot import bot, __version__
-from zoidbergbot.config import *
+from cogs.confess.confess_config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 from cogs.logging import create_message_link, log_confess
-import sqlite3
+from cogs.confess.confess_db import *
+
+
+def backup_db():
+    if os.path.isdir("./confess/db-backup"):
+        os.mkdir("./confess/db-backup")
+    print("Backing up confess db... ")
+    shutil.copy()
 
 
 def find_url(url):
@@ -59,15 +66,6 @@ async def send_linked_embed(ctx, link):
     await ctx.send(embed=embed)
 
 
-if not os.path.isfile('./confess/data.db'):
-    os.mknod("data/severs.db")
-    connection = sqlite3.connect('./confess/data.db')
-    cursor = connection.cursor()
-    cursor.execute("CREATE TABLE confess_data (guild INTEGER, confess_channel INTEGER, logging_channel INTEGER)")
-else:
-    connection = sqlite3.connect('./confess/data.db')
-
-
 class Confess(commands.Cog):
     """Cog for confessing. As the name makes clear. """
 
@@ -80,7 +78,7 @@ class Confess(commands.Cog):
         if (len(message) != 0) or (ctx.message.attachments != []):
             current_time = datetime.now().strftime("%d/%m %H:%M")
             user_id = ctx.message.author.id
-            channel = bot.get_channel(int(CHANNEL_ID))
+            channel = bot.get_channel(get_db_int("confess_channel", 0))
             if get_user_ban(user_id):
                 await ctx.send(get_string("BANNED_COMMAND"))
                 pass
