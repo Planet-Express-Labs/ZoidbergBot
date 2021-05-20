@@ -31,10 +31,11 @@ from cogs.confess.confess_db import *
 
 
 def backup_db():
-    if os.path.isdir("./confess/db-backup"):
-        os.mkdir("./confess/db-backup")
+    if os.path.isdir("./db-backup"):
+        os.mkdir("./db-backup")
     print("Backing up confess db... ")
-    shutil.copy()
+    # TODO: Support multiple backups later.
+    shutil.copy("./data.db", "./db-backup/backup1.db")
 
 
 def find_url(url):
