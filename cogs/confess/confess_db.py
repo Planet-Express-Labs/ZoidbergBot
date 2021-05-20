@@ -1,6 +1,11 @@
 import sqlite3
 import os
 
+import discord
+
+from bot import bot
+from discord.ext.commands import Context
+
 if not os.path.isfile('./data.db'):
     print("Confess DB missing! Creating new DB. ")
     connection = sqlite3.connect('./data.db')
@@ -45,3 +50,19 @@ def increment_last_message(guild):
 def get_db_int(channel, guild):
     data = cursor.execute(f'SELECT {channel} FROM confess_data WHERE guild = {guild}')
     return int(''.join(map(str, data.fetchall()[0])))
+
+
+def server_picker(ctx: Context):
+    author = ctx.message.author()
+    servers = ""
+    i = 0
+    for each in author.mutual_guilds():
+        i += 1
+        logging = get_db_int("logging_channel", each) != 0
+        servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
+
+    embed = discord.Embed(title="Which server do you want me to send this message in? ",
+                          description="Please react with the server you want to choose. . \n" + servers
+                          )
+    message = ctx.send(embed=embed)
+
