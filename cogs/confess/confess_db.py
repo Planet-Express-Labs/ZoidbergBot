@@ -8,7 +8,7 @@ from discord.ext.commands import Context
 
 if not os.path.isfile('./data.db'):
     print("Confess DB missing! Creating new DB. ")
-    connection = sqlite3.connect('./data.db')
+    connection = sqlite3.connect(os.getcwd() + 'data.db')
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE confess_data (
                     guild INTEGER,
