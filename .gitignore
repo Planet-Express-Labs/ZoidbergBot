@@ -13,3 +13,4 @@ output.txt
 bans.csv
 *.db
 *.sqlite
+.DS_Store
