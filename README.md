@@ -18,8 +18,15 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
 
 Public branch of Zoidberg. Feature request should go in issues. 
 Discord bot that allows you to send confession messages into a channel without revealing your username to the server. 
+Please support our work: 
+```
+ - banano - ban_1xpmndkuscsa89jztp1ytedw9qcw1gagf7bro6zdg4e9cg9np8f16dafqisb
+ - BTC - 1HMC5hbPq1sgExh2m7j8dMfd3qebZJu12X
+ - BCH - bitcoincash:qze4898dlglnjf2nngqv4fplx8rqv2f5cc22mjgkz6
+ - USDT -  0x540d5C00e8Ab7e16ab8Fe1a9417CA2963388FDCd
 
-
+```
+Your support is very appreciated - just raise an issue with your wallet address and I'll add you as a supporter. Thanks! <3
 # Install
 
 Hosted Zoidberg is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run just fine, although you'll probably have some reliablility issues with windows update.
