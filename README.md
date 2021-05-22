@@ -18,6 +18,7 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
 
 Public branch of Zoidberg. Feature request should go in issues. 
 Discord bot that allows you to send confession messages into a channel without revealing your username to the server. 
+
 Please support our work: 
 ```
  - banano - ban_1xpmndkuscsa89jztp1ytedw9qcw1gagf7bro6zdg4e9cg9np8f16dafqisb
