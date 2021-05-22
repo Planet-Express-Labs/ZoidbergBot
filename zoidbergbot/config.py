@@ -25,7 +25,7 @@ from json import loads
 
 log = logging.getLogger(__name__)
 
-CONFIG_FILE = "./data/config.ini"
+CONFIG_FILE = os.getcwd() + "/data/config.ini"
 config = configparser.ConfigParser()
 config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
