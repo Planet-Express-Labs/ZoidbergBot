@@ -23,11 +23,11 @@ import discord
 from discord.ext import commands
 
 from bot import bot, __version__
-from cogs.confess.confess_config import *
+from cogs.confess_data.confess_config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 from cogs.logging import create_message_link, log_confess
-from cogs.confess.confess_db import *
+from cogs.confess_data.confess_db import *
 
 
 def backup_db():

@@ -52,7 +52,7 @@ def get_db_int(channel, guild):
     return int(''.join(map(str, data.fetchall()[0])))
 
 
-def server_picker(ctx: Context):
+async def server_picker(ctx: Context):
     author = ctx.message.author()
     servers = ""
     i = 0
@@ -62,7 +62,14 @@ def server_picker(ctx: Context):
         servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
-                          description="Please react with the server you want to choose. . \n" + servers
+                          description="Please react with the server you want to choose: \n" + servers
                           )
-    message = ctx.send(embed=embed)
+    message = await ctx.send(embed=embed)
+    if author.mutual_guilds > 10:
+        embed = discord.Embed(title="Which server do you want me to send this message in? ",
+                              description="Please send the number of the server you want to choose: \n" + servers
+                              )
+        await message.edit(embed=embed)
+    else:
+        await message.add_reaction()
 
