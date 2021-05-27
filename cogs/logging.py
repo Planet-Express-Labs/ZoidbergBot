@@ -14,6 +14,8 @@
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
+# This isn't even really a cog. 
+
 import discord
 from discord.ext import commands
 
