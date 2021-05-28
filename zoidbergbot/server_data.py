@@ -11,14 +11,14 @@ class Server(Base):
     __tablename__ = 'server_data'
     guild = Column(Integer, primary_key=True)
     prefix = Column(String)
-    enabled_modules = Column(String) # Reserved for future use
+    enabled_modules = Column(String)  # Reserved for future use
     # I'll probably change this to something that will allow more then just two levels of permission, but that's later.
     # If admin_role == 0, then it's just going to go off of each role's permissions.
     admin_role = Column(bool)
     mod_role = Column(bool)
-    cooldown = Column(Integer) # Reserved for future use
+    cooldown = Column(Integer)  # Reserved for future use
     auto_delete = Column(Integer)  # Reserved for future use
-    premium = Column(bool) # Reserved for future use
+    premium = Column(bool)  # Reserved for future use
 
 
 engine = create_engine('sqlite:///data/servers.db')
