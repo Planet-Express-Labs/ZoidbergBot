@@ -6,9 +6,9 @@ import discord
 from bot import bot
 from discord.ext.commands import Context
 
-if not os.path.isfile(os.getcwd() + '/data.db'):
+if not os.path.isfile(os.getcwd() + '\\data.db'):
     print("Confess DB missing! Creating new DB. ")
-    connection = sqlite3.connect(os.getcwd() + '/data.db')
+    connection = sqlite3.connect(os.getcwd() + '\\data.db')
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE confess_data (
                     guild INTEGER,
@@ -18,7 +18,7 @@ if not os.path.isfile(os.getcwd() + '/data.db'):
                    )
 else:
     # I know that sqlite3 will automatically make the db file, but I'd prefer to handle it like this.
-    connection = sqlite3.connect(os.getcwd() + '/data.db')
+    connection = sqlite3.connect(os.getcwd() + '\\data.db')
     cursor = connection.cursor()
 
 # I really hope to restructure this. If I could somehow make the database entry a python object without having to parse
