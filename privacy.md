@@ -4,7 +4,7 @@ We are very serious about keeping your data private. We want to be as transparen
 # What do we store? 
 Currently, our databases don't store very much information. Here's an overview of what's stored.  
 
-### Main bot: 
+## Main bot: 
 ![fun and fancy code](https://user-images.githubusercontent.com/45272685/120039158-73193000-bfd2-11eb-94a2-dd13008b9bd6.png)
 - The guild column stores the guild id for your server. This is a unique identifer for your server that allows us to track what server is what. From this we can find the guild's members, name, etc. 
 - The prefix is what you put before a command to trigger the bot, and hopefully not some other bot. (!help as opposed to /help)
@@ -15,7 +15,7 @@ Currently, our databases don't store very much information. Here's an overview o
 - Premium is just a boolean that stores if your server has an active premium subscription. This is unused until we actually make this a thing. Don't expect it any time soon.
 
 
-### Confession cog:
+## Confession cog:
 ![like actually the best code ever](https://user-images.githubusercontent.com/45272685/120039192-7e6c5b80-bfd2-11eb-84d8-e72d03f07c29.png)
 > Nice comments.
 - The guild column is the unique ID for your server, just let's us track where to send confessions.
