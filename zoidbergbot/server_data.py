@@ -21,7 +21,6 @@ class Server(Base):
     premium = Column(bool) # Reserved for future use
 
 
-
 engine = create_engine('sqlite:///data/servers.db')
 
 session = sessionmaker()
