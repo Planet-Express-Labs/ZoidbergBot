@@ -52,6 +52,7 @@ async def cmd_about(ctx: Context):
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
         title="Zoidberg",
         url="https://github.com/LiemEldert/ZoidbergBot/")
+    embed.set_footer(text="How we use your data: https://privacy.pexl.pw/")
     embed.set_author(name="Zoidberg v" + __version__,
                      icon_url="https://i.imgur.com/wWa4zCM.png",
                      url="https://github.com/LiemEldert/ZoidbergBot")
