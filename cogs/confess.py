@@ -22,20 +22,12 @@ from io import BytesIO
 import discord
 from discord.ext import commands
 
-from bot import bot, __version__
+from bot import bot
 from cogs.confess_data.confess_config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 from cogs.logging import create_message_link, log_confess
 from cogs.confess_data.confess_db import *
-
-
-def backup_db():
-    if os.path.isdir("./db-backup"):
-        os.mkdir("./db-backup")
-    print("Backing up confess db... ")
-    # TODO: Support multiple backups later.
-    shutil.copy("./data.db", "./db-backup/backup1.db")
 
 
 def find_url(url):
@@ -61,7 +53,7 @@ async def handle_image_embed(ctx, embed, message):
 
 async def send_linked_embed(ctx, link):
     embed = discord.Embed(description=get_string("message_sent"), url=link)
-    embed.set_author(name=f"Zoidberg v{0}".format(__version__),
+    embed.set_author(name=f"Zoidberg confess v{0}".format(__version__),
                      icon_url="https://i.imgur.com/wWa4zCM.png",
                      url="https://github.com/LiemEldert/ZoidbergBot")
     await ctx.send(embed=embed)

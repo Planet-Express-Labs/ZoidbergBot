@@ -25,12 +25,12 @@ from json import loads
 
 log = logging.getLogger(__name__)
 
-CONFIG_FILE = os.getcwd() + "/data/config.ini"
+CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
 config = configparser.ConfigParser()
 config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
 
-def read_config(section, value, file="./data/config.ini"):
+def read_config(section, value, file=CONFIG_FILE):
     config.read_file(codecs.open(file, "r+", "utf-8"))
 
 

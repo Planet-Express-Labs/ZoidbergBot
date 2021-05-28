@@ -25,7 +25,7 @@ from json import loads
 
 log = logging.getLogger(__name__)
 
-CONFIG_FILE = "./config.ini"
+CONFIG_FILE = os.getcwd() + "\\cogs\\confess_data\\config.ini"
 config = configparser.ConfigParser()
 config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
@@ -34,7 +34,7 @@ def read_config(section, value, file="./data/config.ini"):
     config.read_file(codecs.open(file, "r+", "utf-8"))
 
 
-MAX_BACKUPS = config.get("backups", "max_backups")
+MAX_BACKUPS = config.get("db", "max_backups")
 
 ####################
 #       bans       #
