@@ -38,16 +38,16 @@ Installation is simple.
 
 # Planned features. 
 
-- Docker image.
+[ ] Docker image.
    - We'd likely publish a docker image which would be what we'd be primarily supporting, since it's more consistant. 
       Of course, this doesn't mean we're going to not support anything outside of docker.
-- Local logging should transition to Redis or SQL sometime soon. When this transition finishes, you'll be expected to be using one of those two implimentation - text based logging will no longer be supported, and as such must be expected to break. We will add this as in opt-in feature initially, then make it the default in future versions. 
+[x] Local logging should transition to Redis or SQL sometime soon. When this transition finishes, you'll be expected to be using one of those two implimentation - text based logging will no longer be supported, and as such must be expected to break. We will add this as in opt-in feature initially, then make it the default in future versions. 
   - I will likely add support for Redis and SQL through an enternal database or an internal `sqlite3` database for simplifying use. Performance will be reduced with this database. 
-- Multiple server support. This should be relatively simple to add, but I haven't had the time to do anything greater then fixing issues when something breaks. This should be added in the coming months, once I have time. 
+[x] Multiple server support. This should be relatively simple to add, but I haven't had the time to do anything greater then fixing issues when something breaks. This should be added in the coming months, once I have time. 
   - Per server logging into a channel (All confessions from within that server will be dumped into this channel. 
   - Logging indicator if the host or server has enabled 
   - For now, the server's data will be store solely with an internal sqlite3 database. This will probably change much later on - after merging to stable. 
   - We will still maintain a version without multi server support since it's easier to install and requires less resources, but that branch will not recieve frequent updates, and will probably not get feature updates. 
 - "Private" votes in confession channels. 
-- ~~New name, new logo/icon. ~~
+[x] ~~New name, new logo/icon. ~~
 
