@@ -5,6 +5,10 @@ import discord
 
 from bot import bot
 from discord.ext.commands import Context
+from dislash.slash_commands import *
+from dislash.interactions import *
+
+slash = SlashClient(bot)
 
 if not os.path.isfile(os.getcwd() + '\\data.db'):
     print("Confess DB missing! Creating new DB. ")
@@ -20,6 +24,7 @@ else:
     # I know that sqlite3 will automatically make the db file, but I'd prefer to handle it like this.
     connection = sqlite3.connect(os.getcwd() + '\\data.db')
     cursor = connection.cursor()
+
 
 # I really hope to restructure this. If I could somehow make the database entry a python object without having to parse
 # like every like, I'd be happy. If anyone knows how to do that, please, please, PR, and I'll love you forever.
@@ -56,20 +61,27 @@ async def server_picker(ctx: Context):
     author = ctx.message.author()
     servers = ""
     i = 0
-    for each in author.mutual_guilds():
+    guilds = author.mutual_guilds()
+    for each in guilds:
         i += 1
         logging = get_db_int("logging_channel", each) != 0
         servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
-                          description="Please react with the server you want to choose: \n" + servers
+                          description="Please click which server you want to send this in: \n Loading servers... "
                           )
     message = await ctx.send(embed=embed)
-    if author.mutual_guilds > 10:
+    if guilds > 25:
         embed = discord.Embed(title="Which server do you want me to send this message in? ",
                               description="Please send the number of the server you want to choose: \n" + servers
                               )
         await message.edit(embed=embed)
     else:
-        await message.add_reaction()
-
+        button_element = []
+        for index, each in enumerate(guilds):
+            button_element.append(Button(
+                style=ButtonStyle.green,
+                label=each,
+                custom_id=(f"{index}")
+            ))
+        buttons = ActionRow()
