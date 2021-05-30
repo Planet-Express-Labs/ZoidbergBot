@@ -47,12 +47,6 @@ SPECIAL_USERS_IDS = [int(id_) for id_ in loads(config.get("Bot", "special_user_i
 BOT_LANGUAGE = config.get("Bot", "language")
 LOGGING_LEVEL = config.get("Bot", "logging_level")
 
-# Conf section:
-CHANNEL_ID = config.get("conf", "channel_id")
-GUILD_ID: int = config.getint("conf", "guild_id")
-LOG_ID: int = config.getint("conf", "log_channel_id")
-# Users section.
-
 log.info(f"Special users: {', '.join([str(a) for a in SPECIAL_USERS_IDS])}")
 DEV_ID = config.get("Users", "developer_id")
 ADMIN_ID = config.get("Users", "admin_ids").split(" ")
