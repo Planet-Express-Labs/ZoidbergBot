@@ -25,28 +25,36 @@ __version__ = get_string("VERSION")
 logging.basicConfig(level=exec(LOGGING_LEVEL))
 
 log = logging.getLogger(__name__)
+# It's probably worth converting this to autoshardingbot sometime down the road. It's not that important right now, but
+# it would solve some response time issues.
 bot = Bot(
     command_prefix=BOT_PREFIX
 )
+# TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
+extensions = ["cogs.confess"]
 
-bot.load_extension("cogs.confess")
 
+# class Zoidberg:
+#     def __init__(self, bot):
+#         self.bot = bot
+#         for each in extensions:
+#             bot.load_extension(each)
+#         bot.run(BOT_TOKEN)
 
 @bot.listen()
-async def on_ready():
+async def on_ready(self):
     log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
-
     await bot.wait_until_ready()
 
 
 @bot.command(name="ping", brief="The bot responds if alive")
-async def cmd_ping(ctx: Context):
+async def cmd_ping(self, ctx: Context):
     # Literally just responds with this.
     await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
 @bot.command(name="about", brief="A bit about the bot")
-async def cmd_about(ctx: Context):
+async def cmd_about(self, ctx: Context):
     # Oh no - the paragraphs.
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
@@ -62,9 +70,7 @@ async def cmd_about(ctx: Context):
 
 
 @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
-async def cmd_check_perms(ctx, message=""):
-    # TODO: change how this is handled. This will likely just be moved into a differ ent function. Works fine as
-    #  is, however.
+async def cmd_check_perms(self, ctx, message=""):
     permission_levels = ["dev", "admin"]
     await ctx.send("Checking user permissions... ")
     for each in permission_levels:
@@ -75,6 +81,3 @@ async def cmd_check_perms(ctx, message=""):
             message += each + "\n:red_circle"
     embed = discord.Embed(description=message, title="Special Permissions: ")
     await ctx.send(embed=embed)
-
-
-bot.run(BOT_TOKEN)
