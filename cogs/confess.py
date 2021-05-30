@@ -30,6 +30,26 @@ from cogs.logging import create_message_link, log_confess
 from cogs.confess_data.confess_db import *
 
 
+__version__ = '0.1 PRERELEASE'
+
+
+def log_confess(ctx, channel, message_object, timestamp):
+    embed = discord.Embed(title="Confession made", timestamp=timestamp, description=message_object)
+    author = ctx.message.author
+    ava_url = author.avatar_url
+    embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
+    channel.send(embed=embed)
+
+
+def create_message_link(guild=None, channel=None, message=None):
+    if guild is None:
+        guild = message.guild.id
+    if channel is None:
+        channel = message.channel.id
+    message_id = message.id()
+    return f"https://discord.com/channels/{guild}/{channel}/{message_id}"
+
+
 def find_url(url):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s(" \
             r")<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])) "
