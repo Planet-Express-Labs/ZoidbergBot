@@ -37,9 +37,8 @@ extensions = ["cogs.confess"]
 # class Zoidberg:
 #     def __init__(self, bot):
 #         self.bot = bot
-#         for each in extensions:
-#             bot.load_extension(each)
-#         bot.run(BOT_TOKEN)
+for each in extensions:
+    bot.load_extension(each)
 
 @bot.listen()
 async def on_ready(self):
