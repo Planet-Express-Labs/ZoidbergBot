@@ -6,3 +6,4 @@ configparser
 codecs
 json
 SQLAlchemy~=1.4.15
+art~=5.2
