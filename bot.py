@@ -39,6 +39,8 @@ extensions = ["cogs.confess"]
 #         self.bot = bot
 for each in extensions:
     bot.load_extension(each)
+bot.run(BOT_TOKEN)
+
 
 @bot.listen()
 async def on_ready(self):
