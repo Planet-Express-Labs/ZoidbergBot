@@ -26,30 +26,15 @@ from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
 
-def log_confess(ctx, channel, message_object, timestamp):
-    embed = discord.Embed(title="Confession made", timestamp=timestamp, description=message_object)
-    author = ctx.message.author
-    ava_url = author.avatar_url
-    embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
-    channel.send(embed=embed)
-
-
-def create_message_link(guild=None, channel=None, message=None):
-    if guild is None:
-        guild = message.guild.id
-    if channel is None:
-        channel = message.channel.id
-    message_id = message.id()
-    return f"https://discord.com/channels/{guild}/{channel}/{message_id}"
-
-
 class Logging(commands.Cog):
 
     # noinspection PyShadowingNames
     def __init__(self, bot):
         self.bot = bot
 
-    pass
+    @commands.event
+    async def on_ready(self):
+        print('Ready!')
 
 
 # noinspection PyShadowingNames
