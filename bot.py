@@ -43,19 +43,19 @@ bot.run(BOT_TOKEN)
 
 
 @bot.listen()
-async def on_ready(self):
+async def on_ready():
     log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
     await bot.wait_until_ready()
 
 
 @bot.command(name="ping", brief="The bot responds if alive")
-async def cmd_ping(self, ctx: Context):
+async def cmd_ping(ctx: Context):
     # Literally just responds with this.
     await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
 @bot.command(name="about", brief="A bit about the bot")
-async def cmd_about(self, ctx: Context):
+async def cmd_about(ctx: Context):
     # Oh no - the paragraphs.
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
@@ -71,11 +71,10 @@ async def cmd_about(self, ctx: Context):
 
 
 @bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
-async def cmd_check_perms(self, ctx, message=""):
+async def cmd_check_perms(ctx, message=""):
     permission_levels = ["dev", "admin"]
     await ctx.send("Checking user permissions... ")
     for each in permission_levels:
-
         if verify_user(ctx, each):
             message += each + ": :green_circle:\n"
         else:
