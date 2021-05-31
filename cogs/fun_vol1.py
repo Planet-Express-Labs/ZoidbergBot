@@ -17,6 +17,7 @@ import discord
 from discord.ext import commands
 import art
 from bot import bot, BOT_PREFIX
+from dislash import slash_commands
 from dislash.slash_commands import *
 from dislash.interactions import *
 import random
@@ -29,7 +30,8 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
 filter_words = True  # ;)
-
+slash = SlashClient(bot)
+test_guild = 842987183588507670
 
 class FunVol1(commands.Cog):
 
@@ -49,13 +51,13 @@ class FunVol1(commands.Cog):
         await ctx.send(f"`{art.randart()}`")
 
     @commands.command(name="ceaser")
-    async def cmd_ceaser(self, ctx, message, offset=1, inter=None, msg = None):
+    async def cmd_ceaser(self, ctx, *, message, offset=1, inter=None, msg=None):
         """Literally nobody knows what this does. Kai just made it for some reason.
         (Silence liem (Next time capitalize.)
         """
         final = ""
-        if type(message) is discord.Message:
-            message = ctx.message.content
+        # if type(message) is discord.Message:
+        #     message = ctx.message.content
         for i in message:
             final += chr(int(ord(i))+int(offset))
         buttons = ActionRow(
@@ -90,8 +92,8 @@ class FunVol1(commands.Cog):
             await self.cmd_ceaser(ctx, message, offset - 1, inter, msg)
 
     @commands.command(name="lonely")
-    async def cmd_lonely(self, ctx, message):
-        message = ctx.message.content.strip(BOT_PREFIX + "lonely").split(' ')
+    async def cmd_lonely(self, ctx, *, message):
+        # message = ctx.message.content.strip(BOT_PREFIX + "lonely").split(' ')
 
         if int(len(words)) < 500:
             for i in message:
@@ -127,10 +129,9 @@ class FunVol1(commands.Cog):
             await ctx.send("No ")
 
     @commands.command(name="blockchain_ceaser")
-    async def cmd_blockchain_ceaser(self, ctx, message, inter=None, msg = None):
+    async def cmd_blockchain_ceaser(self, ctx, *, message, inter=None, msg = None):
         netvalue = 0
         prevValues = []
-        message = ctx.message.content.strip(BOT_PREFIX + "blockchain_ceaser")
 
         for i in message:
             val = int(ord(i))
