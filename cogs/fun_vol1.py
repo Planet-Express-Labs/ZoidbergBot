@@ -29,9 +29,9 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "XV0aXN0LGt5cyxhdXRpc3RpYyxjaGluayxjb29uLGpldyxkeWtlLGtpa2UscmFpZDpzc2hhZG93IGxlZ2VuZH"
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
-filter_words = True  # ;)
 slash = SlashClient(bot)
 test_guild = 842987183588507670
+
 
 class FunVol1(commands.Cog):
 
@@ -51,13 +51,14 @@ class FunVol1(commands.Cog):
         await ctx.send(f"`{art.randart()}`")
 
     @commands.command(name="ceaser")
-    async def cmd_ceaser(self, ctx, *, message, offset=1, inter=None, msg=None):
+    async def cmd_ceaser(self, ctx, message, offset=1, inter=None, msg=None):
         """Literally nobody knows what this does. Kai just made it for some reason.
         (Silence liem (Next time capitalize.)
         """
         final = ""
-        # if type(message) is discord.Message:
-        #     message = ctx.message.content
+        if type(message) is discord.Message:
+            message = ctx.message.content
+            await ctx.message.delete()
         for i in message:
             final += chr(int(ord(i))+int(offset))
         buttons = ActionRow(
@@ -75,9 +76,9 @@ class FunVol1(commands.Cog):
 
         try:
             if inter is None:
-                msg = await ctx.send(f"```{final}```", components=[buttons])
+                msg = await ctx.send(f"```{final}```\noffset={offset}", components=[buttons])
             else:
-                await inter.reply(final, components=[buttons], type=7)
+                await inter.reply(f"```{final}```\noffset={offset}", components=[buttons], type=7)
         except ValueError:
             pass
 
@@ -94,12 +95,12 @@ class FunVol1(commands.Cog):
     @commands.command(name="lonely")
     async def cmd_lonely(self, ctx, *, message):
         # message = ctx.message.content.strip(BOT_PREFIX + "lonely").split(' ')
-
+        message = message.split(' ')
         if int(len(words)) < 500:
             for i in message:
                 # this is so bad. I don't care tho.
-                if (i in words) == False and int(len(i)) < 20 and (filter_words == False or not (i in bad_words)):
-                   words.append(i)
+                if (i in words) is False and int(len(i)) < 20 and not (i in bad_words):
+                    words.append(i)
 
         iters = range(random.randint(2, 15))
 
