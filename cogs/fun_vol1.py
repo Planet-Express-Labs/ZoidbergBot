@@ -34,6 +34,8 @@ test_guild = 842987183588507670
 
 
 class FunVol1(commands.Cog):
+    """Procrastination but as a module.
+    """
 
     @commands.command(name="big_text")
     async def cmd_big_text(self, ctx, message=""):
@@ -87,9 +89,9 @@ class FunVol1(commands.Cog):
 
         inter = await ctx.wait_for_button_click(wait_for)
         # Send what you received
-        if inter.clicked_button.label == "add":
+        if inter.clicked_button.custom_id == "add":
             await self.cmd_ceaser(ctx, message, offset + 1, inter, msg)
-        else:
+        if inter.clicked_button.custom_id == "sub":
             await self.cmd_ceaser(ctx, message, offset - 1, inter, msg)
 
     @commands.command(name="lonely")
