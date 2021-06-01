@@ -18,12 +18,64 @@
 
 import discord
 from discord.ext import commands
-
-# TODO: Optimise these later - and get rid of import *
 from bot import bot
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
+import sqlite3
+
+
+# TODO: It's probably worth adding something to remove servers when the bot has been removed or perhaps even inactive
+#  servers if it gets to the point of causing an actual response time issue
+if not os.path.isfile(os.getcwd() + '\\data.db'):
+    print("Logging DB missing! Creating new DB. ")
+    connection = sqlite3.connect(os.getcwd() + '\\data.db')
+    cursor = connection.cursor()
+    cursor.execute("""CREATE TABLE logging (
+                    guild INTEGER,
+                    log_channel INTEGER,
+                    message_log_channel INTEGER,
+                    log_joins BOOLEAN,
+                    log_leaves BOOLEAN,
+                    log_invites BOOLEAN,
+                    log_messages BOOLEAN,
+                    log_message_edits BOOLEAN,
+                    log_roles BOOLEAN,
+                    log_profile BOOLEAN,
+                    log_nickname BOOLEAN,
+                    log_user_nickname BOOLEAN,
+                    log_bans BOOLEAN,
+                    log_kicks BOOLEAN,
+                    log_vc_mute BOOLEAN,
+                    log_vc_move BOOLEAN,
+                    log_vc_kick BOOLEAN,
+                    log_vc_user_mute BOOLEAN,        
+                    log_vc_user_leave BOOLEAN  
+                    )"""
+                   )
+else:
+    # I know that sqlite3 will automatically make the db file, but I'd prefer to handle it like this.
+    connection = sqlite3.connect(os.getcwd() + '\\data.db')
+    cursor = connection.cursor()
+
+
+def initialize_server(guild):
+    # This might be worth having it back up the db every time.
+    cursor.execute(f'''INSERT INTO logging({guild})''')
+    connection.commit()
+
+
+def update_attribute(column, value, guild):
+    cursor.execute(f"""UPDATE logging 
+                    SET {column} = {value} 
+                    WHERE guild = {guild}; 
+                    """)
+    connection.commit()
+
+
+def get_val(val, guild):
+    data = cursor.execute(f'SELECT {val} FROM logging WHERE guild = {guild}')
+    return int(''.join(map(str, data.fetchall()[0])))
 
 
 class Logging(commands.Cog):
@@ -32,9 +84,26 @@ class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.event
+    @commands.Cog.listener()
     async def on_ready(self):
         print('Ready!')
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        if member.guild == get_val("log_joins", member.guild):
+            channel = member.guild.system_channel
+            guild = member.guild
+            invites = await guild.invites()
+            invite = None
+            for each in invites:
+                if member.id in each.uses:
+                    invite = each
+            if channel is not None:
+                await channel.send(f"""{member.display_name} has joined the server. 
+                :calendar_spiral:Account made: {member.created_at}
+                :incoming_envelope:Invite used: {invite.id}
+                --> :detective:Created by: {invite.inviter}
+                """)
 
 
 # noinspection PyShadowingNames
