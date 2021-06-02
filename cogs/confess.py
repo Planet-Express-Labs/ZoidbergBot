@@ -26,7 +26,6 @@ from bot import bot
 from cogs.confess_data.confess_config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
-from cogs.logging import create_message_link, log_confess
 from cogs.confess_data.confess_db import *
 
 
