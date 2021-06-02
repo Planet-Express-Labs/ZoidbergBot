@@ -21,17 +21,21 @@ from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
+from dislash.interactions import *
+from dislash.slash_commands import *
+
 __version__ = get_string("VERSION")
 logging.basicConfig(level=exec(LOGGING_LEVEL))
-
 log = logging.getLogger(__name__)
+
 # It's probably worth converting this to autoshardingbot sometime down the road. It's not that important right now, but
 # it would solve some response time issues.
 bot = Bot(
     command_prefix=BOT_PREFIX
 )
+slash = SlashClient(bot)
 # TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
-extensions = ["cogs.confess"]
+extensions = ["cogs.fun_vol1", "cogs.logging"]
 
 
 # class Zoidberg:
