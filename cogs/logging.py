@@ -16,51 +16,58 @@
 
 # This isn't even really a cog. 
 
-import discord
-from discord.ext import commands
-from bot import bot
-from zoidbergbot.config import *
-from zoidbergbot.localization import get_string
-from zoidbergbot.verify import verify_user
 import sqlite3
+
+from discord.ext import commands
+from dislash.interactions import *
+from dislash.slash_commands import *
+
+from bot import bot, slash
+from zoidbergbot.config import *
 
 # TODO: It's probably worth adding something to remove servers when the bot has been removed or perhaps even inactive
 #  servers if it gets to the point of causing an actual response time issue
-if not os.path.isfile(os.getcwd() + '\\data.db'):
+
+# Yup! it's your local moron reusing code that I'm planning on getting rid of later!
+# To be fair, I don't really know how much it really matters here.
+if not os.path.isfile(os.getcwd() + '\\data\\logging.db'):
     print("Logging DB missing! Creating new DB. ")
-    connection = sqlite3.connect(os.getcwd() + '\\data.db')
+    connection = sqlite3.connect(os.getcwd() + '\\data\\logging.db')
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE logging (
-                    guild INTEGER,
+                    guild INTEGER PRIMARY KEY,
                     log_channel INTEGER,
                     message_log_channel INTEGER,
-                    log_joins BOOLEAN,
-                    log_leaves BOOLEAN,
-                    log_invites BOOLEAN,
-                    log_messages BOOLEAN,
-                    log_message_edits BOOLEAN,
-                    log_roles BOOLEAN,
-                    log_profile BOOLEAN,
-                    log_nickname BOOLEAN,
-                    log_user_nickname BOOLEAN,
-                    log_bans BOOLEAN,
-                    log_kicks BOOLEAN,
-                    log_vc_mute BOOLEAN,
-                    log_vc_move BOOLEAN,
-                    log_vc_kick BOOLEAN,
-                    log_vc_user_mute BOOLEAN,        
-                    log_vc_user_leave BOOLEAN  
+                    log_joins BOOLEAN DEFAULT False,
+                    log_leaves BOOLEA NDEFAULT False,
+                    log_invites BOOLEAN DEFAULT False,
+                    log_messages BOOLEAN DEFAULT False,
+                    log_message_edits BOOLEAN DEFAULT False,
+                    log_roles BOOLEAN DEFAULT False,
+                    log_profile BOOLEAN DEFAULT False,
+                    log_nickname BOOLEAN DEFAULT False,
+                    log_user_nickname BOOLEAN DEFAULT False,
+                    log_bans BOOLEAN DEFAULT False,
+                    log_kicks BOOLEAN DEFAULT False,
+                    log_vc_mute BOOLEAN DEFAULT False,
+                    log_vc_move BOOLEAN DEFAULT False,
+                    log_vc_kick BOOLEAN DEFAULT False,
+                    log_vc_user_mute BOOLEAN DEFAULT False,        
+                    log_vc_user_leave BOOLEAN DEFAULT False  
                     )"""
                    )
 else:
     # I know that sqlite3 will automatically make the db file, but I'd prefer to handle it like this.
-    connection = sqlite3.connect(os.getcwd() + '\\data.db')
+    connection = sqlite3.connect(os.getcwd() + '\\data\\logging.db')
     cursor = connection.cursor()
 
 
 def initialize_server(guild):
     # This might be worth having it back up the db every time.
-    cursor.execute(f'''INSERT INTO logging({guild})''')
+    # Holy cow this is bad.
+    # Please put this code out of it's misery.
+    cursor.execute(f'''INSERT INTO logging({guild} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} )''')
+    # cursor.execute(f'''INSERT INTO logging({guild})''')
     connection.commit()
 
 
@@ -75,6 +82,9 @@ def update_attribute(column, value, guild):
 def get_val(val, guild):
     data = cursor.execute(f'SELECT {val} FROM logging WHERE guild = {guild}')
     return int(''.join(map(str, data.fetchall()[0])))
+
+
+initialize_server(123)
 
 
 class Logging(commands.Cog):
@@ -105,14 +115,60 @@ class Logging(commands.Cog):
                 """)
 
     @commands.command(name="setup-logging")
-    async def cmd_setup_logging(self):
-        options = ["guild", "log_channel", "message_log_channel", "log_joins", "log_leaves", "log_invites",
+    async def cmd_setup_logging(self, ctx, msg=None, inter=None):
+        options = ["log_channel", "message_log_channel", "log_joins", "log_leaves", "log_invites",
                    "log_messages", "log_message_edits", "log_roles", "log_profile", "log_nickname", "log_user_nickname",
                    "log_bans", "log_kicks", "log_vc_mute", "log_vc_move", "log_vc_kick", "log_vc_user_mute",
                    "log_vc_user_leave"]
-        buttons =
-        for each in options:
 
+        # jesus christ. fix it fix it fix it fix it fix it fix it fix it fix it fix it fix it fix it fix it fix it fixit
+        # Also, this needs to be changed so I can localize it at some point. Ouch.
+        friendly_options = ["action logging channel", "message logging channel", "log user joins", "log user leaves",
+                            "log when invites are created or used.", "log message deletions",
+                            "log when messages are edited", "log when roles are given/removed",
+                            "log profile changes like usernames", "log nickname changes when changed by an admin",
+                            "log nicknames when changed by the user", "log bans", "log kicks",
+                            "log when someone is muted", "log if someone is moved VC channels by an admin",
+                            "log when someone is kicked from a voice channel", "log when someone mutes themselves",
+                            "log when someone leaves a voice channel"]
+        buttons = []
+        button_grid = auto_rows(max_in_row=5)
+
+        # This is a garbage solution.
+        async def refresh_buttons(grid):
+            for index, each in enumerate(options):
+                color = ButtonStyle.blurple
+                state = get_val(each, ctx.guild)
+                if type(state) == bool:
+                    if state:
+                        color = ButtonStyle.green
+                    else:
+                        color = ButtonStyle.red
+
+                button = Button(
+                    style=color,
+                    label=friendly_options[index],
+                    custom_id=each
+                )
+                buttons.append(button)
+                grid = auto_rows(*buttons, max_in_row=5)
+            return grid
+
+        try:
+            if inter is None:
+                msg = await ctx.send("Click each button to configure the options.", components=button_grid)
+            else:
+                await inter.reply(f"", components=[buttons], type=7)
+        except ValueError:
+            pass
+
+        button_grid = await refresh_buttons(button_grid)
+
+
+        def wait_for(inter):
+            return inter.message.id == msg.id
+
+        inter = await ctx.wait_for_button_click(wait_for)
 
 
 # noinspection PyShadowingNames
