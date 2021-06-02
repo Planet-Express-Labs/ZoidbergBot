@@ -24,7 +24,6 @@ from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 import sqlite3
 
-
 # TODO: It's probably worth adding something to remove servers when the bot has been removed or perhaps even inactive
 #  servers if it gets to the point of causing an actual response time issue
 if not os.path.isfile(os.getcwd() + '\\data.db'):
@@ -104,6 +103,16 @@ class Logging(commands.Cog):
                 :incoming_envelope:Invite used: {invite.id}
                 --> :detective:Created by: {invite.inviter}
                 """)
+
+    @commands.command(name="setup-logging")
+    async def cmd_setup_logging(self):
+        options = ["guild", "log_channel", "message_log_channel", "log_joins", "log_leaves", "log_invites",
+                   "log_messages", "log_message_edits", "log_roles", "log_profile", "log_nickname", "log_user_nickname",
+                   "log_bans", "log_kicks", "log_vc_mute", "log_vc_move", "log_vc_kick", "log_vc_user_mute",
+                   "log_vc_user_leave"]
+        buttons =
+        for each in options:
+
 
 
 # noinspection PyShadowingNames
