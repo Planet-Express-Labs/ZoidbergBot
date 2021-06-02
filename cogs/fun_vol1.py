@@ -36,11 +36,11 @@ test_guild = 842987183588507670
 class FunVol1(commands.Cog):
 
     @commands.command(name="big_text")
-    async def cmd_big_text(self, ctx, message=""):
+    async def cmd_big_text(self, ctx, *, message, style="big"):
         """Repeats your message but ***big***
         """
-        print(message)
-        await ctx.send(f"Embiggoned:\n```{art.text2art(ctx.message.content.strip(BOT_PREFIX + 'big_text'))}```")
+        await ctx.send(f"```{art.text2art(message, font=style)}```")
+        await ctx.message.delete()
 
     @commands.command(name="random_art")
     async def cmd_random_art(self, ctx):
@@ -49,6 +49,10 @@ class FunVol1(commands.Cog):
         message = ctx.message
         await message.delete()
         await ctx.send(f"`{art.randart()}`")
+        buttons = ActionRow(Button(
+            style=ButtonStyle.blurple,
+            label=""
+        ))
 
     @commands.command(name="ceaser")
     async def cmd_ceaser(self, ctx, message, offset=1, inter=None, msg=None):

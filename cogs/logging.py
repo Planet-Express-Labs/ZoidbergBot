@@ -32,7 +32,7 @@ class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.event
+    @bot.event()
     async def on_ready(self):
         print('Ready!')
 
