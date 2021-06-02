@@ -16,7 +16,7 @@
 import discord
 from discord.ext import commands
 import art
-from bot import bot, BOT_PREFIX
+from bot import bot, BOT_PREFIX, slash
 from dislash import slash_commands
 from dislash.slash_commands import *
 from dislash.interactions import *
@@ -29,13 +29,15 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "XV0aXN0LGt5cyxhdXRpc3RpYyxjaGluayxjb29uLGpldyxkeWtlLGtpa2UscmFpZDpzc2hhZG93IGxlZ2VuZH"
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
-slash = SlashClient(bot)
 test_guild = 842987183588507670
 
 
 class FunVol1(commands.Cog):
     """Procrastination but as a module.
     """
+    def __init__(self, bot, slash):
+        self.bot = bot
+        self.slash = slash
 
     @commands.command(name="big_text")
     async def cmd_big_text(self, ctx, *, message, style="big"):
@@ -55,6 +57,36 @@ class FunVol1(commands.Cog):
             style=ButtonStyle.blurple,
             label=""
         ))
+
+    @commands.command()
+    async def test(self, ctx):
+        # Make a row of buttons
+        row_of_buttons = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="Green button",
+                custom_id="green"
+            ),
+            Button(
+                style=ButtonStyle.red,
+                label="Red button",
+                custom_id="red"
+            )
+        )
+        # Send a message with buttons
+        msg = await ctx.send(
+            "This message has buttons!",
+            components=[row_of_buttons]
+        )
+
+        # Wait for someone to click on them
+        def check(inter):
+            return inter.message.id == msg.id
+
+        inter = await ctx.wait_for_button_click(check)
+        # Send what you received
+        button_text = inter.clicked_button.label
+        await inter.reply(f"Button: {button_text}")
 
     @commands.command(name="ceaser")
     async def cmd_ceaser(self, ctx, message, offset=1, inter=None, msg=None):
@@ -137,20 +169,20 @@ class FunVol1(commands.Cog):
 
     @commands.command(name="blockchain_ceaser")
     async def cmd_blockchain_ceaser(self, ctx, *, message, inter=None, msg = None):
-        netvalue = 0
-        prevValues = []
+        net_value = 0
+        prev_values = []
 
         for i in message:
             val = int(ord(i))
-            netvalue += val
-            prevValues.append(netvalue + val)
+            net_value += val
+            prev_values.append(net_value + val)
 
         final = ""
-        for i in prevValues:
+        for i in prev_values:
             final += chr(i)
 
         await ctx.send(final)
 
 
 def setup(bot):
-    bot.add_cog(FunVol1(bot))
+    bot.add_cog(FunVol1(bot, slash))
