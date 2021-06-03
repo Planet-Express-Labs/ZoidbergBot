@@ -184,5 +184,6 @@ class FunVol1(commands.Cog):
         await ctx.send(final)
 
 
-def setup(bot):
+def setup(bot, slash):
     bot.add_cog(FunVol1(bot, slash))
+    
