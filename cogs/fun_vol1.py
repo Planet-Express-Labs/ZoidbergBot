@@ -156,4 +156,3 @@ class FunVol1(commands.Cog):
 
 def setup(bot):
     bot.add_cog(FunVol1(bot))
-    
