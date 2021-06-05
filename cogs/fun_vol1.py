@@ -23,6 +23,7 @@ from dislash.interactions import *
 import random
 import base64
 from zoidbergbot.verify import verify_user
+from data.gifs import *
 
 # please ignore this list. It's so people don't slur. please thank me
 bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG5pZ2EsbmlnLGZhZ2dvdCxxdWVlcixyZXRhcmQsY"
@@ -30,7 +31,6 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
 test_guild = 842987183588507670
-
 
 class FunVol1(commands.Cog):
     """Procrastination but as a module.
@@ -167,7 +167,7 @@ class FunVol1(commands.Cog):
         else:
             await ctx.send("No ")
 
-    @commands.command(name="blockchain_ceaser")
+    @commands.command(name="!")
     async def cmd_blockchain_ceaser(self, ctx, *, message, inter=None, msg = None):
         net_value = 0
         prev_values = []
@@ -182,6 +182,66 @@ class FunVol1(commands.Cog):
             final += chr(i)
 
         await ctx.send(final)
+
+    @commands.command(name="slap")
+    async def cmd_slap(self, ctx, person):
+        embed = discord.Embed(title="SLAPPED!", colour=discord.Colour(0x007E5F))
+
+        embed.add_field(name="Slapped:", value=f"{person} (real person!)")
+
+        # change this link to an image link, e.g a cdn.discord image
+        embed.set_image(url=slap[random.randint(0, int(len(slap)) - 1)])
+
+        await ctx.send(embed=embed)
+
+    @commands.command(name="simple_interaction")
+    async def cmd_simple(self, ctx):
+        buttons = ActionRow(
+            Button(
+                style=ButtonStyle.blurple,
+                label="Click me!",
+                custom_id="interaction"
+            ),
+            Button(
+                style=ButtonStyle.danger,
+                label="Don't click me!",
+                custom_id="bad"
+            )
+        )
+        msg = await ctx.send("click the good one", components=[buttons])
+
+        def wait_for(inter):
+            return inter.message.id == msg.id
+
+        inter = await ctx.wait_for_button_click(wait_for)
+
+        if inter.clicked_button.custom_id == "interaction":
+            await inter.reply("Thank you, kind sir")
+        elif inter.clicked_button.custom_id == "bad":
+            embed = discord.Embed()
+            embed.set_image(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2Fd3MEQYJQpJSKs%2Fgiphy.gif&f=1&nofb=1")
+            await inter.reply(embed=embed)
+
+    @commands.command(name="discord_friends")
+    async def cmd_discord_friends(self, ctx, person):
+        row_of_buttons = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="Accept",
+                custom_id="green"
+            ),
+            Button(
+                style=ButtonStyle.red,
+                label="Decline",
+                custom_id="red"
+            )
+        )
+
+        # Send a message with buttons
+        msg = await ctx.send(
+            "This message has buttons!",
+            components=[row_of_buttons]
+        )
 
 
 def setup(bot):
