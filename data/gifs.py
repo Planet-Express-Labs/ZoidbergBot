@@ -29,7 +29,7 @@ cute_dog_anime = [
 "https://i.imgur.com/jm6jDTT.gif",
 ]
 
-cute_dog irl = [
+cute_dog_irl = [
 "https://media.tenor.com/images/d7afbeb5c3b3efc48a86eb2c3450ceb8/tenor.gif",
 "https://i.pinimg.com/originals/61/f0/70/61f07041bfef3fb0bd0de2785bf0bc76.gif",
 "https://i2.wp.com/images.onwardstate.com/uploads/2015/05/oie_14175751vZSQRLEn.gif?fit=650%2C408&ssl=1",
