@@ -49,17 +49,14 @@ cute_cats_anime = [
 "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgifimage.net%2Fwp-content%2Fuploads%2F2017%2F10%2Fcute-anime-cat-gif-13.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2Fdqxj0bInhQFOM%2Fgiphy.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FeMbTLBUg8zEis%2Fgiphy.gif&f=1&nofb=1",
-"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F10gk712wiRfCV2%2Fgiphy.gif&f=1&nofb=1".
 "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F38.media.tumblr.com%2F8a7bfe86c2a48e01ea50a4ba961903e9%2Ftumblr_nrps3nzTnl1utztsno1_500.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F38.media.tumblr.com%2Fb1d2710e1781633b2043c63fb88765bb%2Ftumblr_mhpt7ufkfd1rphs2wo1_500.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia1.tenor.com%2Fimages%2F27c53422e50ecc9d438cda25ae7ec964%2Ftenor.gif%3Fitemid%3D4382416&f=1&nofb=1".
-"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F33.media.tumblr.com%2F63a5c30a831b897f4074b25445003556%2Ftumblr_no35pqd3nh1upvhr5o1_500.gif&f=1&nofb=1",
   ]
 
 cute_cats_irl = [
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FrZg1mUbze4lmU%2Fgiphy.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FlIgaClvpJdGwg%2Fgiphy.gif&f=1&nofb=1".
-"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F68.media.tumblr.com%2Fbd08f2aa85a6eb8b7a9f4b07c0807d71%2Ftumblr_ofrc94sG1e1sjmm5ao1_400.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0344%2F6469%2Ffiles%2Fcat-gif-loop-ice_grande.gif%3Fv%3D1523984147&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F3xz2BHFXxvFDYwnA9W%2Fgiphy.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgif-free.com%2Fuploads%2Fposts%2F2017-03%2F1490894860_cat-wiggle.gif&f=1&nofb=1",
