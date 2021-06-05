@@ -10,7 +10,7 @@ class Moderation(commands.Cog):
         bot = self.bot
 
     @commands.Cog.listener()
-    async def on_command_error(ctx: Context, error):
+    async def on_command_error(self, ctx: Context, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(localization.get_string("COMMAND_EMPTY"))
         elif isinstance(error, commands.MissingPermissions):
