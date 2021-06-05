@@ -7,3 +7,6 @@ codecs
 json
 SQLAlchemy
 dislash.py
+wavelink
+art~=5.2
+aiohttp
