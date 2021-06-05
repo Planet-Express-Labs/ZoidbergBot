@@ -35,9 +35,9 @@ test_guild = 842987183588507670
 class FunVol1(commands.Cog):
     """Procrastination but as a module.
     """
-    def __init__(self, bot, slash):
+    def __init__(self, bot):
         self.bot = bot
-        self.slash = slash
+        # self.slash = slash
 
     @commands.command(name="big_text")
     async def cmd_big_text(self, ctx, *, message, style="big"):
@@ -184,6 +184,6 @@ class FunVol1(commands.Cog):
         await ctx.send(final)
 
 
-def setup(bot, slash):
-    bot.add_cog(FunVol1(bot, slash))
+def setup(bot):
+    bot.add_cog(FunVol1(bot))
     

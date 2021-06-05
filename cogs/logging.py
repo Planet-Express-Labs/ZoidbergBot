@@ -84,9 +84,6 @@ def get_val(val, guild):
     return int(''.join(map(str, data.fetchall()[0])))
 
 
-initialize_server(123)
-
-
 class Logging(commands.Cog):
 
     # noinspection PyShadowingNames
