@@ -13,7 +13,7 @@ slap = [
 "https://media1.tenor.com/images/b6d8a83eb652a30b95e87cf96a21e007/tenor.gif?itemid=10426943",
 "https://i.gifer.com/B2Sm.gif",
 ]
-
+cute_animals = [
 cute_dog_anime = {
 "https://gifdownload.net/wp-content/uploads/2019/01/anime-dog-slap-gif-.gif",
 "https://cdn2.scratch.mit.edu/get_image/gallery/26447094_170x100.png",
@@ -64,4 +64,4 @@ cute_cats_irl = {
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F3xz2BHFXxvFDYwnA9W%2Fgiphy.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgif-free.com%2Fuploads%2Fposts%2F2017-03%2F1490894860_cat-wiggle.gif&f=1&nofb=1",
 }
-
+]
