@@ -58,36 +58,6 @@ class FunVol1(commands.Cog):
             label=""
         ))
 
-    @commands.command()
-    async def test(self, ctx):
-        # Make a row of buttons
-        row_of_buttons = ActionRow(
-            Button(
-                style=ButtonStyle.green,
-                label="Green button",
-                custom_id="green"
-            ),
-            Button(
-                style=ButtonStyle.red,
-                label="Red button",
-                custom_id="red"
-            )
-        )
-        # Send a message with buttons
-        msg = await ctx.send(
-            "This message has buttons!",
-            components=[row_of_buttons]
-        )
-
-        # Wait for someone to click on them
-        def check(inter):
-            return inter.message.id == msg.id
-
-        inter = await ctx.wait_for_button_click(check)
-        # Send what you received
-        button_text = inter.clicked_button.label
-        await inter.reply(f"Button: {button_text}")
-
     @commands.command(name="ceaser")
     async def cmd_ceaser(self, ctx, message, offset=1, inter=None, msg=None):
         """Literally nobody knows what this does. Kai just made it for some reason.
