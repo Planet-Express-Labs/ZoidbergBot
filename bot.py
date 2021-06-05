@@ -35,7 +35,7 @@ bot = Bot(
 )
 slash = SlashClient(bot)
 # TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
-extensions = ["cogs.fun_vol1", "cogs.logging"]
+extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule"]
 
 
 # class Zoidberg:
