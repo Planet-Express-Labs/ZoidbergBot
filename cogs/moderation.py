@@ -24,5 +24,7 @@ class Moderation(commands.Cog):
         await channel.purge(limit=messages)
 
 
+def setup(bot):
+    bot.add_cog(Moderation(bot))
 
 
