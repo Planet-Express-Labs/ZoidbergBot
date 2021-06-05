@@ -24,6 +24,7 @@ from zoidbergbot.verify import verify_user
 from dislash.interactions import *
 from dislash.slash_commands import *
 
+
 __version__ = get_string("VERSION")
 logging.basicConfig(level=exec(LOGGING_LEVEL))
 log = logging.getLogger(__name__)
@@ -35,7 +36,7 @@ bot = Bot(
 )
 slash = SlashClient(bot)
 # TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
-extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule"]
+extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule", "cogs.music"]
 
 
 # class Zoidberg:
