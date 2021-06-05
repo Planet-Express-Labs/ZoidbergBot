@@ -57,6 +57,4 @@ cute_cats_anime = [
 cute_cats_irl = [
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FrZg1mUbze4lmU%2Fgiphy.gif&f=1&nofb=1",
 "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FlIgaClvpJdGwg%2Fgiphy.gif&f=1&nofb=1".
-"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F3xz2BHFXxvFDYwnA9W%2Fgiphy.gif&f=1&nofb=1",
-"https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgif-free.com%2Fuploads%2Fposts%2F2017-03%2F1490894860_cat-wiggle.gif&f=1&nofb=1",
 ]
