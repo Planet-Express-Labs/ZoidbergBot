@@ -9,10 +9,6 @@ slap = [
 "https://i.pinimg.com/originals/1c/8f/0f/1c8f0f43c75c11bf504b25340ddd912d.gif",
 "https://i.pinimg.com/originals/b6/e3/9e/b6e39e693be3968d212b0fe5754f85db.gif",
 "https://media.tenor.com/images/a0c111e14b73a5ff9a876eb6beab6729/tenor.gif",
-<<<<<<< HEAD
-=======
-"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FyfrwZqRvJ5WFy%2Fgiphy.gif&f=1&nofb=1",
->>>>>>> 0588ec6f2cb37f8fdc974ffc9115f629649f487b
 "https://media1.tenor.com/images/b6d8a83eb652a30b95e87cf96a21e007/tenor.gif?itemid=10426943",
 "https://i.gifer.com/B2Sm.gif"
 ]
