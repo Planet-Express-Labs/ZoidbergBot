@@ -1,7 +1,7 @@
 <img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
 
 ```
-"""
+
 8888888888P         d8b      888 888                                    888               888
       d88P          Y8P      888 888                                    888               888
      d88P                    888 888                                    888               888
@@ -13,7 +13,6 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
                                                                888
                                                           Y8b d88P
                                                            "Y88P"
-"""
 ```
 
 Public branch of Zoidberg. Feature request should go in issues. 

@@ -92,15 +92,15 @@ async def server_picker(ctx: Context):
                               )
         await message.edit(embed=embed)
     else:
-        button_element = []
-        # for index, each in enumerate(guilds):
-        #     button_element.append(Button(
-        #         style=ButtonStyle.green,
-        #         label=each,
-        #         custom_id=f"button_{index}"
-        #     ))
-        # i = 0
-        # for index, each in enumerate(button_element):
-        #     buttons =
-        #     if index % 5 == 0:
-
+        def get_logging(guild):
+            if get_db_int("logging_channel", guild.id) == 0:
+                return True
+            return False
+        button_elements = auto_rows(max_in_row=5)
+        for each in guilds:
+            button_elements += Button(
+                style=ButtonStyle.green,
+                label=f"{each.name}\n :notepad_spiral: - {get_logging(each)}",
+                custom_id=each
+            )
+        await message.edit(content=embed, components=button_elements)
