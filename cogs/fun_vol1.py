@@ -16,14 +16,19 @@
 import discord
 from discord.ext import commands
 import art
+
 from bot import bot, BOT_PREFIX, slash
+from zoidbergbot.verify import verify_user
+from data.gifs import *
+from zoidbergbot.localization import get_string
+
 from dislash import slash_commands
 from dislash.slash_commands import *
 from dislash.interactions import *
+
 import random
 import base64
-from zoidbergbot.verify import verify_user
-from data.gifs import *
+import aiohttp
 
 # please ignore this list. It's so people don't slur. please thank me
 bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG5pZ2EsbmlnLGZhZ2dvdCxxdWVlcixyZXRhcmQsY"
@@ -31,6 +36,10 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
 test_guild = 842987183588507670
+
+# update this to not suck
+last_index = 0
+
 
 class FunVol1(commands.Cog):
     """Procrastination but as a module.
@@ -137,7 +146,7 @@ class FunVol1(commands.Cog):
         else:
             await ctx.send("No ")
 
-    @commands.command(name="!")
+    @commands.command(name="blockchain_ceaser")
     async def cmd_blockchain_ceaser(self, ctx, *, message, inter=None, msg = None):
         net_value = 0
         prev_values = []
@@ -154,43 +163,60 @@ class FunVol1(commands.Cog):
         await ctx.send(final)
 
     @commands.command(name="slap")
-    async def cmd_slap(self, ctx, person):
+    async def cmd_slap(self, ctx, person, lastIndex=last_index, loops=0):
+        """Slap your friends for fun. 👏
+        """
+        if loops > 10:
+            await ctx.send(get_string("UNKNOWN_ERROR") + " TIMEOUT EXCEEDED \n COMMAND: " + ctx.message.content)
+            return
+        index = random.randint(0, len(slap) - 1)
+        timeout = 0
+        while (index != lastIndex | lastIndex != 0) & timeout > 10:
+            timeout += 1
+            index = random.randint(0, len(slap) - 1)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(slap[index]) as r:
+                print(r.status)
+                if r.status == 404:
+                    print([index], "is a dead link!")
+                    await self.cmd_slap(ctx, person, lastIndex, loops + 1)
+        lastIndex = index
         embed = discord.Embed(title="SLAPPED!", colour=discord.Colour(0x007E5F))
-
         embed.add_field(name="Slapped:", value=f"{person} (real person!)")
-
-        # change this link to an image link, e.g a cdn.discord image
-        embed.set_image(url=slap[random.randint(0, int(len(slap)) - 1)])
-
+        # TODO: make this use a self hosted CDN instead of random peoples.
+        embed.set_image(url=slap[index])
         await ctx.send(embed=embed)
 
-    @commands.command(name="simple_interaction")
-    async def cmd_simple(self, ctx):
-        buttons = ActionRow(
-            Button(
-                style=ButtonStyle.blurple,
-                label="Click me!",
-                custom_id="interaction"
-            ),
-            Button(
-                style=ButtonStyle.danger,
-                label="Don't click me!",
-                custom_id="bad"
-            )
-        )
-        msg = await ctx.send("click the good one", components=[buttons])
+    # Ignore this - It's example code to teach Kai.
 
-        def wait_for(inter):
-            return inter.message.id == msg.id
-
-        inter = await ctx.wait_for_button_click(wait_for)
-
-        if inter.clicked_button.custom_id == "interaction":
-            await inter.reply("Thank you, kind sir")
-        elif inter.clicked_button.custom_id == "bad":
-            embed = discord.Embed()
-            embed.set_image(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2Fd3MEQYJQpJSKs%2Fgiphy.gif&f=1&nofb=1")
-            await inter.reply(embed=embed)
+    # @commands.command(name="simple_interaction")
+    # async def cmd_simple(self, ctx):
+    #     buttons = ActionRow(
+    #         Button(
+    #             style=ButtonStyle.blurple,
+    #             label="Click me!",
+    #             custom_id="interaction"
+    #         ),
+    #         Button(
+    #             style=ButtonStyle.danger,
+    #             label="Don't click me!",
+    #             custom_id="bad"
+    #         )
+    #     )
+    #     msg = await ctx.send("click the good one", components=[buttons])
+    #
+    #     def wait_for(inter):
+    #         return inter.message.id == msg.id
+    #
+    #     inter = await ctx.wait_for_button_click(wait_for)
+    #
+    #     if inter.clicked_button.custom_id == "interaction":
+    #         await inter.reply("Thank you, kind sir")
+    #     elif inter.clicked_button.custom_id == "bad":
+    #         embed = discord.Embed()
+    #         embed.set_image(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia"
+    #                             "%2Fd3MEQYJQpJSKs%2Fgiphy.gif&f=1&nofb=1")
+    #         await inter.reply(embed=embed)
 
     @commands.command(name="discord_friends")
     async def cmd_discord_friends(self, ctx, person):
@@ -213,6 +239,10 @@ class FunVol1(commands.Cog):
             components=[row_of_buttons]
         )
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(get_string("COMMAND_EMPTY"))
 
 def setup(bot):
     bot.add_cog(FunVol1(bot))
