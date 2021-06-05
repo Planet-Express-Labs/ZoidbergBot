@@ -5,7 +5,7 @@ from discord.ext import commands
 
 URI = "http://127.0.0.1:2333"
 PASS = ""
-INDENT = "node"
+IDENT = "node"
 
 class Music(commands.Cog):
 
@@ -51,6 +51,6 @@ class Music(commands.Cog):
         await ctx.send(f'Added {str(tracks[0])} to the queue.')
         await player.play(tracks[0])
 
-def s
-    etup(bot):
+
+def setup(bot):
     bot.add_cog(Music(bot))
