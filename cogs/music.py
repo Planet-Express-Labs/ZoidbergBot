@@ -1,11 +1,17 @@
 import wavelink
+import os
 
 import discord
 from discord.ext import commands
 
+# Start the LavaLink server
+# os.system(f'cmd /k f"java -jar {os.getcwd()}\\cogs\\lavalink\\Lavalink.jar"')
+
+# I'd strongly advise you change this password.
 URI = "http://127.0.0.1:2333"
-PASS = ""
+PASS = "qA8Gow8sBqqs.mv6txB8tEEwG*a.nudJ3rmupRFno@7ADP7Fd-"
 IDENT = "node"
+
 
 class Music(commands.Cog):
 
@@ -26,7 +32,7 @@ class Music(commands.Cog):
                                               region='us_east')
 
     @commands.command(name='connect')
-    async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
+    async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
         if not channel:
             try:
                 channel = ctx.author.voice.channel
