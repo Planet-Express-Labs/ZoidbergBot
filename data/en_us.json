@@ -3,7 +3,8 @@
   "BOT_ABOUT": "I am a general purpose discord bot. Currently, I does not have too many functions (Nor do babies), however I are working very hard on expanding that.  ",
   "CMD_PERMISSION_ERROR": ":exclamation:You do not have permission to use this command! Please contact an admin if you believe this to be an error. ",
   "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command. I can only take so many requests at once!",
-  "VERSION": "2.0 beta-1",
+  "VERSION": "2.0 beta-2",
+
   "COMMAND_EMPTY_USER_ID": ":exclamation:Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
   "NO_RESULTS": ":exclamation:This command has returned no results. This likely just means you haven't added anything. ",
   "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message.",
@@ -11,6 +12,8 @@
   "BANNED_COMMAND": ":exclamation: You are banned from using this command by your server's admins! If you believe this to be in error, please message the administrators of this server. ",
   "COMMAND_ERROR": ":exclamation: I couldn't do that quite right. This is my fault not yours, if this appears multiple times, please create an bug report by typing !bug or !issue. Thanks!",
   "DISABLED_COMMAND": ":exclamation: This command is disabled on this server! If you believe this to be in error, please message the administrators of this server.",
+  "UNKNOWN_ERROR": ":exclamation: Something went wrong! Please report this issue in our discord along with the following information: ",
+
   "BOT_JOINED":  ":wave:\nThank you for inviting me to your server! We have a few steps to complete before the bot will be able to use all of it's features. This setup is really quick - just run !setup to start. ",
   "SETUP_1":  "Let's get started. Do you have a specific role that you want to have admin permissions or do you want to use the admin permission on discord? ",
   "SETUP_1_ROLE": "Sounds good. Please ping the role or send the ID of the role you want to assign.",

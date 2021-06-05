@@ -24,18 +24,21 @@ log = logging.getLogger(__name__)
 with open(f"./data/{BOT_LANGUAGE}.json", "r") as read_strings:
     STRINGS = loads(read_strings.read())
 
-# Maybe we shouldn't be handling version through localization...
+# Maybe we shouldn't be handling version through localization... whatever
 REQUIRED_STRING_LIST = [
     "BOT_ABOUT",
     "CMD_PERMISSION_ERROR",
     "COMMAND_ON_COOLDOWN",
     "VERSION",
+
     "COMMAND_EMPTY_USER_ID",
     "NO_RESULTS",
     "MESSAGE_SENT",
     "COMMAND_EMPTY",
     "BANNED_COMMAND",
     "DISABLED_COMMAND",
+    "UNKNOWN_ERROR",
+
     "SETUP_1",
     "SETUP_1_ROLE",
     "SETUP_1_SUCCESS",
