@@ -5,7 +5,6 @@ slap = [
 "https://i.kym-cdn.com/photos/images/newsfeed/000/940/326/086.gif",
 "https://i.kym-cdn.com/photos/images/newsfeed/000/940/326/086.gif",
 "https://media.tenor.com/images/c6b70091d3643ab80929de2a38343aa5/tenor.gif",
-"file:///C:/Users/trina/AppData/Local/Temp/VW0cOyL.gif",
 "https://media.giphy.com/media/10Am8idu3qBYRy/giphy.gif",
 "https://i.pinimg.com/originals/4e/9e/a1/4e9ea150354ad3159339b202cbc6cad9.gif",
 "https://i.pinimg.com/originals/1c/8f/0f/1c8f0f43c75c11bf504b25340ddd912d.gif",
