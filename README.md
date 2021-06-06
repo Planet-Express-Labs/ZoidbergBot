@@ -26,7 +26,7 @@ Please support our work:
  - BCH - bitcoincash:qze4898dlglnjf2nngqv4fplx8rqv2f5cc22mjgkz6
  - USDT -  0x540d5C00e8Ab7e16ab8Fe1a9417CA2963388FDCd
 ```
-Your support is very appreciated - just raise an issue with your wallet address and I'll add you as a supporter. Thanks! <3
+Your support is very appreciated - just raise an issue with your wallet address and I'll add you as a supporter if you send something >5 USD. Thanks! <3
 # Install
 
 Hosted Zoidberg is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run just fine, although you'll probably have some reliablility issues with windows update.
