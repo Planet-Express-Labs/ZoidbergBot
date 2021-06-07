@@ -25,6 +25,7 @@ import wavelink
 from discord.ext import commands
 
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
+loop = False
 
 
 class Bot(commands.Bot):
@@ -134,6 +135,12 @@ class Music(commands.Cog):
 
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+
+    # @wavelink.WavelinkMixin.listener()
+    # async def on_track_end(self, payload):
+    #     player = payload.player()
+    #     print(controller.queue._queue)
+    #     
 
     @commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
