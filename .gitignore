@@ -16,3 +16,4 @@ bans.csv
 .DS_Store
 *.m4a
 *.webm
+cogs/lavalink/logs/spring.log
