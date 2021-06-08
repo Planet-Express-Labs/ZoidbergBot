@@ -7,7 +7,7 @@ from zoidbergbot import localization
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
-        bot = self.bot
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error):
@@ -22,6 +22,17 @@ class Moderation(commands.Cog):
         if channel is None:
             channel = ctx.channel
         await channel.purge(limit=messages)
+
+    @commands.command(name="avatar")
+    async def cmd_avatar(self, ctx, *, user: discord.Member = None):
+        embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
+        embed.set_image(url=user.avatar_url)
+        await ctx.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(get_string("COMMAND_EMPTY"))
 
 
 def setup(bot):
