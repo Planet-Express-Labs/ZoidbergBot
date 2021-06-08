@@ -17,3 +17,4 @@ bans.csv
 *.m4a
 *.webm
 cogs/lavalink/logs/spring.log
+cogs/music_nodes.py
