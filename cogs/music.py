@@ -22,6 +22,7 @@ from typing import Union
 import discord
 import humanize
 import wavelink
+from music_nodes import nodes
 from discord.ext import commands
 
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
@@ -89,15 +90,11 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host='127.0.0.1',
-                                                     port=2333,
-                                                     rest_uri='http://127.0.0.1:2333',
-                                                     password='qA8Gow8sBqqs.mv6txB8tEEwG*a.nudJ3rmupRFno@7ADP7Fd-',
-                                                     identifier='TEST',
-                                                     region='us_central')
 
-        # Set our node hook callback
-        node.set_hook(self.on_event_hook)
+        for n in nodes.values():
+            node = await self.bot.wavelink.initiate_node(n)
+            # Set our node hook callback
+            node.set_hook(self.on_event_hook)
 
     async def on_event_hook(self, event):
         """Node hook callback."""
@@ -140,7 +137,7 @@ class Music(commands.Cog):
     # async def on_track_end(self, payload):
     #     player = payload.player()
     #     print(controller.queue._queue)
-    #     
+    #
 
     @commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
