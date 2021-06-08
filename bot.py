@@ -53,15 +53,15 @@ async def on_ready():
     await bot.wait_until_ready()
 
 
-@bot.command(name="ping", brief="The bot responds if alive")
+@bot.command(name="ping")
 async def cmd_ping(ctx: Context):
-    # Literally just responds with this.
+    """Check if the bots alive and what the latency is. """
     await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
-@bot.command(name="about", brief="A bit about the bot")
+@bot.command(name="about")
 async def cmd_about(ctx: Context):
-    # Oh no - the paragraphs.
+    """About the bot. """
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
         title="Zoidberg",
@@ -75,7 +75,7 @@ async def cmd_about(ctx: Context):
     await ctx.send(embed=embed)
 
 
-@bot.command(name="check-special", brief="Checks if user has any special roles configured within the bot. ")
+@bot.command(name="check-special")
 async def cmd_check_perms(ctx, message=""):
     permission_levels = ["dev", "admin"]
     await ctx.send("Checking user permissions... ")
