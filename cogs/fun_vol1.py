@@ -244,5 +244,6 @@ class FunVol1(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(get_string("COMMAND_EMPTY"))
 
+
 def setup(bot):
     bot.add_cog(FunVol1(bot))
