@@ -18,3 +18,4 @@ bans.csv
 *.webm
 cogs/lavalink/logs/spring.log
 cogs/music_nodes.py
+cogs/music_nodes.py
