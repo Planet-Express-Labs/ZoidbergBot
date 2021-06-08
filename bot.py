@@ -15,14 +15,15 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
-from discord.ext.commands import Bot, Context
+from discord.ext import commands
 
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
 
-from dislash.interactions import *
-from dislash.slash_commands import *
+from dislash import *
+# from dislash.interactions import *
+# from dislash.slash_commands import *
 
 
 __version__ = get_string("VERSION")
@@ -31,13 +32,13 @@ log = logging.getLogger(__name__)
 
 # It's probably worth converting this to autoshardingbot sometime down the road. It's not that important right now, but
 # it would solve some response time issues.
-bot = Bot(
+bot = commands.Bot(
     command_prefix=BOT_PREFIX
 )
-slash = SlashClient(bot)
+slash = SlashClient(bot, show_warnings=True)
 # TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
 extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule", "cogs.music"]
-
+guilds = [752888281036881960]
 
 # class Zoidberg:
 #     def __init__(self, bot):
@@ -51,16 +52,17 @@ bot.run(BOT_TOKEN)
 async def on_ready():
     log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
     await bot.wait_until_ready()
+    print(slash.commands)
 
 
-@bot.command(name="ping")
-async def cmd_ping(ctx: Context):
+@slash.command(name="ping", description="Replies with Zoidberg's response time", guild_ids=guilds)
+async def cmd_ping(ctx):
     """Check if the bots alive and what the latency is. """
     await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
-@bot.command(name="about")
-async def cmd_about(ctx: Context):
+@slash.command(name="about", description="Provides some information about the bot", guild_ids=guilds)
+async def cmd_about(ctx):
     """About the bot. """
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
@@ -75,7 +77,7 @@ async def cmd_about(ctx: Context):
     await ctx.send(embed=embed)
 
 
-@bot.command(name="check-special")
+@slash.command(name="check-special", description="Checks if you have any gloabl bot roles", guild_ids=guilds)
 async def cmd_check_perms(ctx, message=""):
     permission_levels = ["dev", "admin"]
     await ctx.send("Checking user permissions... ")

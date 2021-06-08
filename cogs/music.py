@@ -22,6 +22,7 @@ from typing import Union
 import discord
 import humanize
 import wavelink
+from cogs.music_nodes import nodes
 from discord.ext import commands
 
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
@@ -89,15 +90,11 @@ class Music(commands.Cog):
 
         # Initiate our nodes. For this example we will use one server.
         # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-        node = await self.bot.wavelink.initiate_node(host='127.0.0.1',
-                                                     port=2333,
-                                                     rest_uri='http://127.0.0.1:2333',
-                                                     password='qA8Gow8sBqqs.mv6txB8tEEwG*a.nudJ3rmupRFno@7ADP7Fd-',
-                                                     identifier='TEST',
-                                                     region='us_central')
 
-        # Set our node hook callback
-        node.set_hook(self.on_event_hook)
+        for n in nodes.values():
+            node = await self.bot.wavelink.initiate_node(n)
+            # Set our node hook callback
+            node.set_hook(self.on_event_hook)
 
     async def on_event_hook(self, event):
         """Node hook callback."""
@@ -140,11 +137,11 @@ class Music(commands.Cog):
     # async def on_track_end(self, payload):
     #     player = payload.player()
     #     print(controller.queue._queue)
-    #     
+    #
 
     @commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
-        """Connect to a valid voice channel."""
+        """Connect the bot to a voice channel. """
         if not channel:
             try:
                 channel = ctx.author.voice.channel
@@ -152,7 +149,7 @@ class Music(commands.Cog):
                 raise discord.DiscordException('No channel to join. Please either specify a valid channel or join one.')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f'Connecting to **`{channel.name}`**', delete_after=15)
+        await ctx.send(f'Connecting to **`{channel.name}`**')
         await player.connect(channel.id)
 
         controller = self.get_controller(ctx)
@@ -160,7 +157,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, *, query: str):
-        """Search for and add a song to the Queue."""
+        """Search for and add a song to the Queue.
+        This command should support YouTube, Soundcloud, Bandcamp, Twitch, Vimeo, Mixer(RIP), and raw http streams.
+        """
         if not RURL.match(query):
             query = f'ytsearch:{query}'
 
@@ -177,26 +176,26 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.send(f'Added {str(track)} to the queue.', delete_after=15)
+        await ctx.send(f'Added {str(track)} to the queue.')
 
     @commands.command()
     async def pause(self, ctx):
-        """Pause the player."""
+        """Pauses the song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_playing:
-            return await ctx.send('I am not currently playing anything!', delete_after=15)
+            return await ctx.send('I am not currently playing anything!')
 
-        await ctx.send('Pausing the song!', delete_after=15)
+        await ctx.send('Pausing the song!')
         await player.set_pause(True)
 
     @commands.command()
     async def resume(self, ctx):
-        """Resume the player from a paused state."""
+        """Resumes the song if pauced. ."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.paused:
-            return await ctx.send('I am not currently paused!', delete_after=15)
+            return await ctx.send('The song is not currently paused!')
 
-        await ctx.send('Resuming the player!', delete_after=15)
+        await ctx.send('Resumed. ')
         await player.set_pause(False)
 
     @commands.command()
@@ -205,22 +204,22 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
         if not player.is_playing:
-            return await ctx.send('I am not currently playing anything!', delete_after=15)
+            return await ctx.send("There isn't anything playing!")
 
-        await ctx.send('Skipping the song!', delete_after=15)
+        await ctx.send('Skipping...')
         await player.stop()
 
     @commands.command()
-    async def volume(self, ctx, *, vol: int):
+    async def volume(self, ctx, *, vol: int = None):
         """Set the player volume."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
-
-        vol = max(min(vol, 1000), 0)
-        controller.volume = vol
-
-        await ctx.send(f'Setting the player volume to `{vol}`')
-        await player.set_volume(vol)
+        if vol is not None:
+            vol = max(min(vol, 1000), 0)
+            controller.volume = vol
+            await ctx.send(f'Setting the volume to `{vol}`')
+            await player.set_volume(vol)
+        
 
     @commands.command(aliases=['np', 'current', 'nowplaying'])
     async def now_playing(self, ctx):

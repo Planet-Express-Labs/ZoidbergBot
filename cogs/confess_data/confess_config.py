@@ -40,45 +40,45 @@ MAX_BACKUPS = config.get("db", "max_backups")
 #       bans       #
 ####################
 
-
-def get_bans():
-    with open("./data/bans.csv", newline='') as file:
-        names = []
-        read = csv.reader(file, delimiter='\n', quotechar='|')
-        for row in read:
-            names.append(row)
-        return names
-
-
-def get_user_ban(name):
-    if not os.path.isfile("./data/bans.csv"):
-        file = open("./data/bans.csv", "w")
-        file.close()
-    bans = get_bans()
-    for each in bans:
-        if each == name:
-            return True
-    return False
-
-
+#
+# def get_bans():
+#     with open("./data/bans.csv", newline='') as file:
+#         names = []
+#         read = csv.reader(file, delimiter='\n', quotechar='|')
+#         for row in read:
+#             names.append(row)
+#         return names
+#
+#
+# def get_user_ban(name):
+#     if not os.path.isfile("./data/bans.csv"):
+#         file = open("./data/bans.csv", "w")
+#         file.close()
+#     bans = get_bans()
+#     for each in bans:
+#         if each == name:
+#             return True
+#     return False
+#
+#
 # I highly doubt this is remotely close to the correct way of doing something like this, but it is what it is, I guess.
-def rm_ban(user):
-    with open("./data/bans.csv", newline='') as read_file:
-        read = csv.reader(read_file, delimiter='\n', quotechar='|')
-        file = []
-        for each in read:
-            if each != user:
-                file.append(each)
-    with open("./data/bans.csv", 'w+', newline='') as write_file:
-        write = csv.writer(write_file, delimiter='\n', quotechar='|')
-        for each in file:
-            write.writerow(each)
-
-
-def add_ban(user):
-    if get_user_ban(user):
-        return False
-    with open("./data/bans.csv", "a", newline='') as write_file:
-        write = csv.writer(write_file, delimiter='\n', quotechar='|')
-        user = [user]
-        write.writerow(user)
+# def rm_ban(user):
+#     with open("./data/bans.csv", newline='') as read_file:
+#         read = csv.reader(read_file, delimiter='\n', quotechar='|')
+#         file = []
+#         for each in read:
+#             if each != user:
+#                 file.append(each)
+#     with open("./data/bans.csv", 'w+', newline='') as write_file:
+#         write = csv.writer(write_file, delimiter='\n', quotechar='|')
+#         for each in file:
+#             write.writerow(each)
+#
+#
+# def add_ban(user):
+#     if get_user_ban(user):
+#         return False
+#     with open("./data/bans.csv", "a", newline='') as write_file:
+#         write = csv.writer(write_file, delimiter='\n', quotechar='|')
+#         user = [user]
+#         write.writerow(user)
