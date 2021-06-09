@@ -22,21 +22,18 @@ class Moderation(commands.Cog):
                             description="Deletes many messages at once. Syntax: /purge <messages> <channel>. ",
                             guild_ids=guilds,
                             options=[
-                                Option('Messages', 'The number of messages to delete.', Type.STRING, required=True),
-                                Option('Channel', 'The channel to delete the messages in.', Type.STRING)
+                                Option('Messages', 'The number of messages to delete.', Type.INTEGER, required=True),
+                                Option('Channel', 'The channel to delete the messages in.', Type.CHANNEL)
                             ]
                             )
-    @commands.has_permissions(manage_messages=True)
+    @slash_commands .has_permissions(manage_messages=True)
     async def cmd_purge(self, ctx, interaction: interactions.Interaction):
         """Deletes Multiple messages from a channel.
         The syntax is as follows:
         purge <messages> <channel>.
         If the channel is none, it will use the current channel.
         """
-        try:
-            messages = int(interaction.get("Messages"))
-        except ValueError:
-            await interaction.reply(localization.get_string("INTEGER_ERROR") % "Messages")
+        messages = int(interaction.get("Messages"))
         channel = interaction.get("Channel")
         if channel is None:
             channel = ctx.channel
