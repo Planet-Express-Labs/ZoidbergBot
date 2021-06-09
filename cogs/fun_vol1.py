@@ -22,9 +22,7 @@ from zoidbergbot.verify import verify_user
 from data.gifs import *
 from zoidbergbot.localization import get_string
 
-from dislash import slash_commands
-from dislash.slash_commands import *
-from dislash.interactions import *
+from dislash import *
 
 import random
 import base64
