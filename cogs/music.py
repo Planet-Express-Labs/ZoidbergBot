@@ -7,7 +7,7 @@ This example makes use of: Python 3.7, WaveLink(https://github.com/EvieePy/Wavel
 This is a very basic playlist example, which allows per guild playback of unique queues.
 The commands implement very basic logic for basic usage. But allow for expansion. It would be advisable to implement
 your own permissions and usage logic for commands.
-e.g You might like to implement a vote before skipping the song or only allow admins to stop the player.
+e.g You might like to implement a vote before skipping the song or only allow admins to cmd_stop the player.
 Music bots require lots of work, and tuning. Goodluck.
 If you find any bugs feel free to ping me on discord. @Eviee#0666
 """
@@ -19,14 +19,13 @@ import sys
 import traceback
 from typing import Union
 
-from bot import guilds
-
 import discord
 import humanize
 import wavelink
 from cogs.music_nodes import nodes
 
 from dislash import slash_commands
+from bot import slash, guilds
 from discord.ext import commands
 
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
@@ -92,13 +91,10 @@ class Music(commands.Cog):
     async def start_nodes(self):
         await self.bot.wait_until_ready()
 
-        # Initiate our nodes. For this example we will use one server.
-        # Region should be a discord.py guild.region e.g sydney or us_central (Though this is not technically required)
-
         for n in nodes.values():
-            node = await self.bot.wavelink.initiate_node(n)
-            # Set our node hook callback
+            node = await self.bot.wavelink.initiate_node(**n)
             node.set_hook(self.on_event_hook)
+            print(f"Node connected: {node.identifier} at {node.region}")
 
     async def on_event_hook(self, event):
         """Node hook callback."""
@@ -140,11 +136,11 @@ class Music(commands.Cog):
     # @wavelink.WavelinkMixin.listener()
     # async def on_track_end(self, payload):
     #     player = payload.player()
-    #     print(controller.queue._queue)
+    #     print(controller.cmd_queue._queue)
     #
 
-    @slash_commands.command(name='connect')
-    async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
+    @slash_commands.command(name='connect', guild_ids=guilds)
+    async def cmd_connect_(self, ctx, *, channel: discord.VoiceChannel = None):
         """Connect the bot to a voice channel. """
         if not channel:
             try:
@@ -159,8 +155,8 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
 
-    @slash_commands.command()
-    async def play(self, ctx, *, query: str):
+    @slash_commands.command(name='play', guild_ids=guilds)
+    async def cmd_play(self, ctx, *, query: str):
         """Search for and add a song to the Queue.
         This command should support YouTube, Soundcloud, Bandcamp, Twitch, Vimeo, Mixer(RIP), and raw http streams.
         """
@@ -174,16 +170,16 @@ class Music(commands.Cog):
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
-            await ctx.invoke(self.connect_)
+            await ctx.invoke(self.cmd_connect_)
 
         track = tracks[0]
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.send(f'Added {str(track)} to the queue.')
+        await ctx.send(f'Added {str(track)} to the cmd_queue.')
 
-    @slash_commands.command()
-    async def pause(self, ctx):
+    @slash_commands.command(name='cmd_pause', guild_ids=guilds)
+    async def cmd_pause(self, ctx):
         """Pauses the song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_playing:
@@ -192,8 +188,8 @@ class Music(commands.Cog):
         await ctx.send('Pausing the song!')
         await player.set_pause(True)
 
-    @slash_commands.command()
-    async def resume(self, ctx):
+    @slash_commands.command(name="resume", guild_ids=guilds)
+    async def cmd_resume(self, ctx):
         """Resumes the song if pauced. ."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.paused:
@@ -202,8 +198,8 @@ class Music(commands.Cog):
         await ctx.send('Resumed. ')
         await player.set_pause(False)
 
-    @slash_commands.command()
-    async def skip(self, ctx):
+    @slash_commands.command(name='skip', guild_ids=guilds)
+    async def cmd_skip(self, ctx):
         """Skip the currently playing song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -213,39 +209,38 @@ class Music(commands.Cog):
         await ctx.send('Skipping...')
         await player.stop()
 
-    @slash_commands.command()
-    async def volume(self, ctx, *, vol: int = None):
-        """Set the player volume."""
+    @slash_commands.command(name='volume', aliases=['vol'], guild_ids=guilds)
+    async def cmd_volume(self, ctx, *, vol: int = None):
+        """Set the player cmd_volume."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         if vol is not None:
             vol = max(min(vol, 1000), 0)
             controller.volume = vol
-            await ctx.send(f'Setting the volume to `{vol}`')
+            await ctx.send(f'Setting the cmd_volume to `{vol}`')
             await player.set_volume(vol)
-        
 
-    @slash_commands.command(aliases=['np', 'current', 'nowplaying'])
-    async def now_playing(self, ctx):
+    @slash_commands.command(name='now_playing', aliases=['np', 'current', 'nowplaying'], guild_ids=guilds)
+    async def cmd_now_playing(self, ctx):
         """Retrieve the currently playing song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
         if not player.current:
-            return await ctx.send('I am not currently playing anything!')
+            return await ctx.send('I am not currently playing anything!', guild_ids=guilds)
 
         controller = self.get_controller(ctx)
         await controller.now_playing.delete()
 
         controller.now_playing = await ctx.send(f'Now playing: `{player.current}`')
 
-    @slash_commands.command(aliases=['q'])
-    async def queue(self, ctx):
-        """Retrieve information on the next 5 songs from the queue."""
+    @slash_commands.command(name="queue", aliases=['q'], guild_ids=guilds)
+    async def cmd_queue(self, ctx):
+        """Retrieve information on the next 5 songs from the cmd_queue."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
 
         if not player.current or not controller.queue._queue:
-            return await ctx.send('There are no songs currently in the queue.', delete_after=20)
+            return await ctx.send('There are no songs currently in the cmd_queue.', delete_after=20)
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, 5))
 
@@ -254,8 +249,8 @@ class Music(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @slash_commands.command(aliases=['disconnect', 'dc'])
-    async def stop(self, ctx):
+    @slash_commands.command(name='stop', aliases=['disconnect', 'dc'], guild_ids=guilds)
+    async def cmd_stop(self, ctx):
         """Stop and disconnect the player and controller."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
@@ -263,13 +258,13 @@ class Music(commands.Cog):
             del self.controllers[ctx.guild.id]
         except KeyError:
             await player.disconnect()
-            return await ctx.send('There was no controller to stop.')
+            return await ctx.send('There was no controller to cmd_stop.')
 
         await player.disconnect()
         await ctx.send('Disconnected player and killed controller.', delete_after=20)
 
-    @slash_commands.command()
-    async def info(self, ctx):
+    @slash_commands.command(name='nodes', guild_ids=guilds)
+    async def cmd_nodes(self, ctx):
         """Retrieve various Node/Server/Player information."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
         node = player.node
@@ -279,7 +274,7 @@ class Music(commands.Cog):
         free = humanize.naturalsize(node.stats.memory_free)
         cpu = node.stats.cpu_cores
 
-        fmt = f'**WaveLink:** `{wavelink.__version__}`\n\n' \
+        fmt = f'Running: **WaveLink:** `{wavelink.__version__}`\n\n' \
               f'Connected to `{len(self.bot.wavelink.nodes)}` nodes.\n' \
               f'Best available Node `{self.bot.wavelink.get_best_node().__repr__()}`\n' \
               f'`{len(self.bot.wavelink.players)}` players are distributed on nodes.\n' \
@@ -293,3 +288,7 @@ class Music(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Music(bot))
+
+
+"<:emoji_1:123456789123456789>"
+
