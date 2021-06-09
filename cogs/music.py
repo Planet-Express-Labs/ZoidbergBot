@@ -19,10 +19,14 @@ import sys
 import traceback
 from typing import Union
 
+from bot import guilds
+
 import discord
 import humanize
 import wavelink
 from cogs.music_nodes import nodes
+
+from dislash import slash_commands
 from discord.ext import commands
 
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
@@ -139,7 +143,7 @@ class Music(commands.Cog):
     #     print(controller.queue._queue)
     #
 
-    @commands.command(name='connect')
+    @slash_commands.command(name='connect')
     async def connect_(self, ctx, *, channel: discord.VoiceChannel = None):
         """Connect the bot to a voice channel. """
         if not channel:
@@ -155,7 +159,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
 
-    @commands.command()
+    @slash_commands.command()
     async def play(self, ctx, *, query: str):
         """Search for and add a song to the Queue.
         This command should support YouTube, Soundcloud, Bandcamp, Twitch, Vimeo, Mixer(RIP), and raw http streams.
@@ -178,7 +182,7 @@ class Music(commands.Cog):
         await controller.queue.put(track)
         await ctx.send(f'Added {str(track)} to the queue.')
 
-    @commands.command()
+    @slash_commands.command()
     async def pause(self, ctx):
         """Pauses the song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -188,7 +192,7 @@ class Music(commands.Cog):
         await ctx.send('Pausing the song!')
         await player.set_pause(True)
 
-    @commands.command()
+    @slash_commands.command()
     async def resume(self, ctx):
         """Resumes the song if pauced. ."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -198,7 +202,7 @@ class Music(commands.Cog):
         await ctx.send('Resumed. ')
         await player.set_pause(False)
 
-    @commands.command()
+    @slash_commands.command()
     async def skip(self, ctx):
         """Skip the currently playing song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -209,7 +213,7 @@ class Music(commands.Cog):
         await ctx.send('Skipping...')
         await player.stop()
 
-    @commands.command()
+    @slash_commands.command()
     async def volume(self, ctx, *, vol: int = None):
         """Set the player volume."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -221,7 +225,7 @@ class Music(commands.Cog):
             await player.set_volume(vol)
         
 
-    @commands.command(aliases=['np', 'current', 'nowplaying'])
+    @slash_commands.command(aliases=['np', 'current', 'nowplaying'])
     async def now_playing(self, ctx):
         """Retrieve the currently playing song."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -234,7 +238,7 @@ class Music(commands.Cog):
 
         controller.now_playing = await ctx.send(f'Now playing: `{player.current}`')
 
-    @commands.command(aliases=['q'])
+    @slash_commands.command(aliases=['q'])
     async def queue(self, ctx):
         """Retrieve information on the next 5 songs from the queue."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -250,7 +254,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['disconnect', 'dc'])
+    @slash_commands.command(aliases=['disconnect', 'dc'])
     async def stop(self, ctx):
         """Stop and disconnect the player and controller."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
@@ -264,7 +268,7 @@ class Music(commands.Cog):
         await player.disconnect()
         await ctx.send('Disconnected player and killed controller.', delete_after=20)
 
-    @commands.command()
+    @slash_commands.command()
     async def info(self, ctx):
         """Retrieve various Node/Server/Player information."""
         player = self.bot.wavelink.get_player(ctx.guild.id)
