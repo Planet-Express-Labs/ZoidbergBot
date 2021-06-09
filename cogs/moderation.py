@@ -18,16 +18,15 @@ class Moderation(commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send(localization.get_string("CMD_PERMISSION_ERROR"))
 
+    @slash_commands.has_permissions(manage_messages=True)
     @slash_commands.command(name="purge",
                             description="Deletes many messages at once. Syntax: /purge <messages> <channel>. ",
                             guild_ids=guilds,
                             options=[
                                 Option('Messages', 'The number of messages to delete.', Type.INTEGER, required=True),
-                                Option('Channel', 'The channel to delete the messages in.', Type.CHANNEL)
-                            ]
+                                Option('Channel', 'The channel to delete the messages in.', Type.CHANNEL)]
                             )
-    @slash_commands .has_permissions(manage_messages=True)
-    async def cmd_purge(self, ctx, interaction: interactions.Interaction):
+    async def cmd_purge(self, interaction):
         """Deletes Multiple messages from a channel.
         The syntax is as follows:
         purge <messages> <channel>.
@@ -36,7 +35,7 @@ class Moderation(commands.Cog):
         messages = int(interaction.get("Messages"))
         channel = interaction.get("Channel")
         if channel is None:
-            channel = ctx.channel
+            channel = interaction.channel
         await channel.purge(limit=messages)
         await interaction.reply(f"Deleted {messages} messages. ")
 
@@ -44,12 +43,13 @@ class Moderation(commands.Cog):
                             description="Gets the avatar from the pinged user.",
                             guild_ids=guilds,
                             options=[
-                                Option('user', Type.USER, required=True)
+                                Option('User', "Who's avatar you want to pull.", Type.USER, required=True)
                             ])
     async def cmd_avatar(self, ctx):
+        user = ctx.get('User')
         embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
         embed.set_image(url=user.avatar_url)
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
