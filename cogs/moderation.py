@@ -40,8 +40,13 @@ class Moderation(commands.Cog):
         await channel.purge(limit=messages)
         await interaction.reply(f"Deleted {messages} messages. ")
 
-    @slash_commands.command(name="avatar", description="Gets the avatar from the pinged user.", guild_ids=guilds)
-    async def cmd_avatar(self, ctx, *, user: discord.Member = None):
+    @slash_commands.command(name="avatar",
+                            description="Gets the avatar from the pinged user.",
+                            guild_ids=guilds,
+                            options=[
+                                Option('user', Type.USER, required=True)
+                            ])
+    async def cmd_avatar(self, ctx):
         embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
         embed.set_image(url=user.avatar_url)
         await ctx.send(embed=embed)
