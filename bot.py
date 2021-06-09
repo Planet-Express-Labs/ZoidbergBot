@@ -1,4 +1,4 @@
-# 8888888888P         d8b      888 888                                    888               888
+# 888888    8888P         d8b      888 888                                    888               888
 #       d88P          Y8P      888 888                                    888               888
 #      d88P                    888 888                                    888               888
 #     d88P    .d88b.  888  .d88888 88888b.   .d88b.  888d888 .d88b.       88888b.   .d88b.  888888
@@ -35,33 +35,31 @@ log = logging.getLogger(__name__)
 bot = commands.Bot(
     command_prefix=BOT_PREFIX
 )
-slash = SlashClient(bot, show_warnings=True)
+slash = SlashClient(bot)
 # TODO: Make this in the config file or something IDK I'm just the developer, nobody pays me or anything.
 extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule", "cogs.music"]
-guilds = [752888281036881960]
 
+guilds = [842987183588507670]
 # class Zoidberg:
 #     def __init__(self, bot):
 #         self.bot = bot
 for each in extensions:
     bot.load_extension(each)
-bot.run(BOT_TOKEN)
 
 
-@bot.listen()
+@bot.event
 async def on_ready():
-    log.info(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
+    print(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
     await bot.wait_until_ready()
-    print(slash.commands)
 
 
-@slash.command(name="ping", description="Replies with Zoidberg's response time", guild_ids=guilds)
+@slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
 async def cmd_ping(ctx):
     """Check if the bots alive and what the latency is. """
     await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
-@slash.command(name="about", description="Provides some information about the bot", guild_ids=guilds)
+@slash.command(name="about", description="Provides some information about the bot.", guild_ids=guilds)
 async def cmd_about(ctx):
     """About the bot. """
     embed = discord.Embed(
@@ -77,7 +75,7 @@ async def cmd_about(ctx):
     await ctx.send(embed=embed)
 
 
-@slash.command(name="check-special", description="Checks if you have any gloabl bot roles", guild_ids=guilds)
+@slash.command(name="check-special", description="Checks if you have any global bot roles.", guild_ids=guilds)
 async def cmd_check_perms(ctx, message=""):
     permission_levels = ["dev", "admin"]
     await ctx.send("Checking user permissions... ")
@@ -88,3 +86,5 @@ async def cmd_check_perms(ctx, message=""):
             message += each + "\n:red_circle"
     embed = discord.Embed(description=message, title="Special Permissions: ")
     await ctx.send(embed=embed)
+
+bot.run(BOT_TOKEN)
