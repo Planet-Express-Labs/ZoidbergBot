@@ -1,7 +1,9 @@
-from bot import bot
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
+from dislash import slash_commands, Option, Type, interactions
+
+from bot import guilds
 from zoidbergbot import localization
 
 
@@ -16,14 +18,32 @@ class Moderation(commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send(localization.get_string("CMD_PERMISSION_ERROR"))
 
-    @commands.command(name="purge")
+    @slash_commands.command(name="purge",
+                            description="Deletes many messages at once. Syntax: /purge <messages> <channel>. ",
+                            guild_ids=guilds,
+                            options=[
+                                Option('Messages', 'The number of messages to delete.', Type.STRING, required=True),
+                                Option('Channel', 'The channel to delete the messages in.', Type.STRING)
+                            ]
+                            )
     @commands.has_permissions(manage_messages=True)
-    async def cmd_purge(self, ctx, messages=0, channel=None):
+    async def cmd_purge(self, ctx, interaction: interactions.Interaction):
+        """Deletes Multiple messages from a channel.
+        The syntax is as follows:
+        purge <messages> <channel>.
+        If the channel is none, it will use the current channel.
+        """
+        try:
+            messages = int(interaction.get("Messages"))
+        except ValueError:
+            await interaction.reply(localization.get_string("INTEGER_ERROR") % "Messages")
+        channel = interaction.get("Channel")
         if channel is None:
             channel = ctx.channel
         await channel.purge(limit=messages)
+        await interaction.reply(f"Deleted {messages} messages. ")
 
-    @commands.command(name="avatar")
+    @slash_commands.command(name="avatar", description="Gets the avatar from the pinged user.", guild_ids=guilds)
     async def cmd_avatar(self, ctx, *, user: discord.Member = None):
         embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
         embed.set_image(url=user.avatar_url)
@@ -32,7 +52,7 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(get_string("COMMAND_EMPTY"))
+            await ctx.send(localization.get_string("COMMAND_EMPTY"))
 
 
 def setup(bot):
