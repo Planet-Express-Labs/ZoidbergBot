@@ -71,16 +71,4 @@ async def cmd_about(ctx):
     await ctx.send(embed=embed)
 
 
-@slash.command(name="check-special", description="Checks if you have any global bot roles.", guild_ids=guilds)
-async def cmd_check_perms(ctx, message=""):
-    permission_levels = ["dev", "admin"]
-    await ctx.send("Checking user permissions... ")
-    for each in permission_levels:
-        if verify_user(ctx, each):
-            message += each + ": :green_circle:\n"
-        else:
-            message += each + "\n:red_circle"
-    embed = discord.Embed(description=message, title="Special Permissions: ")
-    await ctx.send(embed=embed)
-
 bot.run(BOT_TOKEN)
