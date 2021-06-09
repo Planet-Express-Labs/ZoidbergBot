@@ -23,10 +23,10 @@ import discord
 from discord.ext import commands
 
 from bot import bot
-from cogs.confess_data.confess_config import *
+from cogs.data.confess_config import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
-from cogs.confess_data.confess_db import *
+from cogs.data.confess_db import *
 
 
 __version__ = '0.1 PRERELEASE'

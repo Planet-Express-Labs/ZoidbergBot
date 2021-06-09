@@ -26,7 +26,7 @@ from json import loads
 use_env_var = False
 log = logging.getLogger(__name__)
 try:
-    CONFIG_FILE = os.getcwd() + "\\cogs\\confess_data\\config.ini"
+    CONFIG_FILE = os.getcwd() + "\\cogs\\data\\config.ini"
 except FileNotFoundError:
     use_env_var = True
 config = configparser.ConfigParser()
