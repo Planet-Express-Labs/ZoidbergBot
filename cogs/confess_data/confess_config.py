@@ -23,9 +23,12 @@ import csv
 
 from json import loads
 
+use_env_var = False
 log = logging.getLogger(__name__)
-
-CONFIG_FILE = os.getcwd() + "\\cogs\\confess_data\\config.ini"
+try:
+    CONFIG_FILE = os.getcwd() + "\\cogs\\confess_data\\config.ini"
+except FileNotFoundError:
+    use_env_var = True
 config = configparser.ConfigParser()
 config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
