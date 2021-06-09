@@ -25,22 +25,21 @@ from dislash import *
 
 
 __version__ = get_string("VERSION")
-logging.basicConfig(level=exec(LOGGING_LEVEL))
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 bot = commands.Bot(
     command_prefix=BOT_PREFIX
 )
-slash = SlashClient(bot)
+slash = SlashClient(bot, show_warnings=True)
 
 
 # TODO: Move both of these into the config file.
-extensions = ["cogs.fun_vol1", "cogs.log", "cogs.schedule", "cogs.music"]
 guilds = [842987183588507670]
 
-
-for cog in extensions:
-    bot.load_extension(cog)
+for filename in os.listdir("cogs"):
+    if filename.endswith(".py"):
+        bot.load_extension(f"cogs.{filename[:-3]}")
 
 
 @bot.event
@@ -52,7 +51,7 @@ async def on_ready():
 @slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
 async def cmd_ping(ctx):
     """Check if the bots alive and what the latency is. """
-    await ctx.send(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
+    await ctx.reply(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
 @slash.command(name="about", description="Provides some information about the bot.", guild_ids=guilds)
@@ -68,7 +67,7 @@ async def cmd_about(ctx):
                      url="https://github.com/LiemEldert/ZoidbergBot")
     embed.set_thumbnail(
         url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
-    await ctx.send(embed=embed)
+    await ctx.reply(embed=embed)
 
 
 bot.run(BOT_TOKEN)
