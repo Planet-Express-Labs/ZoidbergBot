@@ -23,8 +23,8 @@ class Moderation(commands.Cog):
                             description="Deletes many messages at once. Syntax: /purge <messages> <channel>. ",
                             guild_ids=guilds,
                             options=[
-                                Option('Messages', 'The number of messages to delete.', Type.INTEGER, required=True),
-                                Option('Channel', 'The channel to delete the messages in.', Type.CHANNEL)]
+                                Option('messages', 'The number of messages to delete.', Type.INTEGER, required=True),
+                                Option('channel', 'The channel to delete the messages in.', Type.CHANNEL)]
                             )
     async def cmd_purge(self, interaction):
         """Deletes Multiple messages from a channel.
@@ -32,8 +32,8 @@ class Moderation(commands.Cog):
         purge <messages> <channel>.
         If the channel is none, it will use the current channel.
         """
-        messages = int(interaction.get("Messages"))
-        channel = interaction.get("Channel")
+        messages = int(interaction.get("messages"))
+        channel = interaction.get("channel")
         if channel is None:
             channel = interaction.channel
         await channel.purge(limit=messages)
@@ -43,10 +43,10 @@ class Moderation(commands.Cog):
                             description="Gets the avatar from the pinged user.",
                             guild_ids=guilds,
                             options=[
-                                Option('User', "Who's avatar you want to pull.", Type.USER, required=True)
+                                Option('user', "Who's avatar you want to pull.", Type.USER, required=True)
                             ])
     async def cmd_avatar(self, ctx):
-        user = ctx.get('User')
+        user = ctx.get('user')
         embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
         embed.set_image(url=user.avatar_url)
         await ctx.reply(embed=embed)

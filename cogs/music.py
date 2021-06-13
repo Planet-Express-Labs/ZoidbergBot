@@ -139,15 +139,15 @@ class Music(commands.Cog):
     #     print(controller.cmd_queue._queue)
     #
 
-    @slash_commands.command(guild_ids=guilds,
+    @slash_commands.command(name='connect',
+                            guild_ids=guilds,
                             description="Connect the bot to a voice channel.",
                             options=[
-                                Option('Channel', 'The channel you want the bot to join.', type=Type.CHANNEL)
-                            ]
-                            )
+                                Option('channel', 'The channel you want the bot to join.', type=Type.CHANNEL)
+                            ])
     async def cmd_connect_(self, ctx):
         """Connect the bot to a voice channel. """
-        channel = ctx.get('Channel')
+        channel = ctx.get('channel')
         if not channel:
             try:
                 channel = ctx.author.voice.channel
@@ -165,21 +165,20 @@ class Music(commands.Cog):
                             guild_ids=guilds,
                             description="Search for and adds a song to the queue.",
                             options=[
-                                Option('Song', 'The song you want to play', type=Type.STRING, required=True)
-                            ]
-                            )
+                                Option('song', 'The song you want to play', type=Type.STRING, required=True)
+                            ])
     async def cmd_play(self, ctx):
         """Search for and add a song to the Queue.
         This command should support YouTube, Soundcloud, Bandcamp, Twitch, Vimeo, Mixer(RIP), and raw http streams.
         """
-        query = ctx.get('Song')
+        query = ctx.get('song')
         if not RURL.match(query):
             query = f'ytsearch:{query}'
 
         tracks = await self.bot.wavelink.get_tracks(f'{query}')
 
         if not tracks:
-            return await ctx.send('Could not find any songs with that query.')
+            return await ctx.reply('Could not find any songs with that query.')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
@@ -189,9 +188,9 @@ class Music(commands.Cog):
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.send(f'Added {str(track)} to the cmd_queue.')
+        await ctx.reply(f'Added {str(track)} to the cmd_queue.')
 
-    @slash_commands.command(name='cmd_pause',
+    @slash_commands.command(name='pause',
                             guild_ids=guilds,
                             description="Pauses the song."
                             )
@@ -236,12 +235,12 @@ class Music(commands.Cog):
                             guild_ids=guilds,
                             description="Sets the volume. Leave it empty to adjust it using the buttons.",
                             options=[
-                                Option('Volume', 'What volume you want to set the bot to 0-100', type=Type.INTEGER)
+                                Option('volume', 'What volume you want to set the bot to 0-100', type=Type.INTEGER)
                             ]
                             )
     async def cmd_volume(self, ctx):
         """Set the player volume."""
-        vol = ctx.get('Volume')
+        vol = ctx.get('volume')
         player = self.bot.wavelink.get_player(ctx.guild.id)
         controller = self.get_controller(ctx)
         if vol is not None:
