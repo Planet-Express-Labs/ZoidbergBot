@@ -20,7 +20,7 @@ import traceback
 from typing import Union
 
 import discord
-import humanize
+from humanize import naturalsize
 import wavelink
 from discord.ext import commands
 from dislash import slash_commands, Option, Type, interactions
@@ -313,9 +313,9 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         node = player.node
 
-        used = humanize.naturalsize(node.stats.memory_used)
-        total = humanize.naturalsize(node.stats.memory_allocated)
-        free = humanize.naturalsize(node.stats.memory_free)
+        used = naturalsize(node.stats.memory_used)
+        total = naturalsize(node.stats.memory_allocated)
+        free = naturalsize(node.stats.memory_free)
         cpu = node.stats.cpu_cores
 
         fmt = f'Running: **WaveLink:** `{wavelink.__version__}`\n\n' \
