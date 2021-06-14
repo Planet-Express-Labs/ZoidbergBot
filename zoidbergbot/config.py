@@ -42,7 +42,6 @@ def read_config(section, value, file=CONFIG_FILE):
 # else:
 BOT_TOKEN = config.get("Bot", "bot_token")
 
-BOT_PREFIX = config.get("Bot", "bot_prefix", fallback="!")
 SPECIAL_USERS_IDS = [int(id_) for id_ in loads(config.get("Bot", "special_user_ids", fallback="[]"))]
 BOT_LANGUAGE = config.get("Bot", "language")
 LOGGING_LEVEL = config.get("Bot", "logging_level")
