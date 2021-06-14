@@ -175,26 +175,20 @@ class Music(commands.Cog):
         query = ctx.get('song')
         if not RURL.match(query):
             query = f'ytsearch:{query}'
-
-        try:
-            tracks = await self.bot.wavelink.get_tracks(f'{query}')
-        except wavelink.errors.ZeroConnectedNodes:
-            return await ctx.reply("Unknown node error occurred, are the nodes online? ")
+        tracks = await self.bot.wavelink.get_tracks(f'{query}')
 
         if not tracks:
-            # TODO: convert to a localization string.
-            return await ctx.reply('Could not find any songs with that query.')
+            return await ctx.create_response('Could not find any songs with that query.')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
+            # await ctx.invoke(self.cmd_connect_)
             await self.cmd_connect_(ctx)
 
         track = tracks[0]
-
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        # TODO: convert to a localization string.
-        await ctx.reply(f'Added {str(track)} to the queue.')
+        await ctx.create_response(f'Added {str(track)} to the queue.')
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,
