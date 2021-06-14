@@ -20,8 +20,7 @@ import discord
 
 from bot import bot
 from discord.ext.commands import Context
-from dislash.slash_commands import *
-from dislash.interactions import *
+from dislash import *
 
 slash = SlashClient(bot)
 
@@ -77,30 +76,45 @@ async def server_picker(ctx: Context):
     servers = ""
     i = 0
     guilds = author.mutual_guilds()
-    for each in guilds:
-        i += 1
-        logging = get_db_int("logging_channel", each) != 0
-        servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
+    print(guilds)
+    if guilds is None:
+        return None
+    # for each in guilds:
+    #     i += 1
+    #     logging = get_db_int("logging_channel", each) != 0
+    #     servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
                           description="Please click which server you want to send this in: \n Loading servers... "
                           )
-    message = await ctx.send(embed=embed)
+
     if guilds > 25:
         embed = discord.Embed(title="Which server do you want me to send this message in? ",
                               description="Please send the number of the server you want to choose: \n" + servers
                               )
-        await message.edit(embed=embed)
+        message = await ctx.send(embed=embed)
     else:
         def get_logging(guild):
             if get_db_int("logging_channel", guild.id) == 0:
                 return True
             return False
-        button_elements = auto_rows(max_in_row=5)
+
+        buttons = []
         for each in guilds:
-            button_elements += Button(
+            buttons += Button(
                 style=ButtonStyle.green,
                 label=f"{each.name}\n :notepad_spiral: - {get_logging(each)}",
                 custom_id=each
             )
-        await message.edit(content=embed, components=button_elements)
+        button_elements = auto_rows(buttons, max_in_row=5)
+        message = await ctx.send(embed=embed, content=button_elements)
+
+    def wait_for(inter):
+        return inter.message.id == message.id
+
+    inter = await ctx.wait_for_button_click(wait_for)
+    # Send what you received
+    for each in servers:
+        if inter.clicked_button.custom_id == each:
+            return each
+    return None
