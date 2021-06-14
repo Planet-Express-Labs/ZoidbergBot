@@ -23,7 +23,7 @@ import discord
 from humanize import naturalsize
 import wavelink
 from discord.ext import commands
-from dislash import slash_commands, Option, Type, interactions
+from dislash import slash_commands, Option, Type, Interaction
 
 from bot import guilds
 from cogs.data.music_nodes import nodes
@@ -103,7 +103,7 @@ class Music(commands.Cog):
             controller.next.set()
 
     def get_controller(self, value: Union[commands.Context, wavelink.Player]):
-        if isinstance(value, commands.Context):
+        if isinstance(value, Interaction):
             gid = value.guild.id
         else:
             gid = value.guild_id
@@ -138,6 +138,9 @@ class Music(commands.Cog):
     #     player = payload.player()
     #     print(controller.cmd_queue._queue)
     #
+    @commands.Cog.listener()
+    async def on_slash_command_error(self, inter, error):
+        raise error
 
     @slash_commands.command(name='connect',
                             guild_ids=guilds,
@@ -161,6 +164,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
 
+    # @commands.command(name="play")
     @slash_commands.command(name='play',
                             guild_ids=guilds,
                             description="Search for and adds a song to the queue.",
@@ -168,27 +172,29 @@ class Music(commands.Cog):
                                 Option('song', 'The song you want to play', type=Type.STRING, required=True)
                             ])
     async def cmd_play(self, ctx):
-        """Search for and add a song to the Queue.
-        This command should support YouTube, Soundcloud, Bandcamp, Twitch, Vimeo, Mixer(RIP), and raw http streams.
-        """
         query = ctx.get('song')
         if not RURL.match(query):
             query = f'ytsearch:{query}'
 
-        tracks = await self.bot.wavelink.get_tracks(f'{query}')
+        try:
+            tracks = await self.bot.wavelink.get_tracks(f'{query}')
+        except wavelink.errors.ZeroConnectedNodes:
+            return await ctx.reply("Unknown node error occurred, are the nodes online? ")
 
         if not tracks:
+            # TODO: convert to a localization string.
             return await ctx.reply('Could not find any songs with that query.')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
-            await ctx.invoke(self.cmd_connect_)
+            await self.cmd_connect_(ctx)
 
         track = tracks[0]
 
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.reply(f'Added {str(track)} to the cmd_queue.')
+        # TODO: convert to a localization string.
+        await ctx.reply(f'Added {str(track)} to the queue.')
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,
@@ -259,7 +265,7 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
 
         if not player.current:
-            return await ctx.send('I am not currently playing anything!', guild_ids=guilds)
+            return await ctx.send('I am not currently playing anything!')
 
         controller = self.get_controller(ctx)
         await controller.now_playing.delete()
@@ -277,7 +283,7 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
 
         if not player.current or not controller.queue._queue:
-            return await ctx.send('There are no songs currently in the cmd_queue.', delete_after=20)
+            return await ctx.send('There are no songs currently in the queue.', delete_after=20)
 
         upcoming = list(itertools.islice(controller.queue._queue, 0, 5))
 
