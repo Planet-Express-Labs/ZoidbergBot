@@ -1,10 +1,6 @@
 discord.py
-os
-random
 asyncio
 configparser
-codecs
-json
 SQLAlchemy
 dislash.py
 wavelink
