@@ -22,7 +22,7 @@ required_vars = []
 # ctrl c + ctrl v
 for each in required_vars:
     # checks each required variable if it exists and raises an exception if it isn't.
-    temp = os.getenv("zoidberg_nodes_" + each)
+    temp = os.getenv("zoidberg_music_" + each)
     if temp is None:
         raise MissingEnvironmentVariableError
 
