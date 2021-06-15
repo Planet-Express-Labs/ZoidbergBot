@@ -24,29 +24,37 @@ import csv
 from json import loads
 
 log = logging.getLogger(__name__)
+use_env = False
 
-CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
-config = configparser.ConfigParser()
-config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
+try:
+    CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
+except FileNotFoundError:
+    use_env = True
+
+if use_env:
+    print("Config file missing! Attempting to use environment variables. ")
+    BOT_TOKEN = os.getenv("zoidberg_token")
+    LOGGING_LEVEL = os.getenv("zoidberg_logging")
+
+    # These will be removed later.
+    DEV_ID = os.getenv("zoidberg_developer").split(",")
+    ADMIN_ID = os.getenv("zoidberg_admin").split(",")
+    TEST_GUILDS = os.getenv("zoidberg_guilds").split(",")
+
+else:
+    config = configparser.ConfigParser()
+    config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
 
-def read_config(section, value, file=CONFIG_FILE):
-    config.read_file(codecs.open(file, "r+", "utf-8"))
+    def read_config(section, value, file=CONFIG_FILE):
+        config.read_file(codecs.open(file, "r+", "utf-8"))
 
 
-# Bot section.
+    # Bot section.
 
-# TODO: Fix this.
-# if bool(config.get("Bot", "token_env_var")):
-#     BOT_TOKEN = os.getenv("zoidberg_token")
-# else:
-BOT_TOKEN = config.get("Bot", "bot_token")
+    BOT_TOKEN = config.get("Bot", "bot_token")
 
-SPECIAL_USERS_IDS = [int(id_) for id_ in loads(config.get("Bot", "special_user_ids", fallback="[]"))]
-BOT_LANGUAGE = config.get("Bot", "language")
-LOGGING_LEVEL = config.get("Bot", "logging_level")
+    LOGGING_LEVEL = config.get("Bot", "logging_level")
+    DEV_ID = config.get("Users", "developer_id")
+    ADMIN_ID = config.get("Users", "admin_ids").split(" ")
 
-log.info(f"Special users: {', '.join([str(a) for a in SPECIAL_USERS_IDS])}")
-DEV_ID = config.get("Users", "developer_id")
-ADMIN_ID = config.get("Users", "admin_ids").split(" ")
-print(DEV_ID, ADMIN_ID)

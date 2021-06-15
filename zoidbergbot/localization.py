@@ -16,12 +16,12 @@
 import logging
 from typing import Optional
 from json import loads
-from zoidbergbot.config import BOT_LANGUAGE
+# from zoidbergbot.config import BOT_LANGUAGE
 
 log = logging.getLogger(__name__)
 
-
-with open(f"./data/{BOT_LANGUAGE}.json", "r") as read_strings:
+# TODO: implement per-server
+with open(f"./data/en_us.json", "r") as read_strings:
     STRINGS = loads(read_strings.read())
 
 # Maybe we shouldn't be handling version through localization... whatever
