@@ -25,14 +25,22 @@ from json import loads
 
 log = logging.getLogger(__name__)
 use_env = False
+required_vars = ["token", "logging", "developer", "admin"]
 
-try:
-    CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
-except FileNotFoundError:
-    use_env = True
 
-if use_env:
+class MissingEnvironmentVariableError(Exception):
+    """Raised when a value is not found in the environment variables. """
+    pass
+
+
+if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     print("Config file missing! Attempting to use environment variables. ")
+    for each in required_vars:
+        # checks each required variable if it exists and raises an exception if it isn't.
+        temp = os.getenv("zoidberg_" + each)
+        if temp is None:
+            raise MissingEnvironmentVariableError
+
     BOT_TOKEN = os.getenv("zoidberg_token")
     LOGGING_LEVEL = os.getenv("zoidberg_logging")
 
@@ -42,6 +50,7 @@ if use_env:
     TEST_GUILDS = os.getenv("zoidberg_guilds").split(",")
 
 else:
+    CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
     config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
