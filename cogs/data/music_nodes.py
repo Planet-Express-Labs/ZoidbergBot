@@ -1,5 +1,6 @@
-from zoidbergbot.config import MissingEnvironmentVariableError
 import os
+
+from zoidbergbot.config import MissingEnvironmentVariableError
 
 # ugh, this is such a terrible solution.
 

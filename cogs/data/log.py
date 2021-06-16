@@ -19,10 +19,8 @@
 import sqlite3
 
 from discord.ext import commands
-from dislash.interactions import *
-from dislash.slash_commands import *
+from dislash import Button, ButtonStyle, auto_rows
 
-from bot import bot, slash
 from zoidbergbot.config import *
 
 # TODO: It's probably worth adding something to remove servers when the bot has been removed or perhaps even inactive
@@ -66,7 +64,8 @@ def initialize_server(guild):
     # This might be worth having it back up the db every time.
     # Holy cow this is bad.
     # Please put this code out of it's misery.
-    cursor.execute(f'''INSERT INTO logging({guild} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} )''')
+    cursor.execute(
+        f'''INSERT INTO logging({guild} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} {False} )''')
     # cursor.execute(f'''INSERT INTO logging({guild})''')
     connection.commit()
 
@@ -160,7 +159,6 @@ class Logging(commands.Cog):
             pass
 
         button_grid = await refresh_buttons(button_grid)
-
 
         def wait_for(inter):
             return inter.message.id == msg.id

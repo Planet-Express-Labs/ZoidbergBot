@@ -15,13 +15,10 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 
+import codecs
 import configparser
 import logging
-import codecs
 import os
-import csv
-
-from json import loads
 
 use_env_var = False
 log = logging.getLogger(__name__)

@@ -16,7 +16,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-from dislash import slash_commands, Option, Type, interactions, Interaction
+from dislash import slash_commands, Option, Type, Interaction
 
 from bot import guilds
 from zoidbergbot import localization
