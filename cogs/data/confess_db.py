@@ -11,16 +11,16 @@
 # Mozilla Public License, v. 2.0. If a copy of the MPL was   "Y88P"
 # this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import os
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import sqlite3
-import os
 
 import discord
-
-from bot import bot
 from discord.ext.commands import Context
 from dislash import *
+
+from bot import bot
 
 slash = SlashClient(bot)
 

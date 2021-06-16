@@ -16,13 +16,10 @@
 
 import discord
 from discord.ext import commands
+from dislash import *
 
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
-from zoidbergbot.verify import verify_user
-
-from dislash import *
-
 
 __version__ = get_string("VERSION")
 logging.basicConfig(level=logging.INFO)
@@ -32,7 +29,6 @@ bot = commands.Bot(
     command_prefix='-='
 )
 slash = SlashClient(bot, show_warnings=True)
-
 
 # TODO: Move both of these into the config file.
 guilds = [842987183588507670, 814699569975394314, 752888281036881960, 769039315945914370, 797165487376695317]

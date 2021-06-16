@@ -20,10 +20,10 @@ import traceback
 from typing import Union
 
 import discord
-from humanize import naturalsize
 import wavelink
 from discord.ext import commands
 from dislash import slash_commands, Option, Type, Interaction
+from humanize import naturalsize
 
 from bot import guilds
 from cogs.data.music_nodes import nodes

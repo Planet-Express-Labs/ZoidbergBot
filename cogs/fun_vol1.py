@@ -11,22 +11,21 @@
 # Mozilla Public License, v. 2.0. If a copy of the MPL was   "Y88P"
 # this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import base64
+import random
+
+import aiohttp
+import art
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import discord
 from discord.ext import commands
-import art
-
-from bot import bot, slash, guilds
-from zoidbergbot.verify import verify_user
-from data.gifs import *
-from zoidbergbot.localization import get_string
-
 from dislash import *
 
-import random
-import base64
-import aiohttp
+from bot import guilds
+from data.gifs import *
+from zoidbergbot.localization import get_string
+from zoidbergbot.verify import verify_user
 
 # please ignore this list. It's so people don't slur. please thank me
 bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG5pZ2EsbmlnLGZhZ2dvdCxxdWVlcixyZXRhcmQsY"
@@ -95,7 +94,7 @@ class FunVol1(commands.Cog):
             message = ctx.message.content
             await ctx.message.delete()
         for i in message:
-            final += chr(int(ord(i))+int(offset))
+            final += chr(int(ord(i)) + int(offset))
         buttons = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -147,7 +146,7 @@ class FunVol1(commands.Cog):
         final = ""
         prev = ""
         for i in iters:
-            idx = random.randint(0, int(len(words))-1)
+            idx = random.randint(0, int(len(words)) - 1)
             if words[idx] != prev:
                 final += words[idx] + " "
             prev = words[idx]
@@ -178,7 +177,7 @@ class FunVol1(commands.Cog):
                             options=[
                                 Option("content", "What you want to make illegible. ", Type.STRING)
                             ])
-    async def cmd_blockchain_ceaser(self, ctx, inter=None, msg = None):
+    async def cmd_blockchain_ceaser(self, ctx, inter=None, msg=None):
         net_value = 0
         prev_values = []
         message = ctx.get("content")

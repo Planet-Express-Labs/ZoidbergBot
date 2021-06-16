@@ -19,5 +19,3 @@ d8888888888 "Y88P"  888  "Y88888 88888P"   "Y8888  888     "Y88888      88888P" 
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-
-import sqlite3

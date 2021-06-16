@@ -15,13 +15,10 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 
+import codecs
 import configparser
 import logging
-import codecs
 import os
-import csv
-
-from json import loads
 
 log = logging.getLogger(__name__)
 use_env = False
@@ -66,4 +63,3 @@ else:
     LOGGING_LEVEL = config.get("Bot", "logging_level")
     DEV_ID = config.get("Users", "developer_id")
     ADMIN_ID = config.get("Users", "admin_ids").split(" ")
-

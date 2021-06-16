@@ -14,30 +14,28 @@
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
-from bot import bot
-import discord
-from discord.ext import commands
-from discord.ext.commands import Context
-from zoidbergbot import localization
 import os
 
-schedule = [] # each item should look like [time, repeatevery, description]
+from discord.ext import commands
+
+schedule = []  # each item should look like [time, repeatevery, description]
+
 
 def readschedule():
     with open(os.getcwd() + "\\data\\schedules.cfg", "r") as file:
         semi = file.read().split('-')
-        for i in semi[:int(len(semi))-1]:
+        for i in semi[:int(len(semi)) - 1]:
             supersemi = i.split('|')
-            schedule.append(supersemi[:int(len(supersemi))-1])
+            schedule.append(supersemi[:int(len(supersemi)) - 1])
 
         print(schedule)
 
-def storeschedule():
 
+def storeschedule():
     with open(os.getcwd() + "\\data\\schedules.cfg", "w") as file:
         finalstr = ""
         for i in schedule:
-            for x in i: # baddd
+            for x in i:  # baddd
                 finalstr += x + "|"
             finalstr += "-"
 

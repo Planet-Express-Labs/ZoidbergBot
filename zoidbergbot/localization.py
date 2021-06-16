@@ -14,8 +14,9 @@
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import logging
-from typing import Optional
 from json import loads
+from typing import Optional
+
 # from zoidbergbot.config import BOT_LANGUAGE
 
 log = logging.getLogger(__name__)

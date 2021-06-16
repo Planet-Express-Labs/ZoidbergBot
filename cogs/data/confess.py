@@ -13,21 +13,13 @@
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-import os.path
 import re
-import shutil
-from datetime import datetime
 from io import BytesIO
 
-import discord
 from discord.ext import commands
 
-from bot import bot
-from cogs.data.confess_config import *
-from zoidbergbot.localization import get_string
-from zoidbergbot.verify import verify_user
 from cogs.data.confess_db import *
-
+from zoidbergbot.localization import get_string
 
 __version__ = '0.1 PRERELEASE'
 
