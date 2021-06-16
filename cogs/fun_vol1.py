@@ -74,54 +74,51 @@ class FunVol1(commands.Cog):
             label=""
         ))
 
-    @slash_commands.command(name="ceaser",
-                            guild_ids=guilds,
-                            description="Literally nobody knows what this does. Kai just made it for some reason.\n"
-                                        "something about a ceaser cipher?",
-                            options=[
-                                Option("content", "The content to ceaser. ", Type.STRING)
-                            ])
-    async def cmd_ceaser(self, ctx, offset=1, inter=None, msg=None):
-        """Literally nobody knows what this does. Kai just made it for some reason.
-        (Silence liem (Next time capitalize.)
-        """
-        message = ctx.get("content")
-        final = ""
-        if type(message) is discord.Message:
-            message = ctx.message.content
-            await ctx.message.delete()
-        for i in message:
-            final += chr(int(ord(i)) + int(offset))
-        buttons = ActionRow(
-            Button(
-                style=ButtonStyle.green,
-                label="Offset +",
-                custom_id="add"
-            ),
-            Button(
-                style=ButtonStyle.red,
-                label="Offset -",
-                custom_id="sub"
-            )
-        )
-
-        try:
-            if inter is None:
-                msg = await ctx.send(f"```{final}```\noffset={offset}", components=[buttons])
-            else:
-                await inter.reply(f"```{final}```\noffset={offset}", components=[buttons], type=7)
-        except ValueError:
-            pass
-
-        def wait_for(inter):
-            return inter.message.id == msg.id
-
-        inter = await ctx.wait_for_button_click(wait_for)
-        # Send what you received
-        if inter.clicked_button.custom_id == "add":
-            await self.cmd_ceaser(ctx, message, offset + 1, inter, msg)
-        if inter.clicked_button.custom_id == "sub":
-            await self.cmd_ceaser(ctx, message, offset - 1, inter, msg)
+    # @slash_commands.command(name="ceaser",
+    #                         guild_ids=guilds,
+    #                         description="Literally nobody knows what this does. Kai just made it for some reason.\n"
+    #                                     "something about a ceaser cipher?",
+    #                         options=[
+    #                             Option("content", "The content to ceaser. ", Type.STRING)
+    #                         ])
+    # async def cmd_ceaser(self, ctx, offset=1, inter=None, msg=None):
+    #     message = ctx.get("content")
+    #     final = ""
+    #     if type(message) is discord.Message:
+    #         message = ctx.message.content
+    #         await ctx.message.delete()
+    #     for i in message:
+    #         final += chr(int(ord(i)) + int(offset))
+    #     buttons = ActionRow(
+    #         Button(
+    #             style=ButtonStyle.green,
+    #             label="Offset +",
+    #             custom_id="add"
+    #         ),
+    #         Button(
+    #             style=ButtonStyle.red,
+    #             label="Offset -",
+    #             custom_id="sub"
+    #         )
+    #     )
+    #
+    #     try:
+    #         if inter is None:
+    #             msg = await ctx.send(f"```{final}```\noffset={offset}", components=[buttons])
+    #         else:
+    #             await inter.reply(f"```{final}```\noffset={offset}", components=[buttons], type=7)
+    #     except ValueError:
+    #         pass
+    #
+    #     def wait_for(inter):
+    #         return inter.message.id == msg.id
+    #
+    #     inter = await ctx.wait_for_button_click(wait_for)
+    #     # Send what you received
+    #     if inter.clicked_button.custom_id == "add":
+    #         await self.cmd_ceaser(ctx, message, offset + 1, inter, msg)
+    #     if inter.clicked_button.custom_id == "sub":
+    #         await self.cmd_ceaser(ctx, message, offset - 1, inter, msg)
 
     @slash_commands.command(name="lonely",
                             guild_ids=guilds,
@@ -152,7 +149,8 @@ class FunVol1(commands.Cog):
 
     # TODO: make this work very differently.
     @slash_commands.command(name="get_words",
-                            guild_ids=guilds)
+                            guild_ids=guilds,
+                            description="Gets the words from the lonely command.")
     async def cmd_get_words(self, ctx):
         if verify_user(ctx, "admin"):
             await ctx.send(words)
@@ -160,7 +158,8 @@ class FunVol1(commands.Cog):
             await ctx.send("No ")
 
     @slash_commands.command(name="reset_words",
-                            guild_ids=guilds)
+                            guild_ids=guilds,
+                            description="resets the words in the lonely command. ")
     async def cmd_reset_words(self, ctx):
         if verify_user(ctx, "admin"):
             words = ["hello"]
@@ -174,7 +173,9 @@ class FunVol1(commands.Cog):
                             options=[
                                 Option("content", "What you want to make illegible. ", Type.STRING)
                             ])
-    async def cmd_blockchain_ceaser(self, ctx, inter=None, msg=None):
+    async def cmd_blockchain_ceaser(self, ctx):
+        inter = None
+        msg = None
         net_value = 0
         prev_values = []
         message = ctx.get("content")
@@ -196,9 +197,9 @@ class FunVol1(commands.Cog):
                             options=[
                                 Option("person", "Who you want to slap. ", Type.USER)
                             ])
-    async def cmd_slap(self, ctx, loops=0):
-
+    async def cmd_slap(self, ctx):
         global last_index
+        loops = 0
         person = ctx.get("person")
         if loops > 10:
             await ctx.send(get_string("UNKNOWN_ERROR") + " TIMEOUT EXCEEDED \n COMMAND: " + ctx.message.content)
