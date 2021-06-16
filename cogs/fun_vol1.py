@@ -33,6 +33,7 @@ bad_words = str(base64.b64decode("ZnVjayxiaXRjaCxjdW50LHJhcGUsbmlnZ2VyLG5pZ2dhLG
                                  "Msbm9yZHZwbg=="), "utf-8").split(',')
 words = ["hello"]
 test_guild = 842987183588507670
+last_index = 0
 
 
 class FunVol1(commands.Cog):
@@ -41,10 +42,6 @@ class FunVol1(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        # self.slash = slash
-        # Hah, I made it suck in here now!
-        global last_index
-        last_index = 0
 
     @slash_commands.command(name="big_text",
                             description="Repeats your message but ***big***",
