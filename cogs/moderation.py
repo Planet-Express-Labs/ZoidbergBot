@@ -44,7 +44,9 @@ class Moderation(commands.Cog):
             Option("image_url", "URL of the embed's image", Type.STRING),
             Option("footer", "Creates a footer", Type.STRING),
             Option("footer_url", "URL of the footer image", Type.STRING)
-        ])
+
+        ],
+        guild_ids=guilds)
     async def cmd_embed(self, ctx: Interaction):
         title = ctx.get('title')
         desc = ctx.get('description')
