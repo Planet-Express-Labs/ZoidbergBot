@@ -172,6 +172,7 @@ class Music(commands.Cog):
                                 Option('song', 'The song you want to play', type=Type.STRING, required=True)
                             ])
     async def cmd_play(self, ctx):
+        ctx.reply(type=5)
         query = ctx.get('song')
         if not RURL.match(query):
             query = f'ytsearch:{query}'
@@ -188,7 +189,7 @@ class Music(commands.Cog):
         track = tracks[0]
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.create_response(f'Added {str(track)} to the queue.')
+        await ctx.reply(f'Added {str(track)} to the queue.')
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,
