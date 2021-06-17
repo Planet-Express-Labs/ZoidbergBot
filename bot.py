@@ -31,7 +31,7 @@ bot = commands.Bot(
 slash = SlashClient(bot, show_warnings=True)
 
 # TODO: Move both of these into the config file.
-guilds = [842987183588507670, 814699569975394314, 752888281036881960, 769039315945914370, 797165487376695317]
+guilds = TEST_GUILDS
 
 for filename in os.listdir("cogs"):
     if filename.endswith(".py"):
