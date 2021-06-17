@@ -44,8 +44,9 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     # These will be removed later.
     DEV_ID = os.getenv("zoidberg_developer").split(",")
     ADMIN_ID = os.getenv("zoidberg_admin").split(",")
-    TEST_GUILDS = os.getenv("zoidberg_guilds").split(",")
-
+    TEST_GUILDS = os.getenv("zoidberg_guilds")
+    if TEST_GUILDS is not None:
+        TEST_GUILDS = TEST_GUILDS.split(",")
 else:
     CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
