@@ -189,7 +189,7 @@ class Music(commands.Cog):
         track = tracks[0]
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.edit(f'Added {str(track)} to the queue.')
+        await ctx.reply(f'Added {str(track)} to the queue.')
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,
