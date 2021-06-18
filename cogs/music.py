@@ -345,6 +345,7 @@ class Music(commands.Cog):
               f'Server Memory: `{used}/{total}` | `({free} free)`\n' \
               f'Server CPU: `{cpu}`\n\n' \
               f'Server Uptime: `{datetime.timedelta(milliseconds=node.stats.uptime)}`'
+        embed = discord.Embed(title=f"Zoidberg bot music v{__version__}", description=fmt)
         await ctx.send(fmt)
 
 
