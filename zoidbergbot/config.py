@@ -58,6 +58,7 @@ else:
 
 
     # Bot section.
+    TEST_GUILDS = config.get("Bot", "testing_guilds").split(" ")
 
     BOT_TOKEN = config.get("Bot", "bot_token")
 
