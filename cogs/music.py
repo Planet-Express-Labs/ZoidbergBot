@@ -30,7 +30,7 @@ from humanize import naturalsize
 from bot import guilds
 from cogs.data.music_nodes import nodes
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
 
 
@@ -315,7 +315,7 @@ class Music(commands.Cog):
             return await ctx.send("I don't think I'm playing anything here... ")
 
         await player.disconnect()
-        await ctx.reply()
+        await ctx.reply(type=1)
 
     @slash_commands.command(name='nodes',
                             guild_ids=guilds,
