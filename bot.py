@@ -54,7 +54,8 @@ async def cmd_ping(ctx):
 async def cmd_about(ctx):
     """About the bot. """
     embed = discord.Embed(
-        description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__),
+        description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__) +
+                    f"\n\nI'm in {len(bot.guilds)} servers. ",
         title="Zoidberg",
         url="https://github.com/LiemEldert/ZoidbergBot/")
     embed.set_footer(text="How we use your data: https://privacy.pexl.pw/")
