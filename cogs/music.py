@@ -168,8 +168,15 @@ class Music(commands.Cog):
                 raise discord.DiscordException('You do not appear to be in a channel I can join!')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
-        await ctx.send(f'Connecting to **`{channel.name}`**')
+        load = "{0:.0%}".format(player.node.stats.memory_free / player.node.stats.memory_allocated)
+        embed = discord.Embed(title=f'Connecting to **`{channel.name}`**',
+                              description=f"Node: {player.node.identifier}\n"
+                                          f"Region: {player.node.region}\n"
+                                          f"Players connected: {player.node.stats.players}\n "
+                                          f"Node load: {load}"
+                              )
         await player.connect(channel.id)
+        await ctx.reply(embed=embed)
 
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
