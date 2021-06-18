@@ -72,8 +72,8 @@ class MusicController:
         await player.set_volume(self.volume)
 
         while True:
-            if self.now_playing:
-                await self.now_playing.delete()
+            # if self.now_playing:
+            #     await self.now_playing.delete()
 
             self.next.clear()
 
