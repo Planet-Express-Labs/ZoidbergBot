@@ -24,9 +24,11 @@ from zoidbergbot.localization import get_string
 __version__ = get_string("VERSION")
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
+activity = discord.Activity(name='zoidberg.pexl.pw', type=discord.ActivityType.playing)
 
 bot = commands.Bot(
-    command_prefix='-='
+    command_prefix='-=',
+    activity=activity
 )
 slash = SlashClient(bot, show_warnings=True)
 
