@@ -142,22 +142,12 @@ class Music(commands.Cog):
             raise commands.NoPrivateMessage
         return True
 
-    async def cog_command_error(self, ctx, error):
-        """A local error handler for all errors arising from commands in this cog."""
-        if isinstance(error, commands.NoPrivateMessage):
-            try:
-                return await ctx.send('This command can not be used in Private Messages.')
-            except discord.HTTPException:
-                pass
+    @wavelink.WavelinkMixin.listener()
+    async def on_track_end(self, payload):
+        player = payload.player()
+        if player.queue._queue is None:
+            player.destory()
 
-        print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
-
-    # @wavelink.WavelinkMixin.listener()
-    # async def on_track_end(self, payload):
-    #     player = payload.player()
-    #     print(controller.cmd_queue._queue)
-    #
     @commands.Cog.listener()
     async def on_slash_command_error(self, inter, error):
         raise error
