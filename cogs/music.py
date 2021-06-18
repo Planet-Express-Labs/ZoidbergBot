@@ -85,6 +85,18 @@ class MusicController:
             await self.next.wait()
 
 
+def create_song_embed(ctx: Interaction, player: wavelink.Player, song=None):
+    if song is None:
+        song = player.current
+    embed = discord.Embed(
+        title=song.title,
+        description=f"Length: {song.duration}"
+    )
+    embed.set_image(url=song.thumb)
+    embed.set_author(name=f"Uploaded by: {song.author}")
+    return embed
+
+
 class Music(commands.Cog):
 
     def __init__(self, bot):
