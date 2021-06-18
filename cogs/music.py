@@ -183,7 +183,7 @@ class Music(commands.Cog):
     async def cmd_connect_(self, ctx):
         """Connect the bot to a voice channel. """
         channel = ctx.get('channel')
-        self.create_connection(ctx, channel)
+        await self.create_connection(ctx, channel)
         player = self.bot.wavelink.get_player(ctx.guild.id)
         load = "{0:.0%}".format(player.node.stats.memory_free / player.node.stats.memory_allocated)
         embed = discord.Embed(title=f'Connecting to **`{channel.name}`**',
