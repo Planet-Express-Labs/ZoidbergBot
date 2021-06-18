@@ -74,7 +74,8 @@ class MusicController:
 
             song = await self.queue.get()
             await player.play(song)
-            self.now_playing = await self.channel.send(f'Now playing: `{song}`')
+            embed = create_song_embed(player)
+            self.now_playing = await self.channel.send(embed=embed)
             if next is None:
                 player.destory()
             await self.next.wait()
