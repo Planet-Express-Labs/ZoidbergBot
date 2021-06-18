@@ -2,7 +2,7 @@
   "BOT_ABOUT": "I am a general purpose discord bot. Currently, I does not have too many functions (Nor do babies), however I are working very hard on expanding that.  ",
   "CMD_PERMISSION_ERROR": ":exclamation:You do not have permission to use this command! Please contact an admin if you believe this to be an error. ",
   "COMMAND_ON_COOLDOWN": "You have been rate limited! Please wait before sending another command. I can only take so many requests at once!",
-  "VERSION": "2.0 beta-2",
+  "VERSION": "2.0",
   "COMMAND_EMPTY_USER_ID": ":exclamation:Please provide the user ID. To grab someone's ID, enable developer options in appearance, right click their username and click \"Copy ID\"",
   "NO_RESULTS": ":exclamation:This command has returned no results. This likely just means you haven't added anything. ",
   "MESSAGE_SENT": ":heavy_check_mark:Your message has been sent! Click in this box to view the message.",
