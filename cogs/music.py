@@ -117,8 +117,8 @@ class Music(commands.Cog):
 
         self.bot.loop.create_task(self.start_nodes())
 
-    async def create_connection(self, ctx, channel: None):
-        if not channel:
+    async def create_connection(self, ctx, channel=None):
+        if channel is None:
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
