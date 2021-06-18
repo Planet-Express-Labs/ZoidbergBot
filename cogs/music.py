@@ -30,7 +30,7 @@ from humanize import naturalsize
 from bot import guilds
 from cogs.data.music_nodes import nodes
 
-__version__ = 1.1
+__version__ = "1.1.1"
 RURL = re.compile('https?:\/\/(?:www\.)?.+')
 
 
@@ -341,7 +341,7 @@ class Music(commands.Cog):
               f'Server CPU: `{cpu}`\n\n' \
               f'Server Uptime: `{datetime.timedelta(milliseconds=node.stats.uptime)}`'
         embed = discord.Embed(title=f"Zoidberg bot music v{__version__}", description=fmt)
-        await ctx.send(fmt)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
