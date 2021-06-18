@@ -30,8 +30,13 @@ from humanize import naturalsize
 from bot import guilds
 from cogs.data.music_nodes import nodes
 
-RURL = re.compile('https?:\/\/(?:www\.)?.+')
-loop = False
+__version__ = 1.1
+
+
+def RURL(url):
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s(" \
+            r")<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])) "
+    return re.search(url, regex)
 
 
 class Bot(commands.Bot):
