@@ -117,6 +117,19 @@ class Music(commands.Cog):
 
         self.bot.loop.create_task(self.start_nodes())
 
+    async def create_connection(self, ctx, channel):
+        if not channel:
+            try:
+                channel = ctx.author.voice.channel
+            except AttributeError:
+                raise discord.DiscordException('You do not appear to be in a channel I can join!')
+
+        player = self.bot.wavelink.get_player(ctx.guild.id)
+        await player.connect(channel.id)
+
+        controller = self.get_controller(ctx)
+        controller.channel = ctx.channel
+
     async def start_nodes(self):
         await self.bot.wait_until_ready()
 
@@ -170,12 +183,7 @@ class Music(commands.Cog):
     async def cmd_connect_(self, ctx):
         """Connect the bot to a voice channel. """
         channel = ctx.get('channel')
-        if not channel:
-            try:
-                channel = ctx.author.voice.channel
-            except AttributeError:
-                raise discord.DiscordException('You do not appear to be in a channel I can join!')
-
+        self.create_connection(ctx, channel)
         player = self.bot.wavelink.get_player(ctx.guild.id)
         load = "{0:.0%}".format(player.node.stats.memory_free / player.node.stats.memory_allocated)
         embed = discord.Embed(title=f'Connecting to **`{channel.name}`**',
@@ -184,11 +192,7 @@ class Music(commands.Cog):
                                           f"Players connected: {player.node.stats.players}\n "
                                           f"Node load: {load}"
                               )
-        await player.connect(channel.id)
         await ctx.reply(embed=embed)
-
-        controller = self.get_controller(ctx)
-        controller.channel = ctx.channel
 
     @slash_commands.command(name='play',
                             guild_ids=guilds,
@@ -208,8 +212,7 @@ class Music(commands.Cog):
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
-            # await ctx.invoke(self.cmd_connect_)
-            await self.cmd_connect_(ctx)
+            await self.create_connection(ctx, ctx.channel)
 
         track = tracks[0]
         controller = self.get_controller(ctx)
