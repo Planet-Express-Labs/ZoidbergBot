@@ -20,6 +20,7 @@ import re
 import sys
 import traceback
 from typing import Union
+from math import floor
 
 import discord
 import wavelink
@@ -81,12 +82,24 @@ class MusicController:
             await self.next.wait()
 
 
-def create_song_embed(player: wavelink.Player, song=None):
+def convert_time(time):
+    duration = floor(time / 1000)
+    minutes, seconds = divmod(duration, 60)
+    if seconds < 10:
+        seconds = f"0{seconds}"
+    if minutes < 10:
+        minutes = f"0{minutes}"
+    return minutes, seconds
+
+
+def create_song_embed(ctx: Interaction, player: wavelink.Player, song=None):
     if song is None:
         song = player.current
+    minutes, seconds = convert_time(song.duration)
     embed = discord.Embed(
         title=song.title,
-        description=f"Length: {song.duration}"
+        description=f"Length: {minutes}:{seconds}",
+        url=song.uri
     )
     embed.set_image(url=song.thumb)
     embed.set_author(name=f"Uploaded by: {song.author}")

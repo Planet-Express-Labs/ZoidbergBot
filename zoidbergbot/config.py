@@ -60,6 +60,7 @@ else:
     # Bot section.
     TEST_GUILDS = config.get("Bot", "testing_guilds").split(" ")
 
+    DATABASE = config.get("Bot", "database_path")
     BOT_TOKEN = config.get("Bot", "bot_token")
 
     LOGGING_LEVEL = config.get("Bot", "logging_level")
