@@ -165,7 +165,7 @@ class Music(commands.Cog):
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
-                raise discord.DiscordException('No channel to join. Please either specify a valid channel or join one.')
+                raise discord.DiscordException('You do not appear to be in a channel I can join!')
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await ctx.send(f'Connecting to **`{channel.name}`**')
