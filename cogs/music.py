@@ -181,7 +181,6 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         controller.channel = ctx.channel
 
-    # @commands.command(name="play")
     @slash_commands.command(name='play',
                             guild_ids=guilds,
                             description="Search for and adds a song to the queue.",
@@ -206,7 +205,8 @@ class Music(commands.Cog):
         track = tracks[0]
         controller = self.get_controller(ctx)
         await controller.queue.put(track)
-        await ctx.edit(f'Added {str(track)} to the queue.')
+        embed = create_song_embed(ctx, player, track)
+        await ctx.edit(embed=embed)
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,
