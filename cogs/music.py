@@ -80,7 +80,7 @@ class MusicController:
             await self.next.wait()
 
 
-def create_song_embed(ctx: Interaction, player: wavelink.Player, song=None):
+def create_song_embed(player: wavelink.Player, song=None):
     if song is None:
         song = player.current
     embed = discord.Embed(
