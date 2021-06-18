@@ -117,7 +117,7 @@ class Music(commands.Cog):
 
         self.bot.loop.create_task(self.start_nodes())
 
-    async def create_connection(self, ctx, channel):
+    async def create_connection(self, ctx, channel: None):
         if not channel:
             try:
                 channel = ctx.author.voice.channel
@@ -212,7 +212,7 @@ class Music(commands.Cog):
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
-            await self.create_connection(ctx, ctx.channel)
+            await self.create_connection(ctx)
 
         track = tracks[0]
         controller = self.get_controller(ctx)
