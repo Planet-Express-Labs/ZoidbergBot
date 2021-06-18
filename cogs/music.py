@@ -317,10 +317,10 @@ class Music(commands.Cog):
             del self.controllers[ctx.guild.id]
         except KeyError:
             await player.disconnect()
-            return await ctx.send('There was no controller to cmd_stop.')
+            return await ctx.send("I don't think I'm playing anything here... ")
 
         await player.disconnect()
-        await ctx.send('Disconnected player and killed controller.', delete_after=20)
+        await ctx.reply()
 
     @slash_commands.command(name='nodes',
                             guild_ids=guilds,
