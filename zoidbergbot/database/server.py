@@ -13,12 +13,9 @@
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-from sqlalchemy import Column, String, Integer
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, String, Date, Integer, Numeric
 
-Base = declarative_base()
+from sessions import Base
 
 
 class Server(Base):
@@ -42,15 +39,3 @@ class Server(Base):
         self.auto_delete = auto_delete
         self.premium = premium
 
-
-class ConfessServer(Base):
-    __tablename__ = 'confess_data'
-
-    guild = Column(Integer, primary_key=True)
-
-
-engine = create_engine('sqlite:///data/servers.db')
-
-session = sessionmaker()
-session.configure(bind=engine)
-Base.metadata.create_all(engine)
