@@ -20,9 +20,7 @@ into a channel without revealing your username to the server.
 
 # Install
 
-Hosted Zoidberg is running in a Windows Server 2019 VM. This is the environment we designed for. It should run fine
-within Ubuntu server, however releases aren't tested very often on that. If you're running on Windows 10, it should run
-just fine, although you'll probably have some reliablility issues with windows update.
+Hosted Zoidberg is running on the Azure Ubuntu:latest image. We have a test environment running on Heroku and our deveopers mostly use Windows. There should not be issues with running on different platforms, however we recomend you follow our environment as close as possible. 
 
 Installation is simple.
 
