@@ -97,7 +97,7 @@ class Help(commands.Cog):
                             description='Provides information on how to use the music commands. ', 
                             testing_guilds=guilds)
     async def cmd_music_help(self, ctx:SlashInteraction):
-         menu = Element(
+        menu = Element(
         header="Music commands",
         long_desc="Navigate through all the entries",
         elements=[
@@ -146,3 +146,4 @@ class Help(commands.Cog):
             )
             ]
         )
+        self.create_menu(ctx, menu)
