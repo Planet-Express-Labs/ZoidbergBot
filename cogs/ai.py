@@ -7,6 +7,7 @@ from bot import guilds
 from data.gifs import *
 from zoidbergbot.localization import get_string
 from zoidbergbot.verify import verify_user
+from cogs.data import NLP
 
 
 class Ai(commands.Cog):
