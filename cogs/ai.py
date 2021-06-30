@@ -35,11 +35,10 @@ class Ai(commands.Cog):
                             ]
                             )
     async def cmd_summarize(self, ctx: SlashInteraction):
-
         # convert the values into floats since discord does not seem to support them. 
         try:
-            repetition_penalty = float(repetition_penalty)
-            temperature = float(temperature)
+            repetition_penalty = float(ctx.get("repetition_penalty"))
+            temperature = float(ctx.get("temperature"))
         except ConversionError:
             ctx.create_response("The repetition_penalty and temperature must be floats. ")
 
