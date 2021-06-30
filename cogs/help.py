@@ -57,10 +57,6 @@ class Help(commands.Cog):
         
         on_click = msg.create_click_listener(timeout=60)
         
-        @on_click.not_from_user(ctx.author, cancel_others=True, reset_timeout=False)
-        async def on_wrong_user(inter):
-            await inter.reply("You're not the author", ephemeral=True)
-        
         @on_click.matching_id("down")
         async def down(inter):
             menu.next_elem()
@@ -147,3 +143,6 @@ class Help(commands.Cog):
             ]
         )
         self.create_menu(ctx, menu)
+
+def setup(bot):
+    bot.add_cog(Help(bot))
