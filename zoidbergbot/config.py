@@ -53,7 +53,7 @@ else:
     config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
 
-    def read_config(section, value, file=CONFIG_FILE):
+    def read_config(file=CONFIG_FILE):
         config.read_file(codecs.open(file, "r+", "utf-8"))
 
 
@@ -66,3 +66,6 @@ else:
     LOGGING_LEVEL = config.get("Bot", "logging_level")
     DEV_ID = config.get("Users", "developer_id")
     ADMIN_ID = config.get("Users", "admin_ids").split(" ")
+
+    # AI section:
+    HF_API_KEY = config.get("AI", "HuggingFace_api_key")
