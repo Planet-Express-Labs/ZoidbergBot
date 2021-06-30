@@ -19,10 +19,9 @@
 # Once OpenAI goes public or when I get a key, many of the models will be transitioned to using GPT3.
 import json
 import requests
-import os
 
 from zoidbergbot.config import HF_API_KEY
-
+    
 
 class NLP:
     def __init__(self, headers=None):
@@ -134,16 +133,9 @@ class BartCnn(NLP):
             super().__init__()
             self.API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 
-        def generate_response(self, input, past_input, last_responses, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
+        def generate_response(self, input: str, past_input: list, last_responses:list, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
                   repetition_penalty=None, max_time=None, use_gpu=False, use_cache=True, wait_for_model=False):
 
-
-            if past_input.type is not list:
-                raise TypeError("past_input must be a list. ")
-            if input.type is not str:
-                raise TypeError("input must be a string. ")
-            if last_responses.type is not list:
-                raise TypeError("last_responses must be a list. ")
             data = self.direct_query(
                 {
                     "inputs": {
@@ -159,6 +151,11 @@ class BartCnn(NLP):
                         "temperature": temperature,
                         "repetition_penalty": repetition_penalty,
                         "max_time": max_time
+                    },
+                     "options": {
+                        "use_gpu": use_gpu,
+                        "use_cache": use_cache,
+                        "wait_for_model": wait_for_model
                     }
                 }
             )
