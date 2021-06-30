@@ -129,3 +129,38 @@ class BartCnn(NLP):
         except KeyError:
             return resp
 
+    class DialoGPT(NLP):
+        def __init__(self):
+            super().__init__()
+            self.API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+
+        def generate_response(self, input, past_input, last_responses, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
+                  repetition_penalty=None, max_time=None, use_gpu=False, use_cache=True, wait_for_model=False):
+
+
+            if past_input.type is not list:
+                raise TypeError("past_input must be a list. ")
+            if input.type is not str:
+                raise TypeError("input must be a string. ")
+            if last_responses.type is not list:
+                raise TypeError("last_responses must be a list. ")
+            data = self.direct_query(
+                {
+                    "inputs": {
+                        "past_user_inputs": past_input, 
+                        "generated_responses": last_responses,
+                        "text": input
+                    },
+                    "parameters": {
+                        "min_length": min_length,
+                        "max_length": max_length,
+                        "top_k": top_k,
+                        "top_p": top_p,
+                        "temperature": temperature,
+                        "repetition_penalty": repetition_penalty,
+                        "max_time": max_time
+                    }
+                }
+            )
+            conv = data["conversation"]
+            return data["generated_text"], conv["generated_responses"], conv["past_user_inputs"]
