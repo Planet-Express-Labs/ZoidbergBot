@@ -10,6 +10,14 @@ from zoidbergbot.verify import verify_user
 from cogs.data import NLP
 
 
+def trim(input, max, min):
+    if input > max:
+        input = max
+    elif input < min:
+        input = min
+    return input
+
+
 class Ai(commands.Cog):
     
     def __init__(self, bot):
