@@ -26,7 +26,7 @@ import ujson
 from zoidbergbot.config import HF_API_KEY
 
 
-class Inferances:
+class Inferences:
     def __init__(self, headers=None, use_gpu=False, use_cache=True, wait_for_model=False):
         self.API_URL = None
 
@@ -39,7 +39,7 @@ class Inferances:
             self.headers = {"Authorization": f"Bearer {HF_API_KEY}"}
 
 
-class NLP(Inferances):
+class NLP(Inferences):
 
     async def direct_query(self, payload):
         """[summary]
@@ -200,7 +200,7 @@ class distilbert(NLP):
         return data
 
 
-class Wav2Vec2(Inferances):
+class Wav2Vec2(Inferences):
     def __init__(self):
         super().__init__()
         self.API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
