@@ -51,7 +51,18 @@ class Ai(commands.Cog):
         max_length = ctx.get('max_length')
         out = str(NLP.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature))
         ctx.create_response(out)
-
+    
+    @slash_commands.command(name="expand_text",
+                            description="Uses the GPT2 model to write text from a shorter piece of text.",
+                            testing_guilds=guilds,
+                            options=[
+                                Option('input', 'The text you want to feed into the NLP. ', Type.STRING, required=True)
+                            ]
+                            )
+    async def expand_text(self, ctx):
+        text = ctx.get('input')
+        gpt = NLP.Gpt2()
+        return gpt.expand_text(text)
 
 def setup(bot):
     bot.add_cog(Ai(bot))

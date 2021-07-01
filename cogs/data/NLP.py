@@ -20,15 +20,21 @@
 import json
 import requests
 
-from zoidbergbot.config import HF_API_KEY
     
+#from zoidbergbot.config import HF_API_KEY
+HF_API_KEY = "api_VVZvzwhacKnPImBmnXoYZphpAgEbGplFyu"
 
-class NLP:
-    def __init__(self, headers=None):
-        self.API_URL = None
-        if headers is None:
-            # Some time down the road, it's probably worth re working how the API keys are handled.
-            self.headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+class Inferances:
+    def __init__(self, headers=None,  use_gpu=False, use_cache=True, wait_for_model=False):
+            self.API_URL = None
+            self.use_gpu = use_gpu
+            self.use_cache = use_cache
+            self.wait_for_model = wait_for_model
+
+            if headers is None:
+                # Some time down the road, it's probably worth re working how the API keys are handled.
+                self.headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+
 
     def direct_query(self, payload):
         """[summary]
