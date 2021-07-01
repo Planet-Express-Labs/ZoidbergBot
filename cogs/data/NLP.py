@@ -1,5 +1,4 @@
-﻿
-# 8888888888P         d8b      888 888                                    888               888
+﻿# 8888888888P         d8b      888 888                                    888               888
 #       d88P          Y8P      888 888                                    888               888
 #      d88P                    888 888                                    888               888
 #     d88P    .d88b.  888  .d88888 88888b.   .d88b.  888d888 .d88b.       88888b.   .d88b.  888888
@@ -17,28 +16,31 @@
 
 # This file servers as a library for interfacing with the models we are using with HuggingFace.
 # Once OpenAI goes public or when I get a key, many of the models will be transitioned to using GPT3.
-import json
-import requests
+# import json
+# import requests
 import asyncio
+import aiohttp
+import json
+import ujson
 
 from zoidbergbot.config import HF_API_KEY
 
 
 class Inferances:
-    def __init__(self, headers=None,  use_gpu=False, use_cache=True, wait_for_model=False):
-            self.API_URL = None
+    def __init__(self, headers=None, use_gpu=False, use_cache=True, wait_for_model=False):
+        self.API_URL = None
 
-            self.use_gpu = use_gpu
-            self.use_cache = use_cache
-            self.wait_for_model = wait_for_model
+        self.use_gpu = use_gpu
+        self.use_cache = use_cache
+        self.wait_for_model = wait_for_model
 
-            if headers is None:
-                # Some time down the road, it's probably worth re working how the API keys are handled.
-                self.headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+        if headers is None:
+            # Some time down the road, it's probably worth re working how the API keys are handled.
+            self.headers = {"Authorization": f"Bearer {HF_API_KEY}"}
 
 
 class NLP(Inferances):
-    
+
     async def direct_query(self, payload):
         """[summary]
         Args:
@@ -47,20 +49,22 @@ class NLP(Inferances):
             [dict]: [data returned from API]
         """
         data = json.dumps(payload)
-        response = requests.request(
-            "POST", self.API_URL, headers=self.headers, data=data)
-        val  = json.loads(response.content.decode("utf-8"))
-        if "error" in val and "is currently loading" in val["error"]:
-            await asyncio.sleep(2)
-            return await self.direct_query(payload)
-        return val
+        # response = requests.request(
+        #     "POST", self.API_URL, headers=self.headers, data=data)
+        async with aiohttp.ClientSession(json_serialize=ujson.dumps) as session:
+            async with session.post(self.API_URL, data=payload) as response:
+                val = json.loads(await response.text(encoding="utf-8"))
+                if "error" in val and "is currently loading" in val["error"]:
+                    await asyncio.sleep(2)
+                    return await self.direct_query(payload)
+                return val
 
 
 class Gpt2(NLP):
     def __init__(self):
         super().__init__()
         self.API_URL = "https://api-inference.huggingface.co/models/gpt2"
-    
+
     async def expand_text(self, text):
         data = {
             "inputs": text
@@ -119,7 +123,7 @@ class BartCnn(NLP):
             self.API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 
     async def summarize(self, inputs: str, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
-                  repetition_penalty=None, max_time=None, use_gpu=False, use_cache=True, wait_for_model=False):
+                        repetition_penalty=None, max_time=None, use_gpu=False, use_cache=True, wait_for_model=False):
         data = [{
             "inputs": inputs,
             "parameters": {
@@ -149,13 +153,13 @@ class DialoGPT(NLP):
         super().__init__()
         self.API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 
-    async def generate_response(self, input: str, past_input: list, last_responses:list, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
-                repetition_penalty=None, max_time=None):
-
+    async def generate_response(self, input: str, past_input: list, last_responses: list, min_length=None,
+                                max_length=None, top_k=None, top_p=None, temperature=1.0,
+                                repetition_penalty=None, max_time=None):
         data = await self.direct_query(
             {
                 "inputs": {
-                    "past_user_inputs": past_input, 
+                    "past_user_inputs": past_input,
                     "generated_responses": last_responses,
                     "text": input
                 },
@@ -168,7 +172,7 @@ class DialoGPT(NLP):
                     "repetition_penalty": repetition_penalty,
                     "max_time": max_time
                 },
-                    "options": {
+                "options": {
                     "use_gpu": self.use_gpu,
                     "use_cache": self.use_cache,
                     "wait_for_model": self.wait_for_model
@@ -186,13 +190,13 @@ class distilbert(NLP):
 
     async def classify(self, inputs):
         data = await self.direct_query({
-                "inputs": inputs,
-                "options": {
-                    "use_gpu": self.use_gpu,
-                    "use_cache": self.use_cache,
-                    "wait_for_model": self.wait_for_model
-                }
-                })
+            "inputs": inputs,
+            "options": {
+                "use_gpu": self.use_gpu,
+                "use_cache": self.use_cache,
+                "wait_for_model": self.wait_for_model
+            }
+        })
         return data
 
 
@@ -200,7 +204,7 @@ class Wav2Vec2(Inferances):
     def __init__(self):
         super().__init__()
         self.API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
-    
+
     def convert(self, filename):
         with open(filename, "rb") as f:
             data = f.read()

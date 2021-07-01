@@ -8,3 +8,5 @@ art
 aiohttp
 git+git://github.com/Rapptz/discord-ext-menus
 humanize
+requests
+ujson
