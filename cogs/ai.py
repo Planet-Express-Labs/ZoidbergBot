@@ -53,7 +53,7 @@ class Ai(commands.Cog):
                 repetition_penalty = float(repetition_penalty)
             except ConversionError:
                 await ctx.create_response("The repetition_penalty and temperature must be floats. ")
-             repetition_penalty = trim(repetition_penalty, 100, 0)
+            repetition_penalty = trim(repetition_penalty, 100, 0)
 
         nlp = NLP.BartCnn()
         text = ctx.get('input')
