@@ -203,7 +203,3 @@ class Wav2Vec2(Inferances):
             data = f.read()
         response = requests.request("POST", self.API_URL, headers=self.headers, data=data)
         return json.loads(response.content.decode("utf-8"))["text"]
-
-ml = distilbert()
-response = asyncio.run(ml.classify("Somebody once told me the world was gonna roll me. "))
-print(response)
