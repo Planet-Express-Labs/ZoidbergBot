@@ -23,6 +23,7 @@ import asyncio
 
 from zoidbergbot.config import HF_API_KEY
 
+
 class Inferances:
     def __init__(self, headers=None,  use_gpu=False, use_cache=True, wait_for_model=False):
             self.API_URL = None
@@ -142,6 +143,7 @@ class BartCnn(NLP):
         except KeyError:
             return resp
 
+
 class DialoGPT(NLP):
     def __init__(self):
         super().__init__()
@@ -192,6 +194,7 @@ class distilbert(NLP):
                 }
                 })
         return data
+
 
 class Wav2Vec2(Inferances):
     def __init__(self):
