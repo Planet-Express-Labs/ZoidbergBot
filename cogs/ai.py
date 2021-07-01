@@ -1,7 +1,7 @@
 import re
 from discord.ext import commands
 from discord.ext.commands.errors import ConversionError
-from dislash import SlashInteraction, ActionRow, Button, slash_commands, Element, Type, Option
+from dislash import SlashInteraction, ActionRow, Button, slash_commands, Type, Option
 
 from bot import guilds
 from data.gifs import *
