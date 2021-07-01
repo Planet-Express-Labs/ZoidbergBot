@@ -7,7 +7,8 @@ import art
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import discord
 from discord.ext import commands
-from dislash import SlashInteraction, ActionRow, Button, slash_commands, Element
+from dislash import SlashInteraction, ActionRow, Button, slash_commands, ButtonStyle
+from zoidbergbot.paginator import Element
 
 from bot import guilds
 from data.gifs import *
