@@ -47,6 +47,7 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     TEST_GUILDS = os.getenv("zoidberg_guilds")
     if TEST_GUILDS is not None:
         TEST_GUILDS = TEST_GUILDS.split(",")
+    HF_API_KEY = os.getenv("zoidberg_huggingface")
 else:
     CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
