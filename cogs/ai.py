@@ -30,8 +30,10 @@ class Ai(commands.Cog):
                                 Option('input', 'The text you want to be summarized.', Type.STRING, required=True),
                                 Option('min_length', 'The minimum length of the summary', Type.INTEGER),
                                 Option('max_length', 'The maximum length of the summary', Type.INTEGER),
-                                Option('temperature', 'The temperature of the sampling operation. Higher is closer to uniform probablility.', Type.STRING),
-                                Option('repetition_penalty', 'The higher the value, the higher the penalty is for repeated token.', Type.STRING)
+                                Option('temperature', 'The temperature of the sampling operation. Higher is closer to '
+                                                      'uniform probablility.', Type.STRING),
+                                Option('repetition_penalty', 'The higher the value, the higher the penalty is for '
+                                                             'repeated token.', Type.STRING)
                             ]
                             )
     async def cmd_summarize(self, ctx: SlashInteraction):
@@ -40,17 +42,17 @@ class Ai(commands.Cog):
             repetition_penalty = float(ctx.get("repetition_penalty"))
             temperature = float(ctx.get("temperature"))
         except ConversionError:
-            ctx.create_response("The repetition_penalty and temperature must be floats. ")
+            await ctx.create_response("The repetition_penalty and temperature must be floats. ")
 
         # Cut the values down if they are too large.
         repetition_penalty = trim(repetition_penalty, 100, 0)
         temperature = trim(temperature, 100, 0)
-
+        nlp = NLP.BartCnn()
         text = ctx.get('input')
         min_length = ctx.get('min_length')
         max_length = ctx.get('max_length')
-        out = str(NLP.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature))
-        ctx.create_response(out)
+        out = str(await nlp.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature))
+        await ctx.create_response(out)
     
     @slash_commands.command(name="expand_text",
                             description="Uses the GPT2 model to write text from a shorter piece of text.",
@@ -62,7 +64,7 @@ class Ai(commands.Cog):
     async def expand_text(self, ctx):
         text = ctx.get('input')
         gpt = NLP.Gpt2()
-        return gpt.expand_text(text)
+        return await gpt.expand_text(text)
 
 def setup(bot):
     bot.add_cog(Ai(bot))
