@@ -45,7 +45,7 @@ class Ai(commands.Cog):
             try:
                 temperature = float(repetition_penalty)
             except ConversionError:
-                await ctx.create_response("The repetition_penalty and temperature must be floats. ")
+                await ctx.reply("The repetition_penalty and temperature must be floats. ")
             # Cut the values down if they are too large.
             temperature = trim(temperature, 100, 0)
         if repetition_penalty is not None:
@@ -61,7 +61,7 @@ class Ai(commands.Cog):
         max_length = ctx.get('max_length')
         out = str(await nlp.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty,
                                       temperature=temperature))
-        await ctx.create_response(out)
+        await ctx.reply(out)
     
     @slash_commands.command(name="expand_text",
                             description="Uses the GPT2 model to write text from a shorter piece of text.",
