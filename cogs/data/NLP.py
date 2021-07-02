@@ -90,13 +90,15 @@ class BartMNLI(NLP):
             inputs (string): String to pass to BART
             labels (list): BART labels to score. 
             multi_label (bool, optional): Boolean that is set to True if classes can overlap. Defaults to False.
-            use_gpu (bool, optional): If you are going to be using GPU on HuggingFace. This is only for certain plans. Defaults to False. 
-            use_cache (bool, optional): If the HuggingFace cache should be used. This should only be disabled on large models <10 GO. Defaults to True.
+            use_gpu (bool, optional): If you are going to be using GPU on HuggingFace. This is only for certain plans.
+             Defaults to False.
+            use_cache (bool, optional): If the HuggingFace cache should be used. This should only be disabled on
+             large models <10 GO. Defaults to True.
             wait_for_model (bool, optional): Defaults to False.
         Returns:
             [type]: [description]
         """
-        data = self.direct_query(
+        data = await self.direct_query(
             {
                 "inputs": inputs,
                 "parameters": {
@@ -124,7 +126,7 @@ class BartCnn(NLP):
 
     async def summarize(self, inputs: str, min_length=None, max_length=None, top_k=None, top_p=None, temperature=1.0,
                         repetition_penalty=None, max_time=None, use_gpu=False, use_cache=True, wait_for_model=False):
-        data = [{
+        data = {
             "inputs": inputs,
             "parameters": {
                 "min_length": min_length,
@@ -140,9 +142,10 @@ class BartCnn(NLP):
                 "use_cache": use_cache,
                 "wait_for_model": wait_for_model
             }
-        }]
+        }
         resp = await self.direct_query(data)
         try:
+            resp = resp[0]
             return resp["summary_text"]
         except KeyError:
             return resp
