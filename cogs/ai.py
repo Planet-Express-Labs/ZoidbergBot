@@ -61,7 +61,7 @@ class Ai(commands.Cog):
         max_length = ctx.get('max_length')
         out = str(await nlp.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty,
                                       temperature=temperature))
-        await ctx.reply(out, type=7)
+        await ctx.edit(out)
     
     @slash_commands.command(name="expand_text",
                             description="Uses the GPT2 model to write text from a shorter piece of text.",
