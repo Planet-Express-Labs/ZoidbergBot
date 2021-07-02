@@ -54,7 +54,7 @@ class Ai(commands.Cog):
             except ConversionError:
                 await ctx.create_response("The repetition_penalty and temperature must be floats. ")
             repetition_penalty = trim(repetition_penalty, 100, 0)
-        await ctx.reply(type=6)
+        await ctx.reply(type=5)
         nlp = NLP.BartCnn()
         text = ctx.get('input')
         min_length = ctx.get('min_length')
