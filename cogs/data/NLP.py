@@ -21,6 +21,8 @@
 import asyncio
 import aiohttp
 import json
+
+import requests
 import ujson
 
 from zoidbergbot.config import HF_API_KEY
@@ -48,16 +50,15 @@ class NLP(Inferences):
         Returns:
             [dict]: [data returned from API]
         """
+
         data = json.dumps(payload)
-        # response = requests.request(
-        #     "POST", self.API_URL, headers=self.headers, data=data)
-        async with aiohttp.ClientSession(json_serialize=ujson.dumps) as session:
-            async with session.post(self.API_URL, data=payload) as response:
-                val = json.loads(await response.text(encoding="utf-8"))
-                if "error" in val and "is currently loading" in val["error"]:
-                    await asyncio.sleep(2)
-                    return await self.direct_query(payload)
-                return val
+        response = requests.request(
+            "POST", self.API_URL, headers=self.headers, data=data)
+        val = json.loads(response.content.decode("utf-8"))
+        if "error" in val and "is currently loading" in val["error"]:
+            await asyncio.sleep(2)
+            return await self.direct_query(payload)
+        return val
 
 
 class Gpt2(NLP):
@@ -70,6 +71,8 @@ class Gpt2(NLP):
             "inputs": text
         }
         data = await self.direct_query(data)
+        print(data)
+        data = data[0]
         return data["generated_text"]
 
 
@@ -146,6 +149,7 @@ class BartCnn(NLP):
         resp = await self.direct_query(data)
         try:
             resp = resp[0]
+            print(resp)
             return resp["summary_text"]
         except KeyError:
             return resp

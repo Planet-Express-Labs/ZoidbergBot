@@ -1,12 +1,8 @@
-import re
 from discord.ext import commands
 from discord.ext.commands.errors import ConversionError
-from dislash import SlashInteraction, ActionRow, Button, slash_commands, Type, Option
+from dislash import SlashInteraction, slash_commands, Type, Option
 
 from bot import guilds
-from data.gifs import *
-from zoidbergbot.localization import get_string
-from zoidbergbot.verify import verify_user
 from cogs.data import NLP
 
 
@@ -71,9 +67,12 @@ class Ai(commands.Cog):
                             ]
                             )
     async def expand_text(self, ctx):
+        await ctx.reply(type=5)
         text = ctx.get('input')
         gpt = NLP.Gpt2()
-        return await gpt.expand_text(text)
+        out = str(await gpt.expand_text(text))
+        await ctx.edit(out)
+
 
 def setup(bot):
     bot.add_cog(Ai(bot))
