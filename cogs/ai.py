@@ -44,6 +44,8 @@ class Ai(commands.Cog):
                 await ctx.reply("The repetition_penalty and temperature must be floats. ")
             # Cut the values down if they are too large.
             temperature = trim(temperature, 100, 0)
+        else:
+            temperature = 1.0
         if repetition_penalty is not None:
             try:
                 repetition_penalty = float(repetition_penalty)
@@ -55,8 +57,9 @@ class Ai(commands.Cog):
         text = ctx.get('input')
         min_length = ctx.get('min_length')
         max_length = ctx.get('max_length')
-        out = str(await nlp.summarize(text, min_length, max_length, repetition_penalty=repetition_penalty,
-                                      temperature=temperature))
+        print(str(text), min_length, max_length, temperature, repetition_penalty)
+        out = str(await nlp.summarize(text))
+        #, min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature
         await ctx.edit(out)
     
     @slash_commands.command(name="expand_text",

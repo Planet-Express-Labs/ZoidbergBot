@@ -146,6 +146,7 @@ class BartCnn(NLP):
                 "wait_for_model": wait_for_model
             }
         }
+        data = {"inputs": inputs}
         resp = await self.direct_query(data)
         try:
             resp = resp[0]
