@@ -26,11 +26,14 @@ Installation is simple.
 
 1. Run `git clone https://github.com/LiemEldert/confessbot-public.git`in a terminal in whatever directory you want the
    server to be stored in.
-2. Edit the config_template file and save as `config.ini`. More detailed instructions are inside the file. a: Make a bot
-   account here: discord.com/developers/ b: To copy the chanel ids, you need to enable developer mode in the settings.
-   c: Under the right click menu, there should be an option to copy ids. You need to do this in order to configure the
-   bot correctly. To get the server's id, right click the guild name in the upper left. d: Configure logging. e: ***Save
-   the file as `config.ini`!***
+2. Edit the config_template file and save as `config.ini`. More detailed instructions are inside the file. 
+      a: Make a bot account here: discord.com/developers/ 
+      b: Make an account on huggingface.co/
+      b: To copy the chanel ids, you need to enable developer mode in the settings.
+      c: Under the right click menu, there should be an option to copy ids. You need to do this in order to configure the
+   bot correctly. To get the server's id, right click the guild name in the upper left. 
+      d: Configure logging. 
+      e: ***Save the file as `config.ini`!***
 3. Run the bot by opening the bot's directory in the termainal and run `python bot.py`. Depending on your installation,
    you might need to use the specific python version instead (ie. python3.7 or python3).
 4. Set up is done. This process will likely change soon as we impliment features. View below for more details on what
