@@ -36,7 +36,7 @@ slash = SlashClient(bot, show_warnings=True)
 # TODO: Move both of these into the config file.
 guilds = TEST_GUILDS
 
-blocked_cogs = ["music"]
+blocked_cogs = []
 failed_cogs = []
 
 for filename in os.listdir("cogs"):
