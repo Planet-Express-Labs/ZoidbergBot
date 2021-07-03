@@ -57,9 +57,10 @@ class Ai(commands.Cog):
         text = ctx.get('input')
         min_length = ctx.get('min_length')
         max_length = ctx.get('max_length')
+
         print(str(text), min_length, max_length, temperature, repetition_penalty)
         out = str(await nlp.summarize(text))
-        #, min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature
+        #   , min_length, max_length, repetition_penalty=repetition_penalty, temperature=temperature
         await ctx.edit(out)
     
     @slash_commands.command(name="expand_text",
