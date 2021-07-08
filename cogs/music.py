@@ -17,10 +17,8 @@ import asyncio
 import datetime
 import itertools
 import re
-import sys
-import traceback
-from typing import Union
 from math import floor
+from typing import Union
 
 import discord
 import wavelink
