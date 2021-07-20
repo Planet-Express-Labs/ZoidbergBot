@@ -44,6 +44,9 @@ async def summary(message, inter):
 
 async def txt_file(message):
     channel = message.channel
+    embed = discord.Embed(title="TXT file detected. ")
+    embed.set_footer(text="This feature is in beta, and is only enabled in certain guilds. More actions and file"
+                          "types will be added soon. ")
     await channel.send(
         "TXT file detected.",
         components=[
@@ -52,7 +55,7 @@ async def txt_file(message):
                 placeholder="Choose an action",
                 max_values=1,
                 options=[
-                    SelectOption("Send message content here", f"content,{message.id},{channel.id}"),
+                    # SelectOption("Send message content here", f"content,{message.id},{channel.id}"),
                     # This is a garbage hack.
                     SelectOption("Summarize content", f"summary,{message.id},{channel.id}")
                 ]
@@ -72,7 +75,7 @@ class FileTools(commands.Cog):
         option = [option.value for option in inter.select_menu.selected_options]
         first_option = option[0]
         # Let's eliminate edge-cases to an alarming degree!
-        if option not in labels and len(option) == 1 and len(option[0] > 10) and first_option[10].type in range(9):
+        if option not in labels and len(option) == 1 and len(option[0]) > 10:
             options = str([option.value for option in inter.select_menu.selected_options][0]).split(',')
             print(options)
             print(options)
@@ -83,14 +86,14 @@ class FileTools(commands.Cog):
             message = await channel.fetch_message(message_id)
             if label == "summary":
                 await summary(message, inter)
-            if label == "content":
-                file = message.attachments[0]
-                bytes_io = BytesIO()
-                await file.save(bytes_io)
-                byte = bytes_io.read()
-                text = byte.decode()[0]
-                await inter.reply(type=5)
-                await paginate(text, channel, inter)
+            # if label == "content":
+            #     file = message.attachments[0]
+            #     bytes_io = BytesIO()
+            #     await file.save(bytes_io)
+            #     byte = bytes_io.read()
+            #     text = byte.decode()[0]
+            #     await inter.reply(type=5)
+            #     await paginate(text, channel, inter)
 
     @commands.Cog.listener()
     async def on_message(self, message):
