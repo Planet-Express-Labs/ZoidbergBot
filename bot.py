@@ -99,5 +99,20 @@ async def cmd_modules(ctx):
             embed.description += f"{module}: :green_circle:\n"
     await ctx.reply(embed=embed)
 
+@slash.command(name="invite", description="Sends a bot invite link.",guild_ids=guilds)
+async def cmd_invite(ctx):
+    """About the bot. """
+    embed = discord.Embed(
+    description="Invite Zoidberg to your server. ",
+    title="Zoidberg",
+    url="https://discord.com/api/oauth2/authorize?client_id=769035491278061639&permissions=8&scope=bot%20applications.commands")
+    embed.set_author(name="Zoidberg v" + __version__,
+                    icon_url="https://i.imgur.com/wWa4zCM.png",
+                    url="https://github.com/LiemEldert/ZoidbergBot")
+    embed.set_thumbnail(
+    url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
+    await ctx.reply(embed=embed)
+
+
 
 bot.run(BOT_TOKEN)

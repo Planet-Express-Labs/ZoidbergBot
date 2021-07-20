@@ -91,6 +91,7 @@ class Moderation(commands.Cog):
         purge <messages> <channel>.
         If the channel is none, it will use the current channel.
         """
+        await interaction.reply(type=5)
         messages = int(interaction.get("messages"))
         channel = interaction.get("channel")
         if channel is None:
