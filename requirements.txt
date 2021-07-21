@@ -8,3 +8,10 @@ art
 aiohttp
 git+git://github.com/Rapptz/discord-ext-menus
 humanize
+requests
+ujson
+psycopg2
+pycountry
+six
+google-cloud-translate>=3.0.0
+tortoise-orm

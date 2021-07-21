@@ -16,7 +16,7 @@
 
 import os
 
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 schedule = []  # each item should look like [time, repeatevery, description]
 
@@ -43,6 +43,10 @@ def storeschedule():
 
 
 class Schedule(commands.Cog):
+    @tasks.loop(seconds=30)
+    async def repeater(self):
+        pass
+
     @commands.command(name="update_schedule")
     async def cmd_update_schedule(self, ctx):
         readschedule()

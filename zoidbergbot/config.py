@@ -47,13 +47,14 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     TEST_GUILDS = os.getenv("zoidberg_guilds")
     if TEST_GUILDS is not None:
         TEST_GUILDS = TEST_GUILDS.split(",")
+    HF_API_KEY = os.getenv("zoidberg_huggingface")
 else:
     CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
     config.read_file(codecs.open(CONFIG_FILE, "r+", "utf-8"))
 
 
-    def read_config(section, value, file=CONFIG_FILE):
+    def read_config(file=CONFIG_FILE):
         config.read_file(codecs.open(file, "r+", "utf-8"))
 
 
@@ -66,3 +67,6 @@ else:
     LOGGING_LEVEL = config.get("Bot", "logging_level")
     DEV_ID = config.get("Users", "developer_id")
     ADMIN_ID = config.get("Users", "admin_ids").split(" ")
+
+    # AI section:
+    HF_API_KEY = config.get("AI", "HuggingFace_api_key")

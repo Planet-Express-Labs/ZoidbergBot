@@ -17,10 +17,8 @@ import asyncio
 import datetime
 import itertools
 import re
-import sys
-import traceback
-from typing import Union
 from math import floor
+from typing import Union
 
 import discord
 import wavelink
@@ -77,8 +75,6 @@ class MusicController:
             await player.play(song)
             embed = create_song_embed(player)
             self.now_playing = await self.channel.send(embed=embed)
-            if next is None:
-                player.destory()
             await self.next.wait()
 
 
@@ -167,7 +163,7 @@ class Music(commands.Cog):
     @wavelink.WavelinkMixin.listener()
     async def on_track_end(self, payload):
         player = payload.player()
-        if player.queue._queue is None:
+        if not player.queue._queue:
             player.destory()
 
     @commands.Cog.listener()
@@ -216,9 +212,13 @@ class Music(commands.Cog):
 
         track = tracks[0]
         controller = self.get_controller(ctx)
+
+        if player.current:
+            embed = create_song_embed(player, track)
+            await ctx.edit(embed=embed)
+        else:
+            await ctx.reply("Queued " + track.title)
         await controller.queue.put(track)
-        embed = create_song_embed(player, track)
-        await ctx.edit(embed=embed)
 
     @slash_commands.command(name='pause',
                             guild_ids=guilds,

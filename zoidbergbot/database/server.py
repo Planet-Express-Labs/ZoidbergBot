@@ -22,7 +22,6 @@ class Server(Base):
     __tablename__ = 'server_data'
 
     guild = Column(Integer, primary_key=True)
-    prefix = Column(String)
     enabled_modules = Column(String)  # Reserved for future use
     # I'll probably change this to something that will allow more then just two levels of permission, but that's later.
     # If admin_role == 0, then it's just going to go off of each role's permissions.
@@ -31,11 +30,14 @@ class Server(Base):
     cooldown = Column(Integer)  # Reserved for future use
     auto_delete = Column(Integer)  # Reserved for future use
     premium = Column(bool)  # Reserved for future use
+    official_guild = Column(bool)
 
-    def __init__(self, admin_role, mod_role, cooldown, auto_delete, premium):
+    def __init__(self, enabled_modules, guild, admin_role, mod_role, cooldown, auto_delete, premium, official_guild):
+        self.guild = guild
+        self.enabled_modules = enabled_modules
         self.admin_role = admin_role
         self.mod_role = mod_role
         self.cooldown = cooldown
         self.auto_delete = auto_delete
         self.premium = premium
-
+        self.official_guild = official_guild
