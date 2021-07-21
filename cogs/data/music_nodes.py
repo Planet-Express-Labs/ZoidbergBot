@@ -5,16 +5,16 @@ from zoidbergbot.config import MissingEnvironmentVariableError
 # ugh, this is such a terrible solution.
 
 
-nodes = {"us_east":
-    {
-        "host": "host",
-        "port": 2333,
-        "rest_uri": "http://host.host:2333",
-        "password": "high-security",
-        "identifier": "some creative name",
-        "region": "us_east or some other discord region."
-    }
-}
+# nodes = {"us_east":
+#     {
+#         "host": "host",
+#         "port": 2333,
+#         "rest_uri": "http://host.host:2333",
+#         "password": "high-security",
+#         "identifier": "some creative name",
+#         "region": "us_east or some other discord region."
+#     }
+# }
 
 # # Comment this guff out if you don't want to use env variables.
 #
@@ -43,3 +43,5 @@ nodes = {"us_east":
 #     }
 #
 # }
+
+nodes = ast.literal_eval(os.getenv("zoidberg_full_nodes"))
