@@ -79,7 +79,7 @@ async def cmd_about(ctx):
 @slash.command(name="modules", description="Shows the currently loaded modules.", guild_ids=guilds)
 async def cmd_modules(ctx):
     global failed_cogs
-    sm = b64decode("YWksZmlsZV90b29scyxoZWxwLG1vZGVyYXRpb24sbXVzaWMsZnVuLTE=")
+    sm = b64decode("YWksZmlsZV90b29scyxoZWxwLG1vZGVyYXRpb24sbXVzaWMsZnVuLTEsdHJhbnNsYXRlLHJvbGVz")
     sm = sm.decode().split(',')
     modules = []
     for filename in os.listdir("cogs"):
@@ -98,6 +98,7 @@ async def cmd_modules(ctx):
         else:
             embed.description += f"{module}: :green_circle:\n"
     await ctx.reply(embed=embed)
+
 
 @slash.command(name="invite", description="Sends a bot invite link.",guild_ids=guilds)
 async def cmd_invite(ctx):
