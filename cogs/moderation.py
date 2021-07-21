@@ -38,16 +38,17 @@ class Moderation(commands.Cog):
         name="embed",
         description="Creates an embed",
         options=[
+            Option("channel", "Where the message should be sent.", Type.CHANNEL),
             Option("title", "Creates a title", Type.STRING),
             Option("description", "Creates a description", Type.STRING),
             Option("color", "Colors the embed", Type.STRING),
             Option("image_url", "URL of the embed's image", Type.STRING),
             Option("footer", "Creates a footer", Type.STRING),
             Option("footer_url", "URL of the footer image", Type.STRING)
-
         ],
         guild_ids=guilds)
     async def cmd_embed(self, ctx: Interaction):
+        channel = ctx.get("channel")
         title = ctx.get('title')
         desc = ctx.get('description')
         color = ctx.get('color')
@@ -75,7 +76,11 @@ class Moderation(commands.Cog):
             pl['icon_url'] = footer_url
         if len(pl) > 0:
             reply.set_footer(**pl)
-        await ctx.send(embed=reply)
+        if channel is None:
+            await ctx.send(embed=reply)
+        else:
+            await ctx.reply("Sent!")
+            await channel.send(embed=reply)
 
     @slash_commands.has_permissions(manage_messages=True)
     @slash_commands.command(name="purge",
