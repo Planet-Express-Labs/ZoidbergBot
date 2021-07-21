@@ -1,5 +1,5 @@
 import os
-
+import ast
 from zoidbergbot.config import MissingEnvironmentVariableError
 
 # ugh, this is such a terrible solution.
