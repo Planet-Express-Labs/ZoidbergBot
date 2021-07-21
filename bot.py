@@ -87,7 +87,7 @@ async def cmd_modules(ctx):
             modules.append(filename[:-3])
 
     embed = discord.Embed(title="Modules:", description="")
-    embed.set_footer(text="yellow_circle - unofficial module\nZoidberg v"+str(__version__))
+    embed.set_footer(text="yellow_circle - unofficial module\nZoidberg v" + str(__version__))
     for each in sm:
         if each not in modules:
             failed_cogs += each
@@ -100,20 +100,20 @@ async def cmd_modules(ctx):
     await ctx.reply(embed=embed)
 
 
-@slash.command(name="invite", description="Sends a bot invite link.",guild_ids=guilds)
+@slash.command(name="invite", description="Sends a bot invite link.", guild_ids=guilds)
 async def cmd_invite(ctx):
     """About the bot. """
     embed = discord.Embed(
-    description="Invite Zoidberg to your server. ",
-    title="Zoidberg",
-    url="https://discord.com/api/oauth2/authorize?client_id=769035491278061639&permissions=8&scope=bot%20applications.commands")
+        description="Invite Zoidberg to your server. ",
+        title="Zoidberg",
+        url="https://discord.com/api/oauth2/authorize?client_id=769035491278061639&permissions=8&scope=bot"
+            "%20applications.commands")
     embed.set_author(name="Zoidberg v" + __version__,
-                    icon_url="https://i.imgur.com/wWa4zCM.png",
-                    url="https://github.com/LiemEldert/ZoidbergBot")
+                     icon_url="https://i.imgur.com/wWa4zCM.png",
+                     url="https://github.com/LiemEldert/ZoidbergBot")
     embed.set_thumbnail(
-    url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
+        url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
     await ctx.reply(embed=embed)
-
 
 
 bot.run(BOT_TOKEN)
