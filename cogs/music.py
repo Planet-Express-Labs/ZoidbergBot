@@ -242,7 +242,7 @@ class Music(commands.Cog):
         """Attempts to re-establish connection to nodes. """
         if verify.verify_user(ctx, "developer"):
             await self.start_nodes()
-        await ctx.reply("Attempted reconnection. ")
+            await ctx.reply("Attempted reconnection. ")
 
     @slash_commands.command(name="resume",
                             guild_ids=guilds,
