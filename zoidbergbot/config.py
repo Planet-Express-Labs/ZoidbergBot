@@ -36,6 +36,7 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
         # checks each required variable if it exists and raises an exception if it isn't.
         temp = os.getenv("zoidberg_" + each)
         if temp is None:
+            print(each)
             raise MissingEnvironmentVariableError
 
     BOT_TOKEN = os.getenv("zoidberg_token")
