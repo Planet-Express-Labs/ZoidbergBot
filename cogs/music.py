@@ -25,6 +25,7 @@ import wavelink
 from discord.ext import commands
 from dislash import slash_commands, Option, Type, Interaction
 from humanize import naturalsize
+from zoidbergbot import verify
 
 from bot import guilds
 from cogs.data.music_nodes import nodes
@@ -232,6 +233,16 @@ class Music(commands.Cog):
 
         await ctx.send('Pausing the song!')
         await player.set_pause(True)
+
+    @slash_commands.command(name='reconnect-nodes',
+                            guild_ids=guilds,
+                            description="Attempts to re-establish connection to nodes."
+                            )
+    async def cmd_pause(self, ctx):
+        """Attempts to re-establish connection to nodes. """
+        if verify.verify_user(ctx, "developer"):
+            await self.start_nodes()
+        await ctx.reply("Attempted reconnection. ")
 
     @slash_commands.command(name="resume",
                             guild_ids=guilds,
