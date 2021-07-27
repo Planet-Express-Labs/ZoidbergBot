@@ -49,6 +49,8 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     if TEST_GUILDS is not None:
         TEST_GUILDS = TEST_GUILDS.split(",")
     HF_API_KEY = os.getenv("zoidberg_huggingface")
+    SUBSCRIPTION_KEY = os.getenv('zoidberg_content_moderator_api_key')
+    CONTENT_MODERATOR_ENDPOINT = os.getenv("zoidberg_content_moderator_endpoint")
 else:
     CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
@@ -71,3 +73,5 @@ else:
 
     # AI section:
     HF_API_KEY = config.get("AI", "HuggingFace_api_key")
+    SUBSCRIPTION_KEY = config.get("AI", "content_moderator_api_key")
+    CONTENT_MODERATOR_ENDPOINT = config.get("AI", "content_moderator_endpoint")
