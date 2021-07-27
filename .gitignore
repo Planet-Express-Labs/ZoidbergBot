@@ -18,3 +18,4 @@ bans.csv
 *.webm
 cogs/lavalink/logs/spring.log
 cogs/data/music_nodes.py
+/gcloud.json
