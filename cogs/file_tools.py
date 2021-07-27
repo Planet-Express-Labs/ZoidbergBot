@@ -55,7 +55,7 @@ async def txt_file(message):
                 placeholder="Choose an action",
                 max_values=1,
                 options=[
-                    # SelectOption("Send message content here", f"content,{message.id},{channel.id}"),
+                    SelectOption("Send message content here", f"content,{message.id},{channel.id}"),
                     # This is a garbage hack.
                     SelectOption("Summarize content", f"summary,{message.id},{channel.id}")
                 ]
@@ -86,14 +86,15 @@ class FileTools(commands.Cog):
             message = await channel.fetch_message(message_id)
             if label == "summary":
                 await summary(message, inter)
-            # if label == "content":
-            #     file = message.attachments[0]
-            #     bytes_io = BytesIO()
-            #     await file.save(bytes_io)
-            #     byte = bytes_io.read()
-            #     text = byte.decode()[0]
-            #     await inter.reply(type=5)
-            #     await paginate(text, channel, inter)
+            if label == "content":
+                file = message.attachments[0]
+                bytes_io = BytesIO()
+                await file.save(bytes_io)
+                byte = bytes_io.read()
+                text = byte.decode()
+                print(text)
+                await inter.reply(type=5)
+                await paginate(text, channel, inter)
 
     @commands.Cog.listener()
     async def on_message(self, message):

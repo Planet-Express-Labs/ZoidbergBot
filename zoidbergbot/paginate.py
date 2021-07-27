@@ -96,41 +96,17 @@ class Element:
 
 
 def paginator(text, max_length):
-    temp = ''
-    final = []
-    print(text)
-    for ind, each in enumerate(text):
-        if ind % 4 == max_length:
-            final.append(temp)
-            temp = ''
-        print(len(temp), temp)
-        temp += each
-    print(final)
-    return final
-
-
-def increment_page(page, index):
-    page_length = len(page)
-    if index + 1 > page_length:
-        return index + 1
-    return 0
-
-
-def decrement_page(page, index):
-    page_length = len(page)
-    if index - 1 < page_length:
-        return index - 1
-    return page_length
-
-    index = 0
+    # too lazy to actually fix
+    return textwrap.wrap(text, max_length)
 
 
 async def paginate(text, channel, inter, ephemeral=False):
-    pages = textwrap.wrap(inter.message.content, 4000)
+    print(text)
+    pages = textwrap.wrap(text, 4000)
     elements = []
     for each, index in enumerate(pages):
         elements.append(
-            paginator.Element(
+            Element(
                 header=f"Page {index}:",
                 long_desc=each
             )
@@ -155,32 +131,46 @@ async def paginate(text, channel, inter, ephemeral=False):
     # Send a message with buttons
     emb = discord.Embed(
         title="Message content:",
-        description=text
+        description=pages[0]
     )
     msg = await inter.edit(embed=emb, components=button_row)
 
     # Click manager usage
 
     on_click = msg.create_click_listener(timeout=60)
-
     print(len(pages))
-
+    index = 0
     if len(pages) == 0:
         for button in button_row:
             button.disabled = True
         await msg.edit(embed=emb, components=button_row)
 
-    @on_click.matching_id("left")
-    async def down(inter):
-        global index
-        index = decrement_page(pages, index)
-        emb.description = pages[index]
+    def increment_page(page):
+        page_length = len(page)
+        temp = index
+        if index + 1 > page_length:
+            return index + 1
+        return 0
+
+    def decrement_page(page):
+        page_length = len(page)
+        if index - 1 < page_length:
+            return index - 1
+        return page_length
 
     @on_click.matching_id("right")
-    async def up(inter):
-        global index
-        index = increment_page(pages, index)
+    async def down(inter):
+        index = decrement_page(pages)
         emb.description = pages[index]
+        await msg.edit(embed=emb, components=button_row)
+        await inter.reply(type=6)
+
+    @on_click.matching_id("left")
+    async def up(inter):
+        index = increment_page(pages)
+        emb.description = pages[index]
+        await msg.edit(embed=emb, components=button_row)
+        await inter.reply(type=6)
 
     @on_click.timeout
     async def on_timeout():
