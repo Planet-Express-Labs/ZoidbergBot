@@ -16,3 +16,5 @@ six
 google-cloud-translate>=3.0.0
 tortoise-orm
 google-cloud-vision
+azure-cognitiveservices-vision-contentmoderator
+msrest

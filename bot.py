@@ -12,12 +12,13 @@
 # this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
-# If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
+# If there is an issue that\ might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
 from discord.ext import commands
 from dislash import *
 from base64 import b64decode
+from tortoise import Tortoise, run_async
 
 from zoidbergbot.config import *
 from zoidbergbot.localization import get_string
@@ -26,6 +27,21 @@ __version__ = get_string("VERSION")
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 activity = discord.Activity(name='zoidberg.pexl.pw', type=discord.ActivityType.playing)
+
+
+async def init():
+    # Here we create a SQLite DB using file "db.sqlite3"
+    #  also specify the app name of "models"
+    #  which contain models from "app.models"
+    await Tortoise.init(
+        db_url='sqlite://db.sqlite3',
+        modules={'models': ['zoidbergbot.database.filter_db']}
+    )
+    # Generate the schema
+    await Tortoise.generate_schemas()
+
+# run_async is a helper function to run simple async Tortoise scripts.
+# run_async(init())
 
 bot = commands.Bot(
     command_prefix='-=',
@@ -51,6 +67,7 @@ for filename in os.listdir("cogs"):
 async def on_ready():
     print(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
     await bot.wait_until_ready()
+    await init()
 
 
 @slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
