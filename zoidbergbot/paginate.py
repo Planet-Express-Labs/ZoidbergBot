@@ -1,9 +1,52 @@
 from dislash import *
 import discord
+import textwrap
+
 
 # Stolen, with permission from the dislash.py example bot:
 # https://github.com/EQUENOS/slash-commands-example-bot/blob/main/pagination.py
 # Many thanks to EQUENOS.
+
+class Menu:
+    def __init__(self):
+        self.pages = []
+
+    def add_page(self, name, description, type):
+        if type == "int":
+            buttons = ActionRow(
+                Button(
+                    style=ButtonStyle.green,
+                    label="+",
+                    custom_id="add"
+                ),
+                Button(
+                    style=ButtonStyle.red,
+                    label="-",
+                    custom_id="sub"
+                )
+            )
+
+        self.pages.update({"name": name, "buttons": buttons, "description": description})
+
+    async def send_pages(self, ctx):
+        buttons = []
+        for page in self.pages:
+            buttons.append(page["buttons"])
+
+        rows = auto_rows(*buttons)
+        msg = await ctx.send(content=rows)
+        on_click = msg.create_click_listener(timeout=60)
+
+        @on_click.not_from_user(ctx.author, cancel_others=True, reset_timeout=False)
+        async def on_wrong_user(inter):
+            # Reply with a hidden message
+            await inter.reply(
+                "This command's buttons can only be used by the person who originally sent it for security reasons.",
+                ephemeral=True)
+
+        @on_click.matching_id("test_button")
+        async def on_test_button(ctx):
+            await ctx.reply("You've clicked the button!")
 
 
 class Element:
@@ -79,12 +122,11 @@ def decrement_page(page, index):
         return index - 1
     return page_length
 
-
-index = 0
+    index = 0
 
 
 async def paginate(text, channel, inter, ephemeral=False):
-    pages = paginator(text, 4000)
+    pages = textwrap.wrap(inter.message.content, 4000)
     elements = []
     for each, index in enumerate(pages):
         elements.append(
