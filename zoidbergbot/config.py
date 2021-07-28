@@ -41,7 +41,7 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
 
     BOT_TOKEN = os.getenv("zoidberg_token")
     LOGGING_LEVEL = os.getenv("zoidberg_logging")
-
+    DATABASE = os.getenv("zoidberg_database_path")
     # These will be removed later.
     DEV_ID = os.getenv("zoidberg_developer").split(",")
     ADMIN_ID = os.getenv("zoidberg_admin").split(",")
@@ -69,6 +69,7 @@ else:
 
     LOGGING_LEVEL = config.get("Bot", "logging_level")
     DEV_ID = config.get("Users", "developer_id")
+
     ADMIN_ID = config.get("Users", "admin_ids").split(" ")
 
     # AI section:
