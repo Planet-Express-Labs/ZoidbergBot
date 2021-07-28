@@ -34,11 +34,13 @@ async def init():
     #  also specify the app name of "models"
     #  which contain models from "app.models"
     await Tortoise.init(
-        db_url='sqlite://db.sqlite3',
+        db_url=DATABASE,
         modules={'models': ['zoidbergbot.database.filter_db']}
     )
-    # Generate the schema
-    await Tortoise.generate_schemas()
+
+    # Generate the schema, only run on new
+    # await Tortoise.generate_schemas()
+
 
 # run_async is a helper function to run simple async Tortoise scripts.
 # run_async(init())
