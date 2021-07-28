@@ -19,6 +19,10 @@ class FilterServer(Model):
 
     image_filter = fields.BooleanField(default=False, null=True, blank=True)
 
+    allow_nsfw_channels = fields.BooleanField(default=True, null=True, blank=True)
+    allow_for_roles = fields.TextField(default='', null=True, blank=True)  # placeholder
+    action = fields.TextField(default='', null=True, blank=True)  # placeholder
+
     google_adult_threshold = fields.IntField(default=6, null=True, blank=True)
     google_racy_threshold = fields.IntField(default=6, null=True, blank=True)
     google_medical_threshold = fields.IntField(default=9, null=True, blank=True)
