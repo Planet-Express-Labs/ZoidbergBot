@@ -362,7 +362,7 @@ class Music(commands.Cog):
             async def on_timeout():
                 for button in button_row:
                     button.disabled = True
-                await msg.edit('Current volume:\n' + await progress_bar(player.volume, 100, ctx), components=button_row)
+                await msg.edit('Current volume:\n' + await progress_bar(player.volume, 100, length=25), components=button_row)
 
     @slash_commands.command(name='now_playing',
                             aliases=['np', 'current', 'nowplaying'],
