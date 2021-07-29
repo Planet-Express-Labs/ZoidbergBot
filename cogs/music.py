@@ -290,6 +290,8 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send('I am not currently playing anything!')
+        if vol > 200:
+            return await ctx.reply("That's too loud!")
         controller = self.get_controller(ctx)
         if vol is not None:
             vol = max(min(vol, 1000), 0)

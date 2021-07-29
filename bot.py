@@ -68,8 +68,9 @@ for filename in os.listdir("cogs"):
 @bot.event
 async def on_ready():
     print(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
-    await bot.wait_until_ready()
     await init()
+    await bot.wait_until_ready()
+
 
 
 @slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
