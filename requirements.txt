@@ -18,3 +18,4 @@ tortoise-orm
 google-cloud-vision
 azure-cognitiveservices-vision-contentmoderator
 msrest
+asyncpg

@@ -15,7 +15,7 @@ from tortoise import fields
 
 
 class FilterServer(Model):
-    guild = fields.IntField(pk=True)
+    guild = fields.BigIntField(pk=True)
 
     image_filter = fields.BooleanField(default=False, null=True, blank=True)
 
@@ -39,4 +39,4 @@ class FilterServer(Model):
     facial_recognition = fields.BooleanField(default=False, null=True, blank=True)
     facial_threshold = fields.IntField(default=5, null=True, blank=True)
 
-    event_channel = fields.IntField(default=0, null=True, blank=True)
+    event_channel = fields.BigIntField(default=0, null=True, blank=True)
