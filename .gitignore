@@ -24,3 +24,5 @@ db.sqlite3-shm
 db.sqlite3-wal
 *.db-wal
 *.db-shm
+*.sqlite-shm
+*.sqlite-wal

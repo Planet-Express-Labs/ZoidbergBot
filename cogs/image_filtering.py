@@ -1,3 +1,5 @@
+import asyncio
+
 from google.cloud import vision
 import io
 import base64
@@ -38,14 +40,13 @@ from bot import guilds, bot
 #     print('racy: {}'.format(likelihood_name[safe.racy]))
 #     return likelihood_name, safe
 
-
-async def combine_results(google, azure, ctx):
-    guild = ctx.guild.id
-    server = await filter_db.FilterServer.filter(
-        participants=guild[0].id
-    ).prefetch_related('participants', 'tournament')
-    if server > 1:
-        await ctx.reply("An unexpected database error has occurred. Your settings have been reset. ")
+async def check_conditions(azure, google, channel, message, medical:bool):
+    if (azure["adult_classification_score"] > 0.6 or google.adult / 5 > 0.8 or \
+            google.racy == 5) or (not medical and (azure["medical_classification_score"] > 0.6 or \
+            google.medical > 0.8)):
+        await channel.send("NSFW image detected.")
+        await message.delete()
+        return
 
 
 def detect_safe_search_uri(uri):
@@ -61,13 +62,6 @@ def detect_safe_search_uri(uri):
     # Names of likelihood from google.cloud.vision.enums
     likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
                        'LIKELY', 'VERY_LIKELY')
-    # print('Safe search:')
-    #
-    # print('adult: {}'.format(likelihood_name[safe.adult]))
-    # print('medical: {}'.format(likelihood_name[safe.medical]))
-    # print('spoofed: {}'.format(likelihood_name[safe.spoof]))
-    # print('violence: {}'.format(likelihood_name[safe.violence]))
-    # print('racy: {}'.format(likelihood_name[safe.racy]))
     return likelihood_name, safe
 
 
@@ -82,40 +76,28 @@ class SafeImage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_commands.command(name="scan-image-ms",
+    @slash_commands.command(name="scan-image",
                             guild_ids=guilds,
-                            description="Scans an image for NSFW content using MS content filtering. ",
+                            description="Scans an image for NSFW content using AI. ",
                             options=[
                                 Option("image", "The link to the image to scan. ",
                                        type=Type.STRING, required=True)
                             ])
-    async def cmd_scan_image_ms(self, ctx):
-        uri = ctx.get("image")
-        await ctx.reply(type=5)
-        result = ms_content_moderation.image_moderation(uri)
-        embed = discord.Embed(title="Image scan results:",
-                              description=f'adult: {result["adult_classification_score"]}\n'
-                                          f'medical: {result["racy_classification_score"]}\n')
-        await ctx.reply(embed=embed)
-
-    @slash_commands.command(name="scan-image-safesearch",
-                            guild_ids=guilds,
-                            description="Scans an image for NSFW content using Google SafeSearch. ",
-                            options=[
-                                Option("image", "The link to the image to scan. ",
-                                       type=Type.STRING, required=True)
-                            ])
-    async def cmd_scan_image_safesearch(self, ctx):
+    async def cmd_scan_image(self, ctx):
         uri = ctx.get("image")
         print(uri)
         # if find_url(uri) == 1:
         await ctx.reply(type=5)
         resp, safe = detect_safe_search_uri(uri)
-        embed = discord.Embed(title="Image scan results:", description=f'adult: {resp[safe.adult]}\n'
-                                                                       f'medical: {resp[safe.medical]}\n'
-                                                                       f'spoofed: {resp[safe.spoof]}\n'
-                                                                       f'violence: {resp[safe.violence]}\n'
-                                                                       f'racy: {resp[safe.racy]}')
+        result = ms_content_moderation.image_moderation(uri)
+        embed = discord.Embed(title="Image scan results:",
+                                description=(f'adult: {resp[safe.adult]}\n'
+                                f'medical: {resp[safe.medical]}\n'
+                                f'spoofed: {resp[safe.spoof]}\n'
+                                f'violence: {resp[safe.violence]}\n'
+                                f'racy: {resp[safe.racy]}\n',
+                                f'adult: {result["adult_classification_score"]}\n',
+                                f'medical: {result["racy_classification_score"]}\n'))
         await ctx.edit(embed=embed)
         # else:
         # await ctx.reply("This must be in the format of a URI/URL!")
@@ -144,21 +126,44 @@ class SafeImage(commands.Cog):
             else:
                 safe_image = ButtonStyle.red
                 text = "Enable SafeImage"
-            # if server.text_filter_mode != 0:
-            #     safe_text = ButtonStyle.red
-            # else:
-            #     safe_text = ButtonStyle.green
+            if server.allow_for_channels != '':
+                channel_override = ButtonStyle.green
+                channel_override_text = "Channel override set."
+            else:
+                channel_override = ButtonStyle.red
+                channel_override_text = "Channel overrides have not been set."
+            if server.allow_nsfw_channels:
+                nsfw_override = ButtonStyle.green
+                nsfw_override_text = "NSFW channels are ignored."
+            else:
+                nsfw_override = ButtonStyle.red
+                nsfw_override_text = "NSFW channels are not ignored."
+            if server.allow_for_roles != '':
+                role_override = ButtonStyle.green
+                role_override_text = "Role override set."
+            else:
+                role_override = ButtonStyle.red
+                role_override_text = "Role overrides have not been set."
+                
             buttons = ActionRow(
                 Button(
                     style=safe_image,
                     label=text,
                     custom_id="SI"
+                ),
+                Button(
+                    style=channel_override,
+                    label=channel_override_text,
+                    custom_id="CO"),
+                Button(
+                    style=nsfw_override,
+                    label=nsfw_override_text,
+                    custom_id="NSFW"),
+                Button(
+                    style=role_override,
+                    label=role_override_text,
+                    custom_id="RL"
                 )
-                # Button(
-                #     style=safe_text,
-                #     label="Enable SafeText",
-                #     custom_id="ST"
-                # )
             )
             msg = await ctx.edit(
                 "These are the options for SafeGuard. We are planning to add more options in the future, "
@@ -177,24 +182,89 @@ class SafeImage(commands.Cog):
 
         @on_click.matching_id("SI")
         async def on_test_button(ctx):
+            print(server.image_filter)
             server.image_filter = not server.image_filter
+            print(server.image_filter)
             await server.save()
             await setup_buttons()
             await ctx.reply(type=6)
-
-        # SelectOption("Enable SafeImage", "enable"),
-        # SelectOption("Adult image threshold", "adult_threshold"),
-        # SelectOption("Medical image threshold", "medical_threshold"),
-        # SelectOption("Spoof image threshold", "spoof_threshold"),
-        # SelectOption("Violence image threshold", "violence_threshold"),
-        # SelectOption("Racy image threshold", "racy_threshold"),
-        # SelectOption("Notification threshold", "notification_threshold"),
+            
+        @on_click.matching_id("CO")
+        async def on_test_button(inter):
+            def check(m):
+                return m.content
+            if server.allow_for_channels != '':
+                await ctx.send(f"Here's your current setting: {server.allow_for_channels}")
+            await ctx.send("Waiting for list of channel ids or tags. Separate each entry with a comma.")
+            await inter.reply(type=5)
+            try:
+                resp = await self.bot.wait_for('message', check=check)
+            except asyncio.TimeoutError:
+                await ctx.reply("Timeout reached. Try again. ")
+            print(resp)
+            resp = re.sub("[<># ]", '', resp.content)
+            resp = resp.split(',')
+            print(resp)
+            for each in resp:
+                try:
+                    channel = await self.bot.fetch_channel(each)
+                except discord.errors.HTTPException:
+                    return await inter.reply(f"Entry invalid: {each}\nThere is a chance this is an issue in our "
+                                             "codebase.")
+                if channel is None:
+                    return await inter.reply("Entry invalid: " + each)
+            server.allow_for_channels = resp
+            await server.save()
+            await setup_buttons()
+            await inter.edit("Your channels have been recorded.")
+        
+        @on_click.matching_id("RL")
+        async def on_test_button(inter):
+            def check(m):
+                return m.content
+            if server.allow_for_roles != '':
+                await ctx.send(f"Here's your current setting: {server.allow_for_roles}")
+            await ctx.send("Waiting for a list of role names. Separate each entry with a comma, with spaces.\nrole_name, role name 2")
+            await inter.reply(type=5)
+            try:
+                resp = await self.bot.wait_for('message', check=check)
+            except asyncio.TimeoutError:
+                await ctx.reply("Timeout reached. Try again. ")
+            resp = resp.content.split(',')
+            ids = []
+            for each in resp:
+                for role in ctx.guild.roles:
+                    if role.name == each:
+                        ids.append(role.id)
+            server.allow_for_roles = str(ids)
+            await server.save()
+            await inter.edit("Your roles have been recorded.")
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         # this is an alarming number of conditions. 
         if message.author.id != self.bot.user.id:
             server = await filter_db.FilterServer.filter(guild=message.guild.id).first()
+            if message.channel.is_nsfw and not server.allow_nsfw_channels:
+                return
+
+            roles = server.allow_for_roles.split(',')
+            if roles is not None:
+                for each in message.author.roles:
+                    if each in roles:
+                        return
+
+            permissions = server.allow_for_permissions.split(',')
+            if permissions is not None:
+                for each in message.author.permissions_in(message.channel):
+                    if each in permissions:
+                        return
+            
+            channels = server.allow_for_channels.split(',')
+            for each in channels:
+                if message.channel.id == each:
+                    return
+
             if server is not None and server.image_filter:
                 channel = message.channel
                 attachments = message.attachments
@@ -203,27 +273,17 @@ class SafeImage(commands.Cog):
                     for url in attachment_urls:
                         azure = ms_content_moderation.image_moderation(url)
                         pl, google = detect_safe_search_uri(url)
-                        # print(azure, pl, google)
-                        # if azure["adult_classification_score"] > server.azure_adult_threshold or google.adult / 5> server.google_adult_threshold or \
-                        #         azure[
-                        #             "racy_classification_score"] > server.azure_racy_threshold or google.racy /5 > server.google_racy_threshold or \
-                        #         google.medical > server.google_medical_threshold or google.spoof > server.google_spoof_threshold or google.violence > server.google_violence_threshold:
-                        if azure["adult_classification_score"] > 0.6 or google.adult / 5 > 0.6 or \
-                                azure["racy_classification_score"] > 0.6 or google.racy / 5 > 0.6:
-                            await channel.send("NSFW image detected. ")
-                            await message.delete()
-                            break
+                        await check_conditions(azure, google, channel, message, server.allow_medical)
+                        break
+
                 if find_url(message.content) is not None:
                     urls = find_url(message.content)
                     for url in urls:
                         azure = ms_content_moderation.image_moderation(url)
                         pl, google = detect_safe_search_uri(url)
                         print(azure, pl, google)
-                        if azure["adult_classification_score"] > 0.6 or google.adult / 5 > 0.6 or \
-                                azure["racy_classification_score"] > 0.6 or google.racy / 5 > 0.6:
-                            await channel.send("NSFW image detected. ")
-                            await message.delete()
-                            break
+                        await check_conditions(azure, google, channel, message, server.allow_medical)
+                        break
 
 
 def setup(bot):

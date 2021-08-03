@@ -12,7 +12,7 @@
 # this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
-# If there is an issue that\ might cause issue on your own bot, feel free to pull request if it will improve something.<3
+# If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
 from discord.ext import commands
@@ -71,7 +71,6 @@ async def on_ready():
     print(f"Bot is ready: logged in as {bot.user.name} ({bot.user.id})")
     await init()
     await bot.wait_until_ready()
-
 
 
 @slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
