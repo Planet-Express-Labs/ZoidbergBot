@@ -245,27 +245,30 @@ class SafeImage(commands.Cog):
         # this is an alarming number of conditions. 
         if message.author.id != self.bot.user.id:
             server = await filter_db.FilterServer.filter(guild=message.guild.id).first()
-            if message.channel.is_nsfw and not server.allow_nsfw_channels:
-                return
+            if server is not None and server.image_filter:
 
-            roles = server.allow_for_roles.split(',')
-            if roles is not None:
-                for each in message.author.roles:
-                    if each in roles:
-                        return
 
-            permissions = server.allow_for_permissions.split(',')
-            if permissions is not None:
-                for each in message.author.permissions_in(message.channel):
-                    if each in permissions:
-                        return
-            
-            channels = server.allow_for_channels.split(',')
-            for each in channels:
-                if message.channel.id == each:
+                if message.channel.is_nsfw and not server.allow_nsfw_channels:
                     return
 
-            if server is not None and server.image_filter:
+                roles = list(server.allow_for_roles)
+                if roles is not None:
+                    for each in message.author.roles:
+                        if each in roles:
+                            return
+
+                permissions = list(server.allow_for_permissions)
+                if permissions is not None:
+                    for each in message.author.permissions_in(message.channel):
+                        if each in permissions:
+                            return
+
+                channels = list(server.allow_for_channels)
+                for each in channels:
+                    if message.channel.id == each:
+                        return
+
+
                 channel = message.channel
                 attachments = message.attachments
                 if attachments is not None:
