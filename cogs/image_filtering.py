@@ -247,13 +247,15 @@ class SafeImage(commands.Cog):
             server = await filter_db.FilterServer.filter(guild=message.guild.id).first()
             if server is not None and server.image_filter:
 
-
                 if message.channel.is_nsfw and not server.allow_nsfw_channels:
                     return
-
                 roles = list(server.allow_for_roles)
+                if not isinstance(message.author, discord.Member):
+                    member = message.guild.get_member(message.author.id)
+                else:
+                    member = message.author
                 if roles is not None:
-                    for each in message.author.roles:
+                    for each in member.roles:
                         if each in roles:
                             return
 
@@ -267,7 +269,6 @@ class SafeImage(commands.Cog):
                 for each in channels:
                     if message.channel.id == each:
                         return
-
 
                 channel = message.channel
                 attachments = message.attachments
