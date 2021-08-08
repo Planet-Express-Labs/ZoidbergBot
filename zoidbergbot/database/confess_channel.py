@@ -15,8 +15,8 @@ from tortoise import fields
 
 
 class ConfessChannel(Model):
-    confess_id = fields.IntField(pk=True)
-    guild = fields.BigIntField()
+    guild = fields.BigIntField(pk=True)
+
     confess_channel = fields.BigIntField()
     log_channel = fields.BigIntField()
     last_confess = fields.BigIntField()
