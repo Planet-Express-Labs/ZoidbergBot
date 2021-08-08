@@ -24,8 +24,59 @@ from zoidbergbot.localization import get_string
 __version__ = '0.1 PRERELEASE'
 
 
+async def server_picker(ctx):
+    author = ctx.message.author()
+    servers = ""
+    i = 0
+    guilds = author.mutual_guilds()
+    servers = await filter_db.FilterServer.filter(guild=guilds)
+    if guilds is None:
+        ctx.reply("It doesn't appear that we share any servers with confess enabled!"
+        "Tell the admins of your server to run the command /setup-confess.")
+    # for each in guilds:
+    #     i += 1
+    #     logging = get_db_int("logging_channel", each) != 0
+    #     servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
+
+    embed = discord.Embed(title="Which server do you want me to send this message in? ",
+                          description="Please click which server you want to send this in: \n Loading servers... "
+                          )
+
+    if guilds > 25:
+        embed = discord.Embed(title="Which server do you want me to send this message in? ",
+                              description="Please send the number of the server you want to choose: \n" + servers
+                              )
+        message = await ctx.send(embed=embed)
+    else:
+
+        def get_logging(server):
+            if server.log_channel == 0:
+                return True
+            return False
+
+        buttons = []
+        for each in guilds:
+            buttons += Button(
+                style=ButtonStyle.green,
+                label=f"{each.name}\n :notepad_spiral: - {get_logging(each)}",
+                custom_id=each
+            )
+        button_elements = auto_rows(buttons, max_in_row=5)
+        message = await ctx.send(embed=embed, content=button_elements)
+
+    def wait_for(inter):
+        return inter.message.id == message.id
+
+    inter = await ctx.wait_for_button_click(wait_for)
+    # Send what you received
+    for each in servers:
+        if inter.clicked_button.custom_id == each:
+            return each
+    return None
+
+
 def log_confess(ctx, channel, message_object, timestamp):
-    embed = discord.Embed(title="Confession made", timestamp=timestamp, description=message_object)
+    embed = discord.Embed(title="Confess event", timestamp=timestamp, description=message_object)
     author = ctx.message.author
     ava_url = author.avatar_url
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
