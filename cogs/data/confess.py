@@ -18,7 +18,7 @@ from io import BytesIO
 
 from discord.ext import commands
 
-from cogs.data.confess_db import *
+from zoidbergbot.database.confess_channel import *
 from zoidbergbot.localization import get_string
 
 __version__ = '0.1 PRERELEASE'
