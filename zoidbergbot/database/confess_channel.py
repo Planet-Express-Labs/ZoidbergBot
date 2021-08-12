@@ -18,6 +18,8 @@ class ConfessChannel(Model):
     confess_id = fields.IntField(pk=True)
     guild = fields.BigIntField()
     confess_channel = fields.BigIntField()
-    log_channel = fields.BigIntField()
-    last_confess = fields.BigIntField()
-
+    log_channel = fields.BigIntField(default=0)
+    last_confess = fields.BigIntField(default=0)
+    blocked_users = fields.TextField(default="")
+    whitelist = fields.BooleanField(default=False)
+    allowed_roles = fields.TextField(default="")
