@@ -17,6 +17,8 @@ import re
 from io import BytesIO
 
 from discord.ext import commands
+from dislash import *
+import discord
 
 from zoidbergbot.database.confess_channel import *
 from zoidbergbot.localization import get_string
@@ -29,18 +31,17 @@ async def server_picker(ctx):
     servers = ""
     i = 0
     guilds = author.mutual_guilds()
-    servers = await filter_db.FilterServer.filter(guild=guilds)
+    servers = await ConfessChannel.filter(guild=guilds)
     if guilds is None:
         ctx.reply("It doesn't appear that we share any servers with confess enabled!"
-        "Tell the admins of your server to run the command /setup-confess.")
+        "Tell the admins of your server to run the command /setup-confess.\n\n"
+        "If you believe this to be an error, let us know in the support server (/server).")
     # for each in guilds:
     #     i += 1
     #     logging = get_db_int("logging_channel", each) != 0
     #     servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
-
-    embed = discord.Embed(title="Which server do you want me to send this message in? ",
-                          description="Please click which server you want to send this in: \n Loading servers... "
-                          )
+    if isinstance(ctx.channel, discord.TextChannel):
+        ctx.send("This command is intended to be used within a DM with the bot.")
 
     if guilds > 25:
         embed = discord.Embed(title="Which server do you want me to send this message in? ",
@@ -48,7 +49,9 @@ async def server_picker(ctx):
                               )
         message = await ctx.send(embed=embed)
     else:
-
+        embed = discord.Embed(title="Which server do you want me to send this message in? ",
+                            description="Please click which server you want to send this in: \n Loading servers... "
+                            )
         def get_logging(server):
             if server.log_channel == 0:
                 return True
@@ -82,7 +85,7 @@ def log_confess(ctx, channel, message_object, timestamp):
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
     channel.send(embed=embed)
 
-
+    
 def create_message_link(guild=None, channel=None, message=None):
     if guild is None:
         guild = message.guild.id
