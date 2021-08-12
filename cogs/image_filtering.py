@@ -224,7 +224,8 @@ class SafeImage(commands.Cog):
                 return m.content
             if server.allow_for_roles != '':
                 await ctx.send(f"Here's your current setting: {server.allow_for_roles}")
-            await ctx.send("Waiting for a list of role names. Separate each entry with a comma, with spaces.\nrole_name, role name 2")
+            await ctx.send("Waiting for a list of role names. Separate each entry with a comma, with spaces.\n"
+                           "role_name, role name 2")
             await inter.reply(type=5)
             try:
                 resp = await self.bot.wait_for('message', check=check)
@@ -239,7 +240,7 @@ class SafeImage(commands.Cog):
             server.allow_for_roles = str(ids)
             await server.save()
             await inter.edit("Your roles have been recorded.")
-
+     
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         # this is an alarming number of conditions. 
