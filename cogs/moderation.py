@@ -88,21 +88,30 @@ class Moderation(commands.Cog):
                             guild_ids=guilds,
                             options=[
                                 Option('messages', 'The number of messages to delete.', Type.INTEGER, required=True),
+                                Option("user", "The user who's messages you want to delete.", Type.USER),
                                 Option('channel', 'The channel to delete the messages in.', Type.CHANNEL)]
                             )
-    async def cmd_purge(self, interaction):
+    async def cmd_purge(self, ctx):
         """Deletes Multiple messages from a channel.
         The syntax is as follows:
         purge <messages> <channel>.
         If the channel is none, it will use the current channel.
         """
-        await interaction.reply(type=5)
-        messages = int(interaction.get("messages"))
-        channel = interaction.get("channel")
-        if channel is None:
-            channel = interaction.channel
-        await channel.purge(limit=messages)
-        await interaction.reply(f"Deleted {messages} messages. ")
+        msg = []
+        channel = ctx.get('channel')
+        limit = ctx.get('messages')
+        member = ctx.get('user')
+        await ctx.reply(type=5)
+        if not member:
+            await ctx.channel.purge(limit=limit)
+            return await ctx.send(f"Purged {limit} messages", delete_after=3)
+        async for m in ctx.channel.history():
+            if len(msg) == limit:
+                break
+            if m.author == member:
+                msg.append(m)
+        await ctx.channel.delete_messages(msg)
+        await ctx.reply(f"Deleted {limit} messages. ", delete_after=5)
 
     @slash_commands.command(name="avatar",
                             description="Gets the avatar from the pinged user.",
