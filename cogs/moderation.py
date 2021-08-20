@@ -16,10 +16,49 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-from dislash import slash_commands, Option, Type, Interaction
+from dislash import *
 
 from bot import guilds
 from zoidbergbot import localization
+
+
+async def avatar(ctx, user):
+    embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
+    embed.set_image(url=user.avatar_url)
+    await ctx.reply(embed=embed)
+
+
+async def user_info(ctx, user):
+    badges = {
+        "staff": "<:staff:812692120049156127>",
+        "partner": "<:partner:812692120414322688>",
+        "hypesquad": "<:hypesquad_events:812692120358879262>",
+        "bug_hunter": "<:bug_hunter:812692120313266176>",
+        "hypesquad_bravery": "<:bravery:812692120015339541>",
+        "hypesquad_brilliance": "<:brilliance:812692120326373426>",
+        "hypesquad_balance": "<:balance:812692120270798878>",
+        "verified_bot_developer": "<:verified_bot_developer:812692120133042178>"
+    }
+
+    badge_string = ' '.join(badges[pf.name] for pf in user.public_flags.all() if pf.name in badges)
+    created_at = str(user.created_at)[:-7]
+    reply = discord.Embed(color=discord.Color.blurple())
+    reply.title = str(user)
+    reply.set_thumbnail(url=user.avatar_url)
+    reply.add_field(
+        name="Registration",
+        value=(
+            f"⌚ **Created at:** `{created_at}`\n"
+            f"📋 **ID:** `{user.id}`"
+        ),
+        inline=False
+    )
+    if len(badge_string) > 1:
+        reply.add_field(
+            name="Badges",
+            value=f"`->` {badge_string}"
+        )
+    await ctx.send(embed=reply)
 
 
 class Moderation(commands.Cog):
@@ -117,50 +156,31 @@ class Moderation(commands.Cog):
                             description="Gets the avatar from the pinged user.",
                             guild_ids=guilds,
                             options=[
-                                Option('user', "Who's avatar you want to pull.", Type.USER, required=True)
+                                Option('user', "Who's avatar you want to pull.", Type.USER)
                             ])
     async def cmd_avatar(self, ctx):
-        user = ctx.get('user')
-        embed = discord.Embed(description=f"{user.display_name}'s profile picture:")
-        embed.set_image(url=user.avatar_url)
-        await ctx.reply(embed=embed)
+        user = ctx.get('user', ctx.author)
+        await avatar(ctx, user)
 
+    @application_commands.user_command(name="Show user avatar",
+                                       description="Sends an embed comtaining a direct link to a user's avatar",
+                                       testing_guilds=guilds)
+    async def ctx_avatar(self, inter):
+        await avatar(inter, inter.target)
+
+    # User info
     @slash_commands.command(
         name="user-info",
         description="Shows user profile",
         options=[Option("user", "Which user to inspect", Type.USER)],
         guild_ids=guilds)
-    async def user_info(self, ctx):
-        badges = {
-            "staff": "<:staff:812692120049156127>",
-            "partner": "<:partner:812692120414322688>",
-            "hypesquad": "<:hypesquad_events:812692120358879262>",
-            "bug_hunter": "<:bug_hunter:812692120313266176>",
-            "hypesquad_bravery": "<:bravery:812692120015339541>",
-            "hypesquad_brilliance": "<:brilliance:812692120326373426>",
-            "hypesquad_balance": "<:balance:812692120270798878>",
-            "verified_bot_developer": "<:verified_bot_developer:812692120133042178>"
-        }
+    async def cmd_user_info(self, ctx):
         user = ctx.get("user", ctx.author)
-        badge_string = ' '.join(badges[pf.name] for pf in user.public_flags.all() if pf.name in badges)
-        created_at = str(user.created_at)[:-7]
-        reply = discord.Embed(color=discord.Color.blurple())
-        reply.title = str(user)
-        reply.set_thumbnail(url=user.avatar_url)
-        reply.add_field(
-            name="Registration",
-            value=(
-                f"⌚ **Created at:** `{created_at}`\n"
-                f"📋 **ID:** `{user.id}`"
-            ),
-            inline=False
-        )
-        if len(badge_string) > 1:
-            reply.add_field(
-                name="Badges",
-                value=f"`->` {badge_string}"
-            )
-        await ctx.send(embed=reply)
+        await user_info(ctx, user)
+
+    @application_commands.user_command(name="Show user info", description="Shows user profile", testing_guilds=guilds)
+    async def ctx_user_info(self, inter):
+        await user_info(inter, inter.target)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
