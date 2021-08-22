@@ -16,11 +16,11 @@ from tortoise import fields
 
 class ConfessChannel(Model):
     confess_id = fields.IntField(pk=True)
-    enable = fields.BooleanField(default=False)
-    guild = fields.BigIntField()
+    enable = fields.BooleanField(default=False, null=True)
+    guild = fields.BigIntField(default=0, null=True)
     confess_channel = fields.BigIntField(default=0)
-    log_channel = fields.BigIntField(default=0)
-    last_confess = fields.BigIntField(default=0)
-    blocked_users = fields.TextField(default="")
-    whitelist = fields.BooleanField(default=False)
-    allowed_roles = fields.TextField(default="")
+    log_channel = fields.BigIntField(default=0, null=True)
+    last_confess = fields.BigIntField(default=0, null=True)
+    blocked_users = fields.TextField(default="", null=True)
+    whitelist = fields.BooleanField(default=False, null=True)
+    allowed_roles = fields.TextField(default="", null=True)

@@ -14,6 +14,7 @@
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import re
+from datetime import datetime
 from io import BytesIO
 
 from discord.ext import commands
@@ -71,43 +72,13 @@ async def server_picker(ctx):
     except IndexError:
         await ctx.reply("That is an invalid server!")
 
-    # else:
-    #     embed = discord.Embed(title="Which server do you want me to send this message in? ",
-    #                           description="Please click which server you want to send this in: \n Loading servers... "
-    #                           )
-    #
-    #     def get_logging(server):
-    #         if server.log_channel == 0:
-    #             return False
-    #         return True
-    #
-    #     buttons = []
-    #     for each in guilds:
-    #         buttons += Button(
-    #             style=ButtonStyle.green,
-    #             label=f"{each.name}\n :notepad_spiral: - {get_logging(each)}",
-    #             custom_id=each
-    #         )
-    #     button_elements = auto_rows(buttons, max_in_row=5)
-    #     message = await ctx.send(embed=embed, content=button_elements)
-    #
-    #     def wait_for(inter):
-    #         return inter.message.id == message.id
-    #
-    #     inter = await ctx.wait_for_button_click(wait_for)
-    #     # Send what you received
-    #     for each in servers:
-    #         if inter.clicked_button.custom_id == each:
-    #             return each
-    #     return None
 
-
-def log_confess(ctx, channel, message_object, timestamp):
+async def log_confess(ctx, channel, message_object, timestamp):
     embed = discord.Embed(title="Confess event", timestamp=timestamp, description=message_object)
     author = ctx.message.author
     ava_url = author.avatar_url
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
-    channel.send(embed=embed)
+    await channel.send(embed=embed)
 
 
 def create_message_link(guild=None, channel=None, message=None):
@@ -140,14 +111,6 @@ async def handle_image_embed(ctx, embed, message):
     return embed
 
 
-async def send_linked_embed(ctx, link):
-    embed = discord.Embed(description=get_string("message_sent"), url=link)
-    embed.set_author(name=f"Zoidberg confess v{0}".format(__version__),
-                     icon_url="https://i.imgur.com/wWa4zCM.png",
-                     url="https://github.com/LiemEldert/ZoidbergBot")
-    await ctx.send(embed=embed)
-
-
 class Confess(commands.Cog):
     """Cog for confessing. As the name makes clear. """
 
@@ -156,9 +119,8 @@ class Confess(commands.Cog):
         self.bot = bot
 
     @slash_commands.has_permissions(administrator=True)
-    @slash_commands.command(name="setup_confess", testing_guilds=guilds, description='test')
+    @slash_command(name="setup_confess", testing_guilds=guilds, description='test')
     async def cmd_something(self, ctx):
-        print(0)
         await ctx.reply(type=5)
 
         server = await ConfessChannel.filter(guild=ctx.guild.id).first()
@@ -166,9 +128,8 @@ class Confess(commands.Cog):
         if server is None:
             server = await ConfessChannel(confess_id=ctx.guild.id, null=True, blank=True)
             await server.save()
-        print(1)
+
         async def setup_buttons():
-            print(2)
             if server.enable:
                 enable = ButtonStyle.green
                 text = "Enable confess"
@@ -218,7 +179,6 @@ class Confess(commands.Cog):
                 resp = await self.bot.wait_for('message', check=check)
             except asyncio.TimeoutError:
                 await ctx.reply("Timeout reached. Try again. ")
-            print(resp)
             resp = re.sub("[<># ]", '', resp.content)
             try:
                 channel = await self.bot.fetch_channel(resp)
@@ -231,9 +191,38 @@ class Confess(commands.Cog):
             await setup_buttons()
             await inter.edit("Your channels have been recorded.")
 
-    # @slash_commands.command(name="server_pick_test", testing_guilds=guilds, description='test')
-    # async def cmd_server_pick_test(self, ctx):
-    #     await ctx.reply(await server_picker(ctx))
+    @slash_command(name="conf", testing_guilds=guilds, description='Sends a message anonymously to a channel.',
+                   options=[
+                       Option('message', 'The message you want to confess', Type.STRING)
+                   ])
+    async def cmd_conf(self, ctx):
+        message = ctx.get('confession')
+        confchannel = await ConfessChannel.filter(guild=ctx.guild.id).first()
+        guild = confchannel.guild
+        current_time = datetime.now().strftime("%d/%m %H:%M")
+        user_id = ctx.message.author.id
+        channel = bot.get_channel(server_picker(ctx))
+        # Create embed. They're fancy
+        embed = discord.Embed(description=f"{message}", timestamp=current_time)
+        embed = handle_image_embed(ctx, embed, message)
+        msg = await channel.send(embed=embed)
+        await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time)
+        embed = discord.Embed(description=get_string("message_sent"), url=create_message_link(guild, channel, msg))
+        embed.set_author(name=f"Zoidberg confess v{0}".format(__version__),
+                         icon_url="https://i.imgur.com/wWa4zCM.png",
+                         url="https://github.com/LiemEldert/ZoidbergBot")
+        await ctx.reply(embed=embed)
+
+    @cmd_conf.error
+    async def conf_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send('Please wait before sending ')
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send('You do not have manage_messages permission')
+
+    @slash_command(name="server_pick_test", testing_guilds=guilds, description='test')
+    async def cmd_server_pick_test(self, ctx):
+        await ctx.reply(await server_picker(ctx))
 
 
 def setup(bot):
