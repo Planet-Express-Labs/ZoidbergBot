@@ -12,7 +12,7 @@ class Bookmarks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @slash_commands.command(name="bookmark", brief="Save a short message or link.", testing_guilds=guilds, options=[
+    @slash_command(name="bookmark", brief="Save a short message or link.", testing_guilds=guilds, options=[
                             Option('message', 'Content you want to save.', Type.STRING, required=True),
                             Option('collection', 'Categorize your bookmarks.', Type.STRING),
                             Option('tags', 'Label your bookmarks using tags.')
@@ -29,7 +29,7 @@ class Bookmarks(commands.Cog):
         bookmark.save()
         await ctx.reply(type=1)
 
-    # @slash_commands.command(name="bookmarks", brief="Returns a list of all saved bookmarks.", testing_guilds=guilds, options=[
+    # @slash_command(name="bookmarks", brief="Returns a list of all saved bookmarks.", testing_guilds=guilds, options=[
     #                         Option('collection', 'Filter by a specific collection name', Type.STRING)
     #                         ])
     # async def bookmarks(self, ctx):

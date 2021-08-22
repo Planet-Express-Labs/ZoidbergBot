@@ -76,7 +76,7 @@ class SafeImage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_commands.command(name="scan-image",
+    @slash_command(name="scan-image",
                             guild_ids=guilds,
                             description="Scans an image for NSFW content using AI. ",
                             options=[
@@ -103,7 +103,7 @@ class SafeImage(commands.Cog):
         # await ctx.reply("This must be in the format of a URI/URL!")
 
     @slash_commands.has_permissions(administrator=True)
-    @slash_commands.command(name="safeguard-ai",
+    @slash_command(name="safeguard-ai",
                             guild_ids=guilds,
                             description="Sets up AI based text and image filtering using AI. ",
                             # options=[

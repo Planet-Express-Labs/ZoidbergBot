@@ -31,7 +31,7 @@ class AI21(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_commands.command(name='talk',
+    @slash_command(name='talk',
                             description='This command allows you to talk to zoidberg and make him do your work. ',
                             testing_guilds=guilds,
                             options=[
