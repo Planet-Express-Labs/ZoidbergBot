@@ -35,7 +35,7 @@ async def init():
     #  which contain models from "app.models"
     await Tortoise.init(
         db_url=DATABASE,
-        modules={'models': ['zoidbergbot.database.filter_db']}
+        modules={'models': ['zoidbergbot.database.filter_db', 'zoidbergbot.database.confess_channel']}
     )
 
     # Generate the schema, only run on new
@@ -45,10 +45,13 @@ async def init():
 
 # run_async is a helper function to run simple async Tortoise scripts.
 # run_async(init())
+intents = discord.Intents.default()
+intents.members = True
 
 bot = commands.Bot(
     command_prefix='-=',
-    activity=activity
+    activity=activity,
+    intents=intents
 )
 slash = SlashClient(bot, show_warnings=True)
 
