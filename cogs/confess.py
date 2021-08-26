@@ -42,18 +42,21 @@ async def server_picker(ctx):
     #     servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
     if isinstance(ctx.channel, discord.TextChannel):
         await ctx.send("This command is intended to be used within a DM with the bot.")
-
+    print(guilds)
     server_names = ""
-    for each in servers:
-        server_names += each
+    channels = ConfessChannel
     for each in guilds:
-        servers.append(await ConfessChannel.filter(guild=each))
+        serv = await ConfessChannel.filter(guild=each.id)
+        if len(serv) != 0:
+            servers.append(serv[0])
 
     if len(servers) == 0:
         await ctx.reply("It doesn't appear that we share any servers with confess enabled!"
-                               "Tell the admins of your server to run the command /setup-confess.\n\n"
-                               "If you believe this to be an error, let us know in the support server (/server).")
+                        "Tell the admins of your server to run the comamand /setup-confess.\n\n"
+                        "If you believe this to be an error, let us know in the support server (/server).")
         return
+    for each in servers:
+        server_names += f"{1}: {bot.get_guild(each.guild)}\n"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
                           description="Please send the number of the server you want to choose: \n" + server_names
@@ -76,7 +79,7 @@ async def server_picker(ctx):
 async def log_confess(ctx, channel, message_object, timestamp):
     embed = discord.Embed(title="Confess event", timestamp=timestamp, description=message_object)
     author = ctx.message.author
-    ava_url = author.avatar_url
+    ava_url = author.avatar_urlz    
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
     await channel.send(embed=embed)
 
@@ -118,15 +121,20 @@ class Confess(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @application_commands.command(name="server_pick_test", testing_guilds=guilds, description='if you see this, run.')
+    async def cmd_server_pick_test(self, ctx):
+        await ctx.reply(await server_picker(ctx))
+
     @slash_commands.has_permissions(administrator=True)
-    @slash_command(name="setup_confess", testing_guilds=guilds, description='test')
+    @slash_command(name="setup_confess", testing_guilds=guilds,
+                   description='Allows you to configure options for confess.')
     async def cmd_something(self, ctx):
         await ctx.reply(type=5)
 
         server = await ConfessChannel.filter(guild=ctx.guild.id).first()
 
         if server is None:
-            server = await ConfessChannel(confess_id=ctx.guild.id, null=True, blank=True)
+            server = await ConfessChannel(guild=ctx.guild.id)
             await server.save()
 
         async def setup_buttons():
@@ -193,15 +201,19 @@ class Confess(commands.Cog):
 
     @slash_command(name="conf", testing_guilds=guilds, description='Sends a message anonymously to a channel.',
                    options=[
-                       Option('message', 'The message you want to confess', Type.STRING)
+                       Option('message', 'The message you want to confess', Type.STRING, required=True)
                    ])
-    async def cmd_conf(self, ctx):
-        message = ctx.get('confession')
+    async def cmd_confess(self, ctx):
+        print("123")
+        message = ctx.get('message')
         confchannel = await ConfessChannel.filter(guild=ctx.guild.id).first()
+        print(123)
         guild = confchannel.guild
         current_time = datetime.now().strftime("%d/%m %H:%M")
         user_id = ctx.message.author.id
-        channel = bot.get_channel(server_picker(ctx))
+        # server = await server_picker(ctx)
+        channel = await bot.get_channel(await server_picker(ctx))
+        print('spp')
         # Create embed. They're fancy
         embed = discord.Embed(description=f"{message}", timestamp=current_time)
         embed = handle_image_embed(ctx, embed, message)
@@ -213,16 +225,12 @@ class Confess(commands.Cog):
                          url="https://github.com/LiemEldert/ZoidbergBot")
         await ctx.reply(embed=embed)
 
-    @cmd_conf.error
+    @cmd_confess.error
     async def conf_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send('Please wait before sending ')
         if isinstance(error, commands.MissingPermissions):
             await ctx.send('You do not have manage_messages permission')
-
-    @slash_command(name="server_pick_test", testing_guilds=guilds, description='test')
-    async def cmd_server_pick_test(self, ctx):
-        await ctx.reply(await server_picker(ctx))
 
 
 def setup(bot):

@@ -114,11 +114,9 @@ class SafeImage(commands.Cog):
     async def cmd_setup_safeguard(self, ctx):
         await ctx.reply(type=5)
         server = await filter_db.FilterServer.filter(guild=ctx.guild.id).first()
-
         if server is None:
             server = filter_db.FilterServer(guild=ctx.guild.id, null=True, blank=True)
             await server.save()
-
         async def setup_buttons():
             if server.image_filter:
                 safe_image = ButtonStyle.green
