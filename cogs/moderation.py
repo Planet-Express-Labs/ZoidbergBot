@@ -71,7 +71,12 @@ class Moderation(commands.Cog):
             await ctx.send(localization.get_string("COMMAND_EMPTY"))
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send(localization.get_string("CMD_PERMISSION_ERROR"))
-
+    
+    @commands.Cog.listener()
+    async def on_slash_command_error(self, inter, error):
+        if isinstance(error, MissingPermissions):
+            await inter.reply("Sorry, you don't have the permissions for that.")
+    
     @slash_commands.has_permissions(manage_messages=True)
     @slash_commands.command(
         name="embed",
