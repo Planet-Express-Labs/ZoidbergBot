@@ -42,9 +42,8 @@ async def server_picker(ctx):
     #     servers += f"{i}: {bot.get_guild(each)}\n```logging: {logging}\n```"
     if isinstance(ctx.channel, discord.TextChannel):
         await ctx.send("This command is intended to be used within a DM with the bot.")
-    print(guilds)
     server_names = ""
-    channels = ConfessChannel
+    # channels = ConfessChannel
     for each in guilds:
         serv = await ConfessChannel.filter(guild=each.id)
         if len(serv) != 0:
@@ -54,7 +53,7 @@ async def server_picker(ctx):
         await ctx.reply("It doesn't appear that we share any servers with confess enabled!"
                         "Tell the admins of your server to run the comamand /setup-confess.\n\n"
                         "If you believe this to be an error, let us know in the support server (/server).")
-        return
+        returnw
     for each in servers:
         server_names += f"{1}: {bot.get_guild(each.guild)}\n"
 
@@ -66,14 +65,17 @@ async def server_picker(ctx):
     await ctx.reply(embed=embed)
 
     def wait(msg):
-        if msg.channel == channel:
+        if msg.channel.id == channel.id and msg.author.id == author.id:
             return msg.content
 
     message = await bot.wait_for('Waiting for response...', check=check)
+    print(message)
     try:
         server = servers[message]
     except IndexError:
         await ctx.reply("That is an invalid server!")
+    # await message.delete()
+    return server
 
 
 async def log_confess(ctx, channel, message_object, timestamp):
@@ -121,14 +123,15 @@ class Confess(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @application_commands.command(name="server_pick_test", testing_guilds=guilds, description='if you see this, run.')
+    @slash_command(name="server_pick_test", testing_guilds=guilds, description='if you see this, run.')
     async def cmd_server_pick_test(self, ctx):
-        await ctx.reply(await server_picker(ctx))
+        resp = await server_picker(ctx)
+        await ctx.reply(resp.name)
 
     @slash_commands.has_permissions(administrator=True)
     @slash_command(name="setup_confess", testing_guilds=guilds,
                    description='Allows you to configure options for confess.')
-    async def cmd_something(self, ctx):
+    async def cmd_confess_setup(self, ctx):
         await ctx.reply(type=5)
 
         server = await ConfessChannel.filter(guild=ctx.guild.id).first()
@@ -210,10 +213,11 @@ class Confess(commands.Cog):
         print(123)
         guild = confchannel.guild
         current_time = datetime.now().strftime("%d/%m %H:%M")
-        user_id = ctx.message.author.id
-        # server = await server_picker(ctx)
-        channel = await bot.get_channel(await server_picker(ctx))
-        print('spp')
+        # user_id = ctx.author.id
+        # await ctx.reply(type=5)
+        server = await server_picker(ctx)
+        # channel = await bot.get_channel(server)
+        print('spp', server)
         # Create embed. They're fancy
         embed = discord.Embed(description=f"{message}", timestamp=current_time)
         embed = handle_image_embed(ctx, embed, message)
