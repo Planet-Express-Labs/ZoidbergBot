@@ -53,7 +53,7 @@ async def server_picker(ctx):
         await ctx.reply("It doesn't appear that we share any servers with confess enabled!"
                         "Tell the admins of your server to run the comamand /setup-confess.\n\n"
                         "If you believe this to be an error, let us know in the support server (/server).")
-        returnw
+        return
     for each in servers:
         server_names += f"{1}: {bot.get_guild(each.guild)}\n"
 
@@ -66,12 +66,15 @@ async def server_picker(ctx):
 
     def wait(msg):
         if msg.channel.id == channel.id and msg.author.id == author.id:
-            return msg.content
+            return msg
 
-    message = await bot.wait_for('Waiting for response...', check=check)
-    print(message)
     try:
-        server = servers[message]
+        message = await bot.wait_for('message', check=wait)
+    except asyncio.TimeoutError:
+        await ctx.reply("Timeout reached. Try again. ")
+    print(message.content)
+    try:
+        server = servers[int(message.content) - 1]
     except IndexError:
         await ctx.reply("That is an invalid server!")
     # await message.delete()
@@ -102,18 +105,8 @@ def find_url(url):
 
 
 async def handle_image_embed(ctx, embed, message):
-    files = []
-    for file in ctx.message.attachments:
-        fp = BytesIO()
-        await file.save(fp)
-        files.append(discord.File(fp, filename=file.filename, spoiler=file.is_spoiler()))
-        image_url = ctx.message.attachments[0].url
-        embed.set_image(url=image_url)
-        print("image" + image_url)
-    image = str(find_url(message))
-    if image is not None:
-        embed.set_image(url=image)
-    return embed
+    # Add support for pulling images from URL
+    return
 
 
 class Confess(commands.Cog):
@@ -126,7 +119,7 @@ class Confess(commands.Cog):
     @slash_command(name="server_pick_test", testing_guilds=guilds, description='if you see this, run.')
     async def cmd_server_pick_test(self, ctx):
         resp = await server_picker(ctx)
-        await ctx.reply(resp.name)
+        await ctx.reply(resp)
 
     @slash_commands.has_permissions(administrator=True)
     @slash_command(name="setup_confess", testing_guilds=guilds,
@@ -181,11 +174,12 @@ class Confess(commands.Cog):
         @on_click.matching_id("CC")
         async def on_test_button(inter):
             def check(m):
-                return m.content
+                if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
+                    return m.content
             if server.confess_channel != '':
                 await ctx.send(f"Here's your current setting: {server.confess_channel}")
             await ctx.send("Waiting for a single channel id...")
-            await inter.reply(type=5)
+            await inter.create_response(type=5)
             try:
                 resp = await self.bot.wait_for('message', check=check)
             except asyncio.TimeoutError:
@@ -207,22 +201,21 @@ class Confess(commands.Cog):
                        Option('message', 'The message you want to confess', Type.STRING, required=True)
                    ])
     async def cmd_confess(self, ctx):
-        print("123")
         message = ctx.get('message')
-        confchannel = await ConfessChannel.filter(guild=ctx.guild.id).first()
-        print(123)
-        guild = confchannel.guild
         current_time = datetime.now().strftime("%d/%m %H:%M")
-        # user_id = ctx.author.id
-        # await ctx.reply(type=5)
+        # Prompt the user to select a server and get it's ConfessChannel object. 
         server = await server_picker(ctx)
-        # channel = await bot.get_channel(server)
-        print('spp', server)
+        print(123)
+        guild = await self.bot.fetch_guild(server.guild)
+        print(server, server.guild)
+        channel = await self.bot.fetch_channel(server.confess_channel)
+        print(channel, "e")
         # Create embed. They're fancy
-        embed = discord.Embed(description=f"{message}", timestamp=current_time)
-        embed = handle_image_embed(ctx, embed, message)
+        embed = discord.Embed(description=message)
+        # embed = handle_image_embed(ctx, embed, message), timestamp=current_time
+        print("embed made")
         msg = await channel.send(embed=embed)
-        await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time)
+        # await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time)
         embed = discord.Embed(description=get_string("message_sent"), url=create_message_link(guild, channel, msg))
         embed.set_author(name=f"Zoidberg confess v{0}".format(__version__),
                          icon_url="https://i.imgur.com/wWa4zCM.png",
