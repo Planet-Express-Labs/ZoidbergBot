@@ -1,4 +1,4 @@
-<img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
+
 
 ```
 
