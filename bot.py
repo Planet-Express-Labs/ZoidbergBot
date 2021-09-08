@@ -15,6 +15,7 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
+import os
 from discord.ext import commands
 from dislash import *
 from base64 import b64decode
@@ -39,8 +40,9 @@ async def init():
     )
 
     # Generate the schema, only run on new
-    if bool(os.getenv("zoidberg_first_run")):
+    if not os.environ.has_key("zoidberg_has_run"):
         await Tortoise.generate_schemas()
+        os.environ['zoidberg_has_run']=1
 
 
 # run_async is a helper function to run simple async Tortoise scripts.
