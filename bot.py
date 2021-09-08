@@ -66,7 +66,7 @@ for filename in os.listdir("cogs"):
         try:
             bot.load_extension(f"cogs.{filename[:-3]}")
         except commands.ExtensionNotLoaded:
-            failed_cogs += filename
+            failed_cogs.append(filename)
 
 
 @bot.event
