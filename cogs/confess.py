@@ -83,7 +83,7 @@ async def server_picker(ctx):
 async def log_confess(ctx, channel, message_object, timestamp):
     embed = discord.Embed(title="Confess event", timestamp=timestamp, description=message_object)
     author = ctx.message.author
-    ava_url = author.avatar_urlz    
+    ava_url = author.avatar_url  
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
     await channel.send(embed=embed)
 
@@ -145,6 +145,13 @@ class Confess(commands.Cog):
             else:
                 confess_channel_enable = ButtonStyle.green
                 confess_channel_text = "Confess channel set"
+            if server.log_channel == 0:
+                log_channel_enable = ButtonStyle.danger
+                log_channel_text = "Set Logging channel"
+            else:
+                log_channel_enable = ButtonStyle.green
+                log_channel_text = "Logging channel set"
+
 
             buttons = ActionRow(
                 Button(
@@ -155,7 +162,11 @@ class Confess(commands.Cog):
                 Button(
                     style=confess_channel_enable,
                     label=confess_channel_text,
-                    custom_id="CC")
+                    custom_id="CC"),
+                Button(
+                style=log_channel_enable,
+                label=log_channel_text,
+                custom_id="LC")
             )
             return await ctx.edit("These are the options for confessions. Confessions are made in DMs using the /conf "
                                   "command.", components=[buttons])
@@ -172,6 +183,7 @@ class Confess(commands.Cog):
 
         @on_click.matching_id("CC")
         async def on_test_button(inter):
+            # TODO: Make this a class. 
             def check(m):
                 if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
                     return m.content
@@ -195,6 +207,32 @@ class Confess(commands.Cog):
             await setup_buttons()
             await inter.edit("Your channels have been recorded.")
 
+        @on_click.matching_id("LC")
+        async def on_test_button(inter):
+            # TODO: Make this a class. 
+            def check(m):
+                if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
+                    return m.content
+            if server.log_channel != '':
+                await ctx.send(f"Here's your current setting: {server.log_channel}")
+            await ctx.send("Waiting for a single channel id...")
+            await inter.create_response(type=5)
+            try:
+                resp = await self.bot.wait_for('message', check=check)
+            except asyncio.TimeoutError:
+                await ctx.reply("Timeout reached. Try again. ")
+            resp = re.sub("[<># ]", '', resp.content)
+            try:
+                channel = await self.bot.fetch_channel(resp)
+            except discord.errors.HTTPException:
+                return await inter.reply(f"Entry invalid: {resp}\ntry again")
+            if channel is None:
+                return await inter.reply("Entry invalid: " + resp)
+            server.log_channel = resp
+            await server.save()
+            await setup_buttons()
+            await inter.edit("Your channels have been recorded.")
+
     @slash_command(name="conf", testing_guilds=guilds, description='Sends a message anonymously to a channel.',
                    options=[
                        Option('message', 'The message you want to confess', Type.STRING, required=True)
@@ -202,16 +240,17 @@ class Confess(commands.Cog):
     async def cmd_confess(self, ctx):
         message = ctx.get('message')
         current_time = datetime.now()
-        #.strftime("%d/%m %H:%M")
         # Prompt the user to select a server and get it's ConfessChannel object. 
         server = await server_picker(ctx)
         guild = await self.bot.fetch_guild(server.guild)
         channel = await self.bot.fetch_channel(server.confess_channel)
+        log_channel = bot.fetch_channel(server.log_channel)
         # Create embed. They're fancy
         embed = discord.Embed(description=message, timestamp=current_time)
         # embed = handle_image_embed(ctx, embed, message)
         msg = await channel.send(embed=embed)
-        # await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time), url=create_message_link(guild, channel, msg)
+        if log_channel is not None: 
+            await log_confess(ctx, log_channel, message, current_time)
         embed = discord.Embed(description="Your message has been sent: " + message, timestamp=current_time,
                             url=create_message_link(guild.id, channel.id, msg))
         embed.set_author(name=f"Zoidberg confess v{__version__}",
