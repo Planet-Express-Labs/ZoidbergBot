@@ -4,7 +4,7 @@
 /output.txt/
 /permissionLog.txt/
 /test/
-zoidbergbot/__pycache__/
+*/__pycache__/
 /%SystemDrive%/
 data/config.ini
 output.txt
