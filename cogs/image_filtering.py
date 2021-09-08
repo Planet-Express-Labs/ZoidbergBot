@@ -190,7 +190,8 @@ class SafeImage(commands.Cog):
         @on_click.matching_id("CO")
         async def on_test_button(inter):
             def check(m):
-                return m.content
+                if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
+                 return m.content
             if server.allow_for_channels != '':
                 await ctx.send(f"Here's your current setting: {server.allow_for_channels}")
             await ctx.send("Waiting for list of channel ids or tags. Separate each entry with a comma.")
