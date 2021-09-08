@@ -20,7 +20,6 @@ from io import BytesIO
 from discord.ext import commands
 from dislash import *
 import discord
-from dislash import *
 import asyncio
 
 from zoidbergbot.database.confess_channel import *
@@ -94,8 +93,8 @@ def create_message_link(guild=None, channel=None, message=None):
         guild = message.guild.id
     if channel is None:
         channel = message.channel.id
-    message_id = message.id()
-    return f"https://discord.com/channels/{guild}/{channel}/{message_id}"
+    print(f"https://discord.com/channels/{guild}/{channel}/{message.id}")
+    return f"https://discord.com/channels/{guild}/{channel}/{message.id}"
 
 
 def find_url(url):
@@ -202,32 +201,28 @@ class Confess(commands.Cog):
                    ])
     async def cmd_confess(self, ctx):
         message = ctx.get('message')
-        current_time = datetime.now().strftime("%d/%m %H:%M")
+        current_time = datetime.now()
+        #.strftime("%d/%m %H:%M")
         # Prompt the user to select a server and get it's ConfessChannel object. 
         server = await server_picker(ctx)
-        print(123)
         guild = await self.bot.fetch_guild(server.guild)
-        print(server, server.guild)
         channel = await self.bot.fetch_channel(server.confess_channel)
-        print(channel, "e")
         # Create embed. They're fancy
-        embed = discord.Embed(description=message)
-        # embed = handle_image_embed(ctx, embed, message), timestamp=current_time
-        print("embed made")
+        embed = discord.Embed(description=message, timestamp=current_time)
+        # embed = handle_image_embed(ctx, embed, message)
         msg = await channel.send(embed=embed)
-        # await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time)
-        embed = discord.Embed(description=get_string("message_sent"), url=create_message_link(guild, channel, msg))
-        embed.set_author(name=f"Zoidberg confess v{0}".format(__version__),
+        # await log_confess(ctx, bot.get_channel(int(confchannel.log_channel)), message, current_time), url=create_message_link(guild, channel, msg)
+        embed = discord.Embed(description="Your message has been sent: " + message, timestamp=current_time,
+                            url=create_message_link(guild.id, channel.id, msg))
+        embed.set_author(name=f"Zoidberg confess v{__version__}",
                          icon_url="https://i.imgur.com/wWa4zCM.png",
-                         url="https://github.com/LiemEldert/ZoidbergBot")
+                         url="https://github.pexl.pw")
         await ctx.reply(embed=embed)
 
     @cmd_confess.error
     async def conf_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send('Please wait before sending ')
-        if isinstance(error, commands.MissingPermissions):
-            await ctx.send('You do not have manage_messages permission')
 
 
 def setup(bot):
