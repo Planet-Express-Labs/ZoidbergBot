@@ -40,9 +40,9 @@ async def init():
     )
 
     # Generate the schema, only run on new
-    if not os.environ.has_key("zoidberg_has_run"):
+    if os.getenv("zoidberg_has_run")==None:
         await Tortoise.generate_schemas()
-        os.environ['zoidberg_has_run']=1
+        os.environ['zoidberg_has_run']='1'
 
 
 # run_async is a helper function to run simple async Tortoise scripts.
