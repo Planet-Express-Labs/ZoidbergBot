@@ -15,7 +15,6 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 import discord
 from discord.ext import commands
-from discord.ext.commands import Context
 from dislash import *
 
 from bot import guilds
@@ -64,22 +63,9 @@ async def user_info(ctx, user):
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx: Context, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(localization.get_string("COMMAND_EMPTY"))
-        elif isinstance(error, commands.MissingPermissions):
-            await ctx.send(localization.get_string("CMD_PERMISSION_ERROR"))
-    
-    @commands.Cog.listener()
-    async def on_slash_command_error(self, inter, error):
-        if isinstance(error, MissingPermissions):
-            await inter.reply("Sorry, you don't have the permissions for that.")
     
     @slash_commands.has_permissions(manage_messages=True)
-    @slash_commands.command(
-        name="embed",
+    @slash_command(name="embed",
         description="Creates an embed",
         options=[
             Option("channel", "Where the message should be sent.", Type.CHANNEL),
@@ -91,14 +77,14 @@ class Moderation(commands.Cog):
             Option("footer_url", "URL of the footer image", Type.STRING)
         ],
         guild_ids=guilds)
-    async def cmd_embed(self, ctx: Interaction):
-        channel = ctx.get("channel")
-        title = ctx.get('title')
-        desc = ctx.get('description')
-        color = ctx.get('color')
-        image_url = ctx.get('image_url')
-        footer = ctx.get('footer')
-        footer_url = ctx.get('footer_url')
+    async def cmd_embed(self, ctx: Interaction,
+                        channel: discord.TextChannel,
+                        title: str = None,
+                        description: str = None,
+                        color: str = None,
+                        image_url: str = None,
+                        footer: str = None,
+                        footer_url: str = None):
         if color is not None:
             # try:
             color = await commands.ColorConverter().convert(ctx, color)
@@ -109,8 +95,8 @@ class Moderation(commands.Cog):
         reply = discord.Embed(color=color)
         if title is not None:
             reply.title = title
-        if desc is not None:
-            reply.description = desc
+        if description is not None:
+            reply.description = description
         if image_url is not None:
             reply.set_image(url=image_url)
         pl = {}
@@ -127,7 +113,7 @@ class Moderation(commands.Cog):
             await channel.send(embed=reply)
 
     @slash_commands.has_permissions(manage_messages=True)
-    @slash_commands.command(name="purge",
+    @slash_command(name="purge",
                             description="Deletes many messages at once. Syntax: /purge <messages> <channel>. ",
                             guild_ids=guilds,
                             options=[
@@ -157,7 +143,7 @@ class Moderation(commands.Cog):
         await ctx.channel.delete_messages(msg)
         await ctx.reply(f"Deleted {limit} messages. ", delete_after=5)
 
-    @slash_commands.command(name="avatar",
+    @slash_command(name="avatar",
                             description="Gets the avatar from the pinged user.",
                             guild_ids=guilds,
                             options=[
@@ -174,7 +160,7 @@ class Moderation(commands.Cog):
         await avatar(inter, inter.target)
 
     # User info
-    @slash_commands.command(
+    @slash_command(
         name="user-info",
         description="Shows user profile",
         options=[Option("user", "Which user to inspect", Type.USER)],
@@ -186,13 +172,6 @@ class Moderation(commands.Cog):
     @application_commands.user_command(name="Show user info", description="Shows user profile", testing_guilds=guilds)
     async def ctx_user_info(self, inter):
         await user_info(inter, inter.target)
-
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(localization.get_string("COMMAND_EMPTY"))
-        if isinstance(error, slash_commands.MissingPermissions):
-            await ctx.send(localization.get_string("NO_PERMISSION"))
 
 
 def setup(bot):
