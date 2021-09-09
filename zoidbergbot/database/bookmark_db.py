@@ -10,14 +10,12 @@
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-from sqlalchemy import Column, String, Date, Integer, Numeric
+from tortoise.models import Model
+from tortoise import fields
 
-from sessions import Base
 
-
-class ConfessServer(Base):
-    __tablename__ = 'confess_data'
-
-    guild = Column(Integer, primary_key=True)
-    confess_channel = Column(Integer)
-    log_channel = Column(Integer)
+class Bookmark(Model):
+    user_id = fields.BigIntField(pk=True)
+    collection = fields.TextField()
+    content = fields.TextField()
+    tags = fields.TextField()

@@ -15,6 +15,7 @@
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
 
 import discord
+import os
 from discord.ext import commands
 from dislash import *
 from base64 import b64decode
@@ -35,24 +36,28 @@ async def init():
     #  which contain models from "app.models"
     await Tortoise.init(
         db_url=DATABASE,
-        modules={'models': ['zoidbergbot.database.filter_db']}
+        modules={'models': ['zoidbergbot.database.filter_db', 'zoidbergbot.database.confess_channel']}
     )
 
     # Generate the schema, only run on new
-    if bool(os.getenv("zoidberg_first_run")):
+    if os.getenv("zoidberg_has_run") is None:
         await Tortoise.generate_schemas()
+        os.environ['zoidberg_has_run'] = '1'
 
 
 # run_async is a helper function to run simple async Tortoise scripts.
 # run_async(init())
+intents = discord.Intents.default()
+intents.members = True
 
 bot = commands.Bot(
     command_prefix='-=',
-    activity=activity
+    activity=activity,
+    intents=intents
 )
-slash = SlashClient(bot, show_warnings=True)
+slash_client = InteractionClient(bot)
 
-# TODO: Move both of these into the config file.
+# TODO: Move both of these into the config file., test_guilds=TEST_GUILDSshow_warnings=True
 guilds = TEST_GUILDS
 
 blocked_cogs = []
@@ -63,7 +68,7 @@ for filename in os.listdir("cogs"):
         try:
             bot.load_extension(f"cogs.{filename[:-3]}")
         except commands.ExtensionNotLoaded:
-            failed_cogs += filename
+            failed_cogs.append(filename)
 
 
 @bot.event
@@ -73,30 +78,30 @@ async def on_ready():
     await bot.wait_until_ready()
 
 
-@slash.command(name="ping", description="Replies with Zoidberg's response time.", guild_ids=guilds)
+@slash_client.command(name="ping", description="Replies with Zoidberg's response time.")
 async def cmd_ping(ctx):
     """Check if the bots alive and what the latency is. """
     await ctx.reply(f"Pong! :ping_pong:       Latency: {0} ms".format(bot.latency))
 
 
-@slash.command(name="about", description="Provides some information about the bot.", guild_ids=guilds)
+@slash_client.slash_command(name="about", description="Provides  some information about the bot.", guild_ids=guilds)
 async def cmd_about(ctx):
     """About the bot. """
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__) +
                     f"\n\nI'm in {len(bot.guilds)} servers. ",
         title="Zoidberg",
-        url="https://github.com/LiemEldert/ZoidbergBot/")
+        url="https://github.pexl.pw")
     embed.set_footer(text="How we use your data: https://privacy.pexl.pw/")
     embed.set_author(name="Zoidberg v" + __version__,
                      icon_url="https://i.imgur.com/wWa4zCM.png",
-                     url="https://github.com/LiemEldert/ZoidbergBot")
+                     url="https://github.pexl.pw")
     embed.set_thumbnail(
         url="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg")
     await ctx.reply(embed=embed)
 
 
-@slash.command(name="modules", description="Shows the currently loaded modules.", guild_ids=guilds)
+@slash_client.command(name="modules", description="Shows the currently loaded modules.", guild_ids=guilds)
 async def cmd_modules(ctx):
     global failed_cogs
     sm = b64decode("YWksZmlsZV90b29scyxoZWxwLG1vZGVyYXRpb24sbXVzaWMsZnVuLTEsdHJhbnNsYXRlLHJvbGVz")
@@ -120,7 +125,7 @@ async def cmd_modules(ctx):
     await ctx.reply(embed=embed)
 
 
-@slash.command(name="invite", description="Sends a bot invite link.", guild_ids=guilds)
+@slash_client.command(name="invite", description="Sends a bot invite link.", guild_ids=guilds)
 async def cmd_invite(ctx):
     """About the bot. """
     embed = discord.Embed(

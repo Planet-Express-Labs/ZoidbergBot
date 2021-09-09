@@ -8,12 +8,12 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # @slash_commands.command(name="role_menu")
+    # @slash_command(name="role_menu")
     # async def cmd_role_menu(self):
     #     pass
 
     @slash_commands.has_permissions(administrator=True)
-    @slash_commands.command(name="select_roles",
+    @slash_command(name="select_roles",
                             guild_ids=guilds,
                             options=[
                                 Option("member", "Who you want to apply these role edits to. ", type=Type.USER)

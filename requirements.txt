@@ -2,7 +2,7 @@ discord.py
 asyncio
 configparser
 SQLAlchemy
-dislash.py
+dislash.py==1.4.1
 wavelink
 art
 aiohttp

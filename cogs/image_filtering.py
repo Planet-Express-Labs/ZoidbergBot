@@ -76,7 +76,7 @@ class SafeImage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_commands.command(name="scan-image",
+    @slash_command(name="scan-image",
                             guild_ids=guilds,
                             description="Scans an image for NSFW content using AI. ",
                             options=[
@@ -103,7 +103,7 @@ class SafeImage(commands.Cog):
         # await ctx.reply("This must be in the format of a URI/URL!")
 
     @slash_commands.has_permissions(administrator=True)
-    @slash_commands.command(name="safeguard-ai",
+    @slash_command(name="safeguard-ai",
                             guild_ids=guilds,
                             description="Sets up AI based text and image filtering using AI. ",
                             # options=[
@@ -114,11 +114,9 @@ class SafeImage(commands.Cog):
     async def cmd_setup_safeguard(self, ctx):
         await ctx.reply(type=5)
         server = await filter_db.FilterServer.filter(guild=ctx.guild.id).first()
-
         if server is None:
             server = filter_db.FilterServer(guild=ctx.guild.id, null=True, blank=True)
             await server.save()
-
         async def setup_buttons():
             if server.image_filter:
                 safe_image = ButtonStyle.green
@@ -192,7 +190,8 @@ class SafeImage(commands.Cog):
         @on_click.matching_id("CO")
         async def on_test_button(inter):
             def check(m):
-                return m.content
+                if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
+                 return m.content
             if server.allow_for_channels != '':
                 await ctx.send(f"Here's your current setting: {server.allow_for_channels}")
             await ctx.send("Waiting for list of channel ids or tags. Separate each entry with a comma.")
@@ -224,7 +223,8 @@ class SafeImage(commands.Cog):
                 return m.content
             if server.allow_for_roles != '':
                 await ctx.send(f"Here's your current setting: {server.allow_for_roles}")
-            await ctx.send("Waiting for a list of role names. Separate each entry with a comma, with spaces.\nrole_name, role name 2")
+            await ctx.send("Waiting for a list of role names. Separate each entry with a comma, with spaces.\n"
+                           "role_name, role name 2")
             await inter.reply(type=5)
             try:
                 resp = await self.bot.wait_for('message', check=check)
@@ -239,21 +239,22 @@ class SafeImage(commands.Cog):
             server.allow_for_roles = str(ids)
             await server.save()
             await inter.edit("Your roles have been recorded.")
-
+     
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         # this is an alarming number of conditions. 
         if message.author.id != self.bot.user.id:
             server = await filter_db.FilterServer.filter(guild=message.guild.id).first()
             if server is not None and server.image_filter:
-
-
                 if message.channel.is_nsfw and not server.allow_nsfw_channels:
                     return
-
                 roles = list(server.allow_for_roles)
+                if not isinstance(message.author, discord.Member):
+                    member = message.guild.get_member(message.author.id)
+                else:
+                    member = message.author
                 if roles is not None:
-                    for each in message.author.roles:
+                    for each in member.roles:
                         if each in roles:
                             return
 
@@ -267,7 +268,6 @@ class SafeImage(commands.Cog):
                 for each in channels:
                     if message.channel.id == each:
                         return
-
 
                 channel = message.channel
                 attachments = message.attachments

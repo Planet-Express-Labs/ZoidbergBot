@@ -1,4 +1,4 @@
-<img align="left" width=500 src="https://user-images.githubusercontent.com/45272685/118345209-fb8ecf80-b500-11eb-9f24-d662a27818dc.jpg">
+
 
 ```
 
@@ -30,18 +30,20 @@ Installation is simple.
    server to be stored in.
 2. Edit the config_template file and save as `config.ini`. More detailed instructions are inside the file. 
 
-      a: Make a bot account here: discord.com/developers/ 
+      a: Make a bot account here: discord.com/developers/
 
-      b: Make an account on huggingface.co/
+      b: Invite the bot, making sure to enable Privileged Gateway Intents, and include applications.commands in the OAuth2 scopes.
 
-      b: To copy the chanel ids, you need to enable developer mode in the settings.
+      c: Make an account on huggingface.co/
 
-      c: Under the right click menu, there should be an option to copy ids. You need to do this in order to configure the
+      d: To copy the chanel ids, you need to enable developer mode in the settings.
+
+      e: Under the right click menu, there should be an option to copy ids. You need to do this in order to configure the
    bot correctly. To get the server's id, right click the guild name in the upper left. 
 
-      d: Configure logging. 
+      f: Configure logging. 
 
-      e: ***Save the file as `config.ini`!***
+      g: ***Save the file as `config.ini`!***
 
 3. Run the bot by opening the bot's directory in the termainal and run `python bot.py`. Depending on your installation,
    you might need to use the specific python version instead (ie. python3.7 or python3).
