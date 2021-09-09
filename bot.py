@@ -40,7 +40,7 @@ async def init():
     )
 
     # Generate the schema, only run on new
-    if os.getenv("zoidberg_has_run")==None:
+    if os.getenv("zoidberg_has_run") is None:
         await Tortoise.generate_schemas()
         os.environ['zoidberg_has_run']='1'
 
