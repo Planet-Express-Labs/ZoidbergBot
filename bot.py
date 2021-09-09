@@ -40,7 +40,7 @@ async def init():
     )
 
     # Generate the schema, only run on new
-    if os.getenv("zoidberg_has_run") is None:
+    if os.getenv("zoidberg_has_run") != 1:
         await Tortoise.generate_schemas()
         os.environ['zoidberg_has_run'] = '1'
 
@@ -89,7 +89,7 @@ async def cmd_about(ctx):
     """About the bot. """
     embed = discord.Embed(
         description=get_string("BOT_ABOUT").format(bot_mention=bot.user.mention, bot_version=__version__) +
-                    f"\n\nI'm in {len(bot.guilds)} servers. ",
+        f"\n\nI'm in {len(bot.guilds)} servers. ",
         title="Zoidberg",
         url="https://github.pexl.pw")
     embed.set_footer(text="How we use your data: https://privacy.pexl.pw/")
