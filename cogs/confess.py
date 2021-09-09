@@ -80,15 +80,15 @@ async def server_picker(ctx):
     return server
 
 
-async def log_confess(ctx, channel, message_object, timestamp):
-    embed = discord.Embed(title="Confess event", timestamp=timestamp, description=message_object)
-    author = ctx.message.author
-    ava_url = author.avatar_url  
+async def log_confess(ctx, channel, message_object, timestamp, text):
+    embed = discord.Embed(title="Confess event", timestamp=timestamp, description=text)
+    author = ctx.author
+    ava_url = author.avatar_url
     embed.set_author(name=author, icon_url=ava_url, url=create_message_link(message_object))
     await channel.send(embed=embed)
 
 
-def create_message_link(guild=None, channel=None, message=None):
+def create_message_link(message, guild=None, channel=None):
     if guild is None:
         guild = message.guild.id
     if channel is None:
@@ -152,7 +152,6 @@ class Confess(commands.Cog):
                 log_channel_enable = ButtonStyle.green
                 log_channel_text = "Logging channel set"
 
-
             buttons = ActionRow(
                 Button(
                     style=enable,
@@ -164,9 +163,9 @@ class Confess(commands.Cog):
                     label=confess_channel_text,
                     custom_id="CC"),
                 Button(
-                style=log_channel_enable,
-                label=log_channel_text,
-                custom_id="LC")
+                    style=log_channel_enable,
+                    label=log_channel_text,
+                    custom_id="LC")
             )
             return await ctx.edit("These are the options for confessions. Confessions are made in DMs using the /conf "
                                   "command.", components=[buttons])
@@ -187,6 +186,7 @@ class Confess(commands.Cog):
             def check(m):
                 if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
                     return m.content
+
             if server.confess_channel != '':
                 await ctx.send(f"Here's your current setting: {server.confess_channel}")
             await ctx.send("Waiting for a single channel id...")
@@ -213,6 +213,7 @@ class Confess(commands.Cog):
             def check(m):
                 if m.channel.id == inter.channel.id and m.author.id == inter.author.id:
                     return m.content
+
             if server.log_channel != '':
                 await ctx.send(f"Here's your current setting: {server.log_channel}")
             await ctx.send("Waiting for a single channel id...")
@@ -237,22 +238,22 @@ class Confess(commands.Cog):
                    options=[
                        Option('message', 'The message you want to confess', Type.STRING, required=True)
                    ])
-    async def cmd_confess(self, ctx):
+    async def cmd_confess(self, ctx:SlashInteraction):
         message = ctx.get('message')
         current_time = datetime.now()
-        # Prompt the user to select a server and get it's ConfessChannel object. 
+        # Prompt the user to select a server and get it's ConfessChannel object.
         server = await server_picker(ctx)
         guild = await self.bot.fetch_guild(server.guild)
         channel = await self.bot.fetch_channel(server.confess_channel)
-        log_channel = bot.fetch_channel(server.log_channel)
+        log_channel = await bot.fetch_channel(server.log_channel)
         # Create embed. They're fancy
         embed = discord.Embed(description=message, timestamp=current_time)
         # embed = handle_image_embed(ctx, embed, message)
         msg = await channel.send(embed=embed)
-        if log_channel is not None: 
-            await log_confess(ctx, log_channel, message, current_time)
+        if log_channel is not None:
+            await log_confess(ctx, log_channel, msg, current_time, message)
         embed = discord.Embed(description="Your message has been sent: " + message, timestamp=current_time,
-                            url=create_message_link(guild.id, channel.id, msg))
+                              url=create_message_link(msg, guild.id, channel.id))
         embed.set_author(name=f"Zoidberg confess v{__version__}",
                          icon_url="https://i.imgur.com/wWa4zCM.png",
                          url="https://github.pexl.pw")
