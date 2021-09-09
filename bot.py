@@ -60,7 +60,7 @@ slash_client = InteractionClient(bot)
 # TODO: Move both of these into the config file., test_guilds=TEST_GUILDSshow_warnings=True
 guilds = TEST_GUILDS
 
-blocked_cogs = []
+blocked_cogs = ['ai21.py', 'bookmark.py', 'help.py']
 failed_cogs = []
 
 for filename in os.listdir("cogs"):
