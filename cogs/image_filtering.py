@@ -246,7 +246,6 @@ class SafeImage(commands.Cog):
         if message.author.id != self.bot.user.id:
             server = await filter_db.FilterServer.filter(guild=message.guild.id).first()
             if server is not None and server.image_filter:
-
                 if message.channel.is_nsfw and not server.allow_nsfw_channels:
                     return
                 roles = list(server.allow_for_roles)
