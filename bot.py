@@ -42,7 +42,7 @@ async def init():
     # Generate the schema, only run on new
     if os.getenv("zoidberg_has_run") is None:
         await Tortoise.generate_schemas()
-        os.environ['zoidberg_has_run']='1'
+        os.environ['zoidberg_has_run'] = '1'
 
 
 # run_async is a helper function to run simple async Tortoise scripts.
@@ -55,7 +55,7 @@ bot = commands.Bot(
     activity=activity,
     intents=intents
 )
-slash_client = InteractionClient(bot, test_guilds=[842987183588507670])
+slash_client = InteractionClient(bot)
 
 # TODO: Move both of these into the config file., test_guilds=TEST_GUILDSshow_warnings=True
 guilds = TEST_GUILDS
