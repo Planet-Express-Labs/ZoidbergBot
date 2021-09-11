@@ -234,6 +234,10 @@ class Confess(commands.Cog):
             await setup_buttons()
             await inter.edit("Your channels have been recorded.")
 
+        @on_click.timeout
+        async def on_timeout():
+            await msg.edit("This menu has timed out.", components=[])
+
     @slash_command(name="conf", testing_guilds=guilds, description='Sends a message anonymously to a channel.',
                    options=[
                        Option('message', 'The message you want to confess', Type.STRING, required=True)
