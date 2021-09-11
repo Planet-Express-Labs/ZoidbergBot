@@ -53,12 +53,16 @@ async def server_picker(ctx):
                         "Tell the admins of your server to run the comamand /setup-confess.\n\n"
                         "If you believe this to be an error, let us know in the support server (/server).")
         return
-    for each in servers:
-        server_names += f"{1}: {bot.get_guild(each.guild)}\n"
+    for index, each in enumerate(servers):
+        server_names += f"{index}: {bot.get_guild(each.guild)} - server logging {(str(each.log_channel != 0).lower())}\n"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
-                          description="Please send the number of the server you want to choose: \n" + server_names
+                          description=f"Please send the number of the server you want to choose:\n{server_names}"
                           )
+    embed.set_footer(text=f"If a server listing shows server-logging=True, that means that unanonymized copies of your "
+                          f"confessions are sent in some channel of that server.\nNeither Zoidberg or PEXL will store "
+                          f"confessions at any time. PEXL has no control over the logging channel inside the server. if"
+                          f"you have an issue with logging in a server, that is a matter to be raised with the server.")
     # message = await ctx.send(embed=embed)
     channel = ctx.channel
     await ctx.reply(embed=embed)
@@ -71,7 +75,6 @@ async def server_picker(ctx):
         message = await bot.wait_for('message', check=wait)
     except asyncio.TimeoutError:
         await ctx.reply("Timeout reached. Try again. ")
-    print(message.content)
     try:
         server = servers[int(message.content) - 1]
     except IndexError:
@@ -93,7 +96,6 @@ def create_message_link(message, guild=None, channel=None):
         guild = message.guild.id
     if channel is None:
         channel = message.channel.id
-    print(f"https://discord.com/channels/{guild}/{channel}/{message.id}")
     return f"https://discord.com/channels/{guild}/{channel}/{message.id}"
 
 
@@ -173,6 +175,10 @@ class Confess(commands.Cog):
         msg = await setup_buttons()
         on_click = msg.create_click_listener(timeout=60)
 
+        @on_click.not_from_user(ctx.author, cancel_others=True, reset_timeout=False)
+        async def on_wrong_user(inter):
+            await inter.reply("You must be the original author to use this menu.", ephemeral=True)
+
         @on_click.matching_id("EN")
         async def on_test_button(ctx):
             server.enable = not server.enable
@@ -238,7 +244,7 @@ class Confess(commands.Cog):
                    options=[
                        Option('message', 'The message you want to confess', Type.STRING, required=True)
                    ])
-    async def cmd_confess(self, ctx:SlashInteraction):
+    async def cmd_confess(self, ctx: SlashInteraction):
         message = ctx.get('message')
         current_time = datetime.now()
         # Prompt the user to select a server and get it's ConfessChannel object.
@@ -258,11 +264,6 @@ class Confess(commands.Cog):
                          icon_url="https://i.imgur.com/wWa4zCM.png",
                          url="https://github.pexl.pw")
         await ctx.reply(embed=embed)
-
-    @cmd_confess.error
-    async def conf_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send('Please wait before sending ')
 
 
 def setup(bot):
