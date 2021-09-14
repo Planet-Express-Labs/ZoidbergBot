@@ -290,11 +290,11 @@ class Music(commands.Cog):
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send('I am not currently playing anything!')
-        if vol > 200:
-            return await ctx.reply("That's too loud!")
         controller = self.get_controller(ctx)
         if vol is not None:
-            vol = max(min(vol, 1000), 0)
+            vol = max(min(vol, 200), 0)
+            if vol > 100:
+                await ctx.reply(f'Volume levels over 100 might have major distortion and may cause hearing damage.')
             controller.volume = vol
             await ctx.send(f'Setting the cmd_volume to `{vol}`')
             await player.set_volume(vol)
@@ -381,7 +381,8 @@ class Music(commands.Cog):
         controller = self.get_controller(ctx)
         await controller.now_playing.delete()
 
-        controller.now_playing = await ctx.send(f'Now playing: `{player.current}`')
+        embed = create_song_embed(player)
+        await ctx.edit(embed=embed)
 
     @slash_commands.command(name="queue",
                             aliases=['q'],
