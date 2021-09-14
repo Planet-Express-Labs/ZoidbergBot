@@ -13,31 +13,17 @@
 
 # This is designed to be used with Zoidberg bot, however I'm sure it could be adapted to work with your own projects.
 # If there is an issue that might cause issue on your own bot, feel free to pull request if it will improve something.<3
-from sqlalchemy import Column, String, Date, Integer, Numeric
+from tortoise.models import Model
+from tortoise import fields
 
-from sessions import Base
 
+class ZoidbergServer(Model):
+    guild = fields.BigIntField(pk=True)
 
-class Server(Base):
-    __tablename__ = 'server_data'
-
-    guild = Column(Integer, primary_key=True)
-    enabled_modules = Column(String)  # Reserved for future use
-    # I'll probably change this to something that will allow more then just two levels of permission, but that's later.
-    # If admin_role == 0, then it's just going to go off of each role's permissions.
-    admin_role = Column(bool)
-    mod_role = Column(bool)
-    cooldown = Column(Integer)  # Reserved for future use
-    auto_delete = Column(Integer)  # Reserved for future use
-    premium = Column(bool)  # Reserved for future use
-    official_guild = Column(bool)
-
-    def __init__(self, enabled_modules, guild, admin_role, mod_role, cooldown, auto_delete, premium, official_guild):
-        self.guild = guild
-        self.enabled_modules = enabled_modules
-        self.admin_role = admin_role
-        self.mod_role = mod_role
-        self.cooldown = cooldown
-        self.auto_delete = auto_delete
-        self.premium = premium
-        self.official_guild = official_guild
+    enabled_modules = fields.StringField()
+    admin_role = fields.BigIntField()
+    mod_role = fields.BigIntField()
+    cooldown = fields.IntField()
+    auto_delete = fields.IntField()
+    premium = fields.BooleanField()
+    official_guild = fields.BooleanField()
