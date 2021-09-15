@@ -44,7 +44,7 @@ async def server_picker(ctx):
     server_names = ""
     # channels = ConfessChannel
     for each in guilds:
-        serv = await ConfessChannel.filter(guild=each.id)
+        serv = await ConfessChannel.filter(guild=each.id).first()
         if len(serv) != 0:
             servers.append(serv[0])
 
