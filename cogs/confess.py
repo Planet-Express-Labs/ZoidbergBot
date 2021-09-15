@@ -53,8 +53,8 @@ async def server_picker(ctx):
                         "Tell the admins of your server to run the comamand /setup-confess.\n\n"
                         "If you believe this to be an error, let us know in the support server (/server).")
         return
-    for each in servers:
-        server_names += f"{1}: {bot.get_guild(each.guild)}\n"
+    for index, each in enumerate(servers):
+        server_names += f"{index}: {bot.get_guild(each.guild)}\n"
 
     embed = discord.Embed(title="Which server do you want me to send this message in? ",
                           description="Please send the number of the server you want to choose: \n" + server_names

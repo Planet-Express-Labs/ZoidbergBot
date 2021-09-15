@@ -3,9 +3,11 @@
 import discord
 from discord.ext import commands
 from dislash import *
+import dislash
 
 from bot import guilds
 from zoidbergbot.paginate import Element
+from zoidbergbot.utils import option_menu
 
 
 class Listeners(commands.Cog):
@@ -19,5 +21,6 @@ class Listeners(commands.Cog):
             await inter.reply("You do not have permissions to run that command!")
         raise error
 
+        
 def setup(bot):
     bot.add_cog(Listeners(bot))
