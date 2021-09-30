@@ -52,6 +52,7 @@ if not os.path.exists(os.getcwd() + "\\data\\config.ini"):
     SUBSCRIPTION_KEY = os.getenv('zoidberg_content_moderator_api_key')
     CONTENT_MODERATOR_ENDPOINT = os.getenv("zoidberg_content_moderator_endpoint")
     AI21_API_KEY = os.getenv("zoidberg_ai21")
+    GREYNOISE_API_KEY = os.getenv("zoidberg_greynoise")
 else:
     CONFIG_FILE = os.getcwd() + "\\data\\config.ini"
     config = configparser.ConfigParser()
@@ -78,3 +79,4 @@ else:
     SUBSCRIPTION_KEY = config.get("AI", "content_moderator_api_key")
     CONTENT_MODERATOR_ENDPOINT = config.get("AI", "content_moderator_endpoint")
     AI21_API_KEY = config.get("AI", "ai21_api_key")
+    GREYNOISE_API_KEY = config.get("API", "greynoise_api_key")
