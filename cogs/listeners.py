@@ -11,6 +11,10 @@ from zoidbergbot.utils import option_menu
 
 
 class Listeners(commands.Cog):
+    """
+        Centralized location for all listeners.
+        Prevents making a million listeners in each cog which might have performance and readability issues.
+    """
     
     def __init__(self, bot):
         self.bot = bot
