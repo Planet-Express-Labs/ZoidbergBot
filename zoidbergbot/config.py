@@ -79,4 +79,7 @@ else:
     SUBSCRIPTION_KEY = config.get("AI", "content_moderator_api_key")
     CONTENT_MODERATOR_ENDPOINT = config.get("AI", "content_moderator_endpoint")
     AI21_API_KEY = config.get("AI", "ai21_api_key")
+
+    # API section
+    GOOGLE_API_KEY = config.get("API", "google_api_key")
     GREYNOISE_API_KEY = config.get("API", "greynoise_api_key")
