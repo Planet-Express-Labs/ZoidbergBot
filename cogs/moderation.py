@@ -78,7 +78,7 @@ class Moderation(commands.Cog):
         ],
         guild_ids=guilds)
     async def cmd_embed(self, ctx: Interaction,
-                        channel: discord.TextChannel,
+                        channel: discord.TextChannel = None,
                         title: str = None,
                         description: str = None,
                         color: str = None,
@@ -86,10 +86,7 @@ class Moderation(commands.Cog):
                         footer: str = None,
                         footer_url: str = None):
         if color is not None:
-            # try:
             color = await commands.ColorConverter().convert(ctx, color)
-            # except:
-            #     color = discord.Color.default()
         else:
             color = discord.Color.default()
         reply = discord.Embed(color=color)
