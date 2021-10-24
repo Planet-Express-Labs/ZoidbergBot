@@ -1,3 +1,6 @@
+# This software is provided free of charge without a warranty. 
+# This Source Code Form is subject to the terms of the Mozilla Public License, 
+# v. 2.0. If a copy of the MPL was this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import asyncio
 
 from google.cloud import vision
@@ -12,33 +15,18 @@ import re
 from cogs.api import ms_content_moderation
 from zoidbergbot.database import filter_db
 from bot import guilds, bot
+from PIL import Image
+import imagehash
 
 
-# def detect_safe_search(file):
-#     """Detects unsafe features in the file."""
-#     bytes_io = io.BytesIO()
-#     file.save(bytes_io)
-#     byte = bytes_io.read()
-#
-#     client = vision.ImageAnnotatorClient()
-#
-#     b64 = base64.b64encode(byte)
-#     image = vision.Image(content=b64)
-#
-#     response = client.safe_search_detection(image=image)
-#     safe = response.safe_search_annotation
-#
-#     # Names of likelihood from google.cloud.vision.enums
-#     likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
-#                        'LIKELY', 'VERY_LIKELY')
-#     # print('Safe search:')
-#
-#     print('adult: {}'.format(likelihood_name[safe.adult]))
-#     print('medical: {}'.format(likelihood_name[safe.medical]))
-#     print('spoofed: {}'.format(likelihood_name[safe.spoof]))
-#     print('violence: {}'.format(likelihood_name[safe.violence]))
-#     print('racy: {}'.format(likelihood_name[safe.racy]))
-#     return likelihood_name, safe
+def compare_images(image1, image2, cutoff=5):
+    image1 = imagehash.average_hash(image1)
+    image2 = imagehash.average_hash(image2)
+    if image1 - image2 < cutoff:
+        return True
+    else:
+        return False
+
 
 async def check_conditions(azure, google, channel, message, medical:bool):
     if (azure["adult_classification_score"] > 0.6 or google.adult / 5 > 0.8 or \
@@ -103,7 +91,7 @@ class SafeImage(commands.Cog):
         # await ctx.reply("This must be in the format of a URI/URL!")
 
     @slash_commands.has_permissions(administrator=True)
-    @slash_command(name="safeguard-ai",
+    @slash_command(name="configure-image-filtering",
                             guild_ids=guilds,
                             description="Sets up AI based text and image filtering using AI. ",
                             # options=[
